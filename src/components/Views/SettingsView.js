@@ -38,7 +38,8 @@ class SettingsView extends Component{
     case 3:
     activeCard = <ColorSchemeCard
       settingsState={this.props.settingsState}
-      CSSstate={'block'}
+      colorScheme={this.props.colorScheme}
+      setColorScheme={this.props.setColorScheme}
            >
     </ColorSchemeCard>
     break

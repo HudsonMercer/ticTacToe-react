@@ -23,6 +23,11 @@ class App extends Component {
       },
       splash: {
         isOpen: true
+      },
+      colorScheme: {
+        red: 0,
+        green: 0,
+        blue: 0
       }
     }
 
@@ -70,6 +75,16 @@ class App extends Component {
     })
   }
 
+  setColorScheme = (r, g, b) =>{
+    this.setState({
+      colorScheme:{
+        red: r,
+        green: g,
+        blue: b
+      }
+    })
+  }
+
   render() {
     return (
       <div>
@@ -93,6 +108,8 @@ class App extends Component {
           userName={this.state.userName}
           handleNameChange={this.handleNameChange}
           avatarImg={AvatarImg}
+          colorScheme={this.state.colorScheme}
+          setColorScheme={this.setColorScheme}
         />
       </div>
     )

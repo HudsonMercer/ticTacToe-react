@@ -19,6 +19,8 @@ class MainContentsView extends Component {
               userName={this.props.userName}
               handleNameChange={this.props.handleNameChange}
               avatarImg={this.props.avatarImg}
+              colorScheme={this.props.colorScheme}
+              setColorScheme={this.props.setColorScheme}
             >
             </SettingsView>
           </Cell>
