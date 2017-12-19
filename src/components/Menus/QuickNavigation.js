@@ -13,12 +13,6 @@ import {
         } from 'react-mdc-web';
 
   class QuickNavigation extends Component {
-    constructor(props){
-      super(props)
-      this.state = {
-      }
-    }
-
 
     render(){
 
@@ -43,23 +37,28 @@ import {
                 this.props.toggle()
               }}
             ><Icon name='desktop_windows'/>Title Screen</div>
-            <div><Icon name='message'/>Lobby</div>
+            <div
+              selected={this.props.activeItem === 'lobby'}
+              onClick={this.props.openLobby}
+            >
+              <Icon name='message'/>Lobby
+            </div>
             <ListDivider/>
             <div>Settings</div>
             <div
-              selected={this.props.activeTab === 1}
-              onClick={() => this.props.openToView(1)}
+              selected={this.props.activeItem === 'general'}
+              onClick={() => this.props.openToView('general')}
             >
               <Icon name='settings'/>General</div>
             <div
-              selected={this.props.activeTab === 2}
-              onClick={() => this.props.openToView(2)}
+              selected={this.props.activeItem === 'avatar'}
+              onClick={() => this.props.openToView('avatar')}
             >
               <Icon name='person'/>Avatar
             </div>
             <div
-              selected={this.props.activeTab === 3}
-              onClick={() => this.props.openToView(3)}
+              selected={this.props.activeItem === 'colorScheme'}
+              onClick={() => this.props.openToView('colorScheme')}
             >
               <Icon name='color_lens'/>Color Theme
             </div>

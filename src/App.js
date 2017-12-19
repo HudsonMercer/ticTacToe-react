@@ -12,14 +12,17 @@ class App extends Component {
     super(props)
     this.state = {
       userName: '',
-      quickNavigationActive: false,
+      quickNavigationState: {
+        isOpen: false,
+        activeItem: 'lobby'
+      },
       mainContents:{
-                    isOpen: true
-                    },
+        isOpen: true
+        },
       settingsState:{
-                    activeTab: 1,
-                    isOpen: true,
-                    setActiveTab: this.settingsSetActiveTab
+        activeItem: 'general',
+        isOpen: false,
+        setActiveTab: this.settingsSetActiveTab
       },
       splash: {
         isOpen: true
@@ -28,24 +31,39 @@ class App extends Component {
         red: 0,
         green: 0,
         blue: 0
+      },
+      lobbyState: {
+        isOpen: true,
+        lobbyGames: []
       }
     }
 
   }
 
   toggleQuickNavigation = ()=>{
-    this.setState({
-      quickNavigationActive: this.state.quickNavigationActive ? false : true
-    })
+    this.setState((prevState)=>({
+      quickNavigationState:{
+        ...prevState.quickNavigationState,
+        isOpen: this.state.quickNavigationState.isOpen ? false : true
+      }
+    }))
   }
 
   openToView = (t)=>{
     this.setState(prevState => ({
-      quickNavigationActive: false,
+      quickNavigationState:{
+        ...prevState.quickNavigationState,
+        activeItem: t,
+        isOpen: false
+      },
       settingsState: {
         ...prevState.settingsState,
-        activeTab: t,
+        activeItem: t,
         isOpen: true
+      },
+      lobbyState: {
+        ...prevState.lobbyState,
+        isOpen: false
       }
     }))
   }
@@ -54,7 +72,7 @@ class App extends Component {
     this.setState(prevState => ({
       settingsState:{
                       ...prevState.settingsState,
-                      activeTab: t
+                      activeItem: t
                     }
     }))
   }
@@ -85,10 +103,44 @@ class App extends Component {
     })
   }
 
+  openLobby = () =>{
+    this.setState(prevState =>({
+      quickNavigationState:{
+        ...prevState.quickNavigationState,
+        activeItem: 'lobby'
+      },
+      settingsState: {
+        ...prevState.settingsState,
+        isOpen: false
+      },
+      lobbyState: {
+        ...prevState.lobbyState,
+        isOpen: true,
+      }
+    }))
+
+    this.toggleQuickNavigation()
+  }
+
+  pushLobbyGame = (gameObject) =>{
+    let lobbyGameList = this.state.lobbyState.lobbyGames
+    let index = lobbyGameList.push(gameObject)
+    this.setState(prevState => ({
+      lobbyState: {
+        ...prevState.lobbyState,
+        lobbyGames: lobbyGameList
+      }
+    }))
+    console.log(this.state.lobbyState.lobbyGames[index])
+  }
+
   render() {
     return (
       <div>
-        <SplashScreen isOpen={this.state.splash.isOpen} toggleSplash={this.toggleSplash}/>
+        <SplashScreen
+          isOpen={this.state.splash.isOpen}
+          toggleSplash={this.toggleSplash}
+        />
         <HeaderToolbar
           toggleQuickNavigation={this.toggleQuickNavigation}
           userName={this.state.userName}
@@ -96,14 +148,15 @@ class App extends Component {
           avatarImg={AvatarImg}
         />
         <QuickNavigation
-          isOpen={this.state.quickNavigationActive}
+          {...this.state.quickNavigationState}
           toggle={this.toggleQuickNavigation}
           toggleSplash={this.toggleSplash}
-          activeTab={this.state.settingsState.activeTab}
           openToView={this.openToView}
+          openLobby={this.openLobby}
         />
         <MainContentsView
-          isOpen={this.state.mainContents.isOpen}
+          pushLobbyGame={this.pushLobbyGame}
+          lobbyState={this.state.lobbyState}
           settingsState={this.state.settingsState}
           userName={this.state.userName}
           handleNameChange={this.handleNameChange}

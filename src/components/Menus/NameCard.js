@@ -20,12 +20,7 @@ class NameCard extends Component {
 
     this.state = {
       userName: props.userName,
-      isOpen: false,
-      valueR: 255,
-      valueG: 255,
-      valueB: 255,
-      inputValue: 0,
-      value: 0
+      isOpen: false
 
     }
   }
@@ -37,9 +32,7 @@ class NameCard extends Component {
 
   render(){
     return(
-      <Content
-        className={this.props.settingsState.activeTab === 1 ? '' : 'hidden'}
-      >
+      <Content>
         <Card>
           <CardHeader>
             <CardTitle>

@@ -12,6 +12,17 @@ $mdc-theme-background: #f5f5f5;
   display: none;
 }
 
+.splashInput{
+  border: 0px;
+  width: 88%;
+  height: 95%;
+  font-size: 2rem;
+  text-align: center;
+  &:focus {
+    outline: none;
+  }
+}
+
 .SplashScreen {
   user-select: none;
   position: absolute;

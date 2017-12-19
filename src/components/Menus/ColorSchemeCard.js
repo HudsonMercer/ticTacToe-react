@@ -31,16 +31,19 @@ class ColorSchemeCard extends Component{
         ${Math.floor(this.props.colorScheme.green/1.5)},
         ${Math.floor(this.props.colorScheme.blue/1.5)}
       )`)
+    }
 
-
-}
+  resetColorScheme = () => {
+    document.documentElement.style.setProperty(`--mdc-theme-primary`, '')
+    document.documentElement.style.setProperty(`--mdc-theme-primary-dark`, '')
+  }
   render(){
 
     return(
-      <Content>
+      <Content style={{userSelect: 'none'}}>
         <Card>
           <CardHeader>
-            Card Header
+            Pick a new color
           </CardHeader>
           <CardText>
             Red
@@ -80,6 +83,7 @@ class ColorSchemeCard extends Component{
           </CardText>
           <CardActions>
             <Button onClick={this.applyColorScheme}>Apply</Button>
+            <Button onClick={this.resetColorScheme}raised>Reset</Button>
           </CardActions>
         </Card>
       </Content>

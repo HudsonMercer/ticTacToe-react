@@ -31,11 +31,11 @@ class HeaderToolbar extends Component {
           </ToolbarSection>
           <ToolbarSection>
             <Display1 className="settingsHeader">
-              {`${this.props.userName ? `Hello, ${this.props.userName}` : 'Tic Tac Toe'} `}
+              {`${this.props.userName ? `Hello, ${this.props.userName}` : 'Tic-Tac-Toe'} `}
             </Display1>
           </ToolbarSection>
           <ToolbarSection align="end">
-            <ToolBarImage onClick={() => {this.props.openToView(2)}} src={this.props.avatarImg} alt=""/>
+            <ToolBarImage onClick={() => {this.props.openToView('avatar')}} src={this.props.avatarImg} alt=""/>
           </ToolbarSection>
         </ToolbarRow>
       </Toolbar>

@@ -10040,6 +10040,15 @@ a.mdc-list-item {
 .hidden {
   display: none; }
 
+.splashInput {
+  border: 0px;
+  width: 88%;
+  height: 95%;
+  font-size: 2rem;
+  text-align: center; }
+  .splashInput:focus {
+    outline: none; }
+
 .SplashScreen {
   user-select: none;
   position: absolute;

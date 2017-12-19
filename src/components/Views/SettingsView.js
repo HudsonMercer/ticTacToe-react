@@ -10,62 +10,55 @@ import ColorSchemeCard from '../Menus/ColorSchemeCard'
 
 
 class SettingsView extends Component{
- constructor(props){
-   super(props)
-
-
- }
   render(){
 
   let activeCard
 
-
-  switch(this.props.settingsState.activeTab){
-    case 1:
+  switch(this.props.activeItem){
+    case 'general':
      activeCard = <NameCard
        userName={this.props.userName}
-      settingsState={this.props.settingsState}
-      handleNameChange={this.props.handleNameChange}
-           ></NameCard>
+       settingsState={this.props}
+       handleNameChange={this.props.handleNameChange}
+                  />
       break
-    case 2:
+    case 'avatar':
     activeCard = <AvatarCard
-      settingsState={this.props.settingsState}
+      settingsState={this.props}
       avatarImg={this.props.avatarImg}
-           >
-    </AvatarCard>
+                 />
       break
-    case 3:
+    case 'colorScheme':
     activeCard = <ColorSchemeCard
-      settingsState={this.props.settingsState}
+      settingsState={this.props}
       colorScheme={this.props.colorScheme}
       setColorScheme={this.props.setColorScheme}
-           >
-    </ColorSchemeCard>
-    break
+                 />
+      break
     default:
-    throw 'Invalid tab index given to SettingsView.js'
-    break
+    activeCard = null
+      throw {message: 'Invalid tab index given to SettingsView.js, given ' + this.props.activeItem}
   }
 
-    if(this.props.settingsState.isOpen){return(
-      <div style={{display: this.props.settingsState.isOpen ? 'block' : 'block'}}>
+    if(this.props.isOpen){
+      return(
+      <div>
         <Tabbar>
           <Tab
-            active={this.props.settingsState.activeTab===1}
-            onClick={() => {this.props.settingsState.setActiveTab(1)}}
+            active={this.props.activeItem === 'general'}
+            onClick={() => {this.props.setActiveTab('general')}}
           >
             General
           </Tab>
           <Tab
-            active={this.props.settingsState.activeTab===2}
-            onClick={() => {this.props.settingsState.setActiveTab(2)}}
+            active={this.props.activeItem === 'avatar'}
+            onClick={() => {this.props.setActiveTab('avatar')}}
           >
             Avatar
           </Tab>
           <Tab
-            active={this.props.settingsState.activeTab===3}
-            onClick={() => {this.props.settingsState.setActiveTab(3)}}
+            active={this.props.activeItem === 'colorScheme'}
+            onClick={() => {this.props.setActiveTab('colorScheme')}}
           >
             Color Scheme
           </Tab>
@@ -73,7 +66,9 @@ class SettingsView extends Component{
         </Tabbar>
         {activeCard}
       </div>
-    )} else {return(<div></div>)}
+    )}  else  {
+          return null
+         }
   }
 }
 

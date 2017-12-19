@@ -23,9 +23,7 @@ class AvatarCard extends Component{
 
   render(){
     return(
-      <Content
-        className={this.props.settingsState.activeTab === 2 ? '' : 'hidden'}
-      >
+      <Content>
         <Card>
           <CardHeader>
             <CardTitle>

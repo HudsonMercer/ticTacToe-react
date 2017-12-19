@@ -3,19 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "caniuse-lite": "^1.0.30000782",
+    "caniuse-lite": "^1.0.30000783",
     "chalk": "^2.3.0",
+    "firebase": "^4.8.1",
+    "firebase-admin": "^5.5.1",
+    "firebase-tools": "^3.16.0",
+    "g": "^2.0.1",
     "json-schema": "^0.2.3",
     "material": "^0.2.6",
     "new-component": "^1.0.1",
     "npm-sass": "^2.2.1",
     "react": "^16.2.0",
-    "react-clickdrag": "^3.0.2",
     "react-dom": "^16.2.0",
     "react-mdc-web": "^0.16.0",
     "react-scripts": "1.0.17",
+    "redux": "^3.7.2",
     "s": "^0.1.1",
-    "styled-components": "^2.2.4"
+    "styled-components": "^2.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
