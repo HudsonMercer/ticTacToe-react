@@ -1,17 +1,11 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {toggleSplash} from '../../actions/uiActions'
 import {
         Icon
         } from 'react-mdc-web';
 
 class SplashScreen extends Component {
-  constructor(props){
-    super(props)
-    this.toggleSplash = this.props.toggleSplash
-  }
-
-
-
-
   render(){
     const
       hideSplashStyle = {
@@ -41,11 +35,27 @@ class SplashScreen extends Component {
           <div className="splashInputBox splashTheme">
             <input className="splashInput" type="password" id="splashPasswordInput" name="splashPassword"/><Icon name="chevron_right" style={loginArrowStyle}></Icon>
           </div>
-          <span className="splashSkip"onClick={this.toggleSplash}>Skip</span>
+          <span className="splashSkip" onClick={this.props.toggleSplash}>Skip</span>
         </div>
       </div>
     )
   }
 }
 
-export default SplashScreen
+const mapStateToProps = (state) => {
+  return {
+    isOpen: state.splashState.isOpen
+  }
+
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleSplash: () => {
+      dispatch(toggleSplash())
+    }
+  }
+
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SplashScreen)

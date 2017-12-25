@@ -1,8 +1,11 @@
-import React, {Component} from 'react';
-import style from 'styled-components';
+import React, {Component} from 'react'
+import style from 'styled-components'
 import {
         Icon
-        } from 'react-mdc-web';
+        } from 'react-mdc-web'
+
+import {connect} from 'react-redux'
+import {toggleQuickNavigation} from '../../actions/uiActions'
 
 const Container = style.div`
   width: 8vh;
@@ -20,19 +23,19 @@ const Container = style.div`
 class HeaderQuickNavigation extends Component {
   constructor(props){
     super(props)
-    this.mouseEnter = this.mouseEnter.bind(this)
-    this.mouseLeave = this.mouseLeave.bind(this)
     this.state = {
     backgroundColor: 'var(--mdc-theme-primary)'}
   }
-  mouseEnter(){
+
+  mouseEnter = () => {
     this.setState({backgroundColor: 'var(--mdc-theme-primary-dark)'})
 
   }
 
-  mouseLeave(){
+  mouseLeave = () => {
     this.setState({backgroundColor: 'var(--mdc-theme-primary)'})
   }
+
   render(){
     return (
       <Container
@@ -49,4 +52,17 @@ class HeaderQuickNavigation extends Component {
   }
 }
 
-export default HeaderQuickNavigation;
+const mapStateToProps = (state) => {
+  return state
+
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onClick: () => {
+      dispatch(toggleQuickNavigation())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderQuickNavigation)

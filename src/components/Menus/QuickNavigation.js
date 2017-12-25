@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux'
+import {toggleSplash, toggleQuickNavigation} from '../../actions/uiActions'
 import {
         Drawer,
         DrawerContent,
@@ -19,7 +21,7 @@ import {
       return(
       <Drawer
         open={this.props.isOpen}
-        onClose={this.props.toggle}
+        onClose={this.props.toggleThis}
       >
 
         <DrawerHeader>
@@ -34,7 +36,7 @@ import {
             <div
               onClick={()=>{
                 this.props.toggleSplash()
-                this.props.toggle()
+                this.props.toggleThis()
               }}
             ><Icon name='desktop_windows'/>Title Screen</div>
             <div
@@ -69,4 +71,23 @@ import {
   }
 }
 
-export default QuickNavigation;
+const mapStateToProps = (store) => {
+  return {
+    isOpen: store.quickNavigationState.isOpen,
+    activeItem: store.settingsState.activeItem,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleSplash: () => {
+      dispatch(toggleSplash())
+    },
+    toggleThis: () => {
+      dispatch(toggleQuickNavigation())
+    }
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuickNavigation)

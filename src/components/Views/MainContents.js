@@ -1,18 +1,20 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {
         Cell,
         Grid
         } from 'react-mdc-web'
 
+import {toggleQuickNavigation} from '../../actions/uiActions'
+
 import SettingsView from './SettingsView'
 import LobbyView from './LobbyView'
 
 class MainContentsView extends Component {
-
   render(){
       if(this.props.lobbyState.isOpen){
         return(
-          <div id="bodyContents" style={{overflowY: 'scroll'}}>
+          <div onClick={() => this.props.setMath(true)} id="bodyContents" style={{overflowY: 'scroll'}}>
             <LobbyView
               {...this.props.lobbyState}
               pushLobbyGame={this.pushLobbyGame}
@@ -21,7 +23,7 @@ class MainContentsView extends Component {
         )
       } else if (this.props.settingsState.isOpen){
         return(
-          <div id="bodyContents" style={{overflowY: 'scroll'}}>
+          <div onclick={(test = 5) => {this.props.setMath(test)}} id="bodyContents" style={{overflowY: 'scroll'}}>
             <Grid>
               <Cell col={2}></Cell>
               <Cell col={8}>
@@ -41,4 +43,27 @@ class MainContentsView extends Component {
   }
 }
 
-export default MainContentsView
+const mathInc = (e) => ({
+  type: 'INC',
+  payload: e
+})
+
+const mapStateToProps = (state) => {
+    return {
+      mathField: state.mathField,
+      quickNavigationState2: state.quickNavigationState
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+      setMath: (e) => {
+        dispatch(toggleQuickNavigation(e))
+      },
+      quickNavigationState: () => {
+        dispatch(mathInc(32))
+      }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainContentsView)

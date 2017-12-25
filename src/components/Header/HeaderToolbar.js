@@ -26,7 +26,7 @@ class HeaderToolbar extends Component {
       <Toolbar fixed style={{paddingLeft: '2vh', paddingRight: '2vh'}}>
         <ToolbarRow>
           <ToolbarSection align="start">
-            <HeaderQuickNavigation onClick={this.props.toggleQuickNavigation}>
+            <HeaderQuickNavigation>
             </HeaderQuickNavigation>
           </ToolbarSection>
           <ToolbarSection>

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux'
 import './styles/default.css';
 
 import HeaderToolbar from './components/Header/HeaderToolbar'
@@ -8,34 +9,35 @@ import SplashScreen from './components/Views/SplashScreen'
 import AvatarImg from './res/avatar.png'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
+
     this.state = {
       userName: '',
       quickNavigationState: {
         isOpen: false,
-        activeItem: 'lobby'
+        activeItem: 'lobby',
       },
       mainContents:{
-        isOpen: true
+        isOpen: true,
         },
       settingsState:{
         activeItem: 'general',
         isOpen: false,
-        setActiveTab: this.settingsSetActiveTab
+        setActiveTab: this.settingsSetActiveTab,
       },
       splash: {
-        isOpen: true
+        isOpen: true,
       },
       colorScheme: {
         red: 0,
         green: 0,
-        blue: 0
+        blue: 0,
       },
       lobbyState: {
         isOpen: true,
-        lobbyGames: []
-      }
+        lobbyGames: [],
+      },
     }
 
   }
@@ -70,6 +72,10 @@ class App extends Component {
 
   settingsSetActiveTab = (t)=>{
     this.setState(prevState => ({
+      quickNavigationState:{
+                            ...prevState.quickNavigationState,
+                            activeItem: t
+                          },
       settingsState:{
                       ...prevState.settingsState,
                       activeItem: t
@@ -137,20 +143,13 @@ class App extends Component {
   render() {
     return (
       <div>
-        <SplashScreen
-          isOpen={this.state.splash.isOpen}
-          toggleSplash={this.toggleSplash}
-        />
+        <SplashScreen/>
         <HeaderToolbar
-          toggleQuickNavigation={this.toggleQuickNavigation}
           userName={this.state.userName}
           openToView={this.openToView}
           avatarImg={AvatarImg}
         />
         <QuickNavigation
-          {...this.state.quickNavigationState}
-          toggle={this.toggleQuickNavigation}
-          toggleSplash={this.toggleSplash}
           openToView={this.openToView}
           openLobby={this.openLobby}
         />
@@ -169,4 +168,16 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+  }
+}
+
+export default App
