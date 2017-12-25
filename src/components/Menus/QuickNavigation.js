@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import {toggleSplash, toggleQuickNavigation} from '../../actions/uiActions'
+import {toggleSplash, toggleQuickNavigation, setSettingsActiveItem, toggleLobby, toggleSettings, uiSetActiveView} from '../../actions/uiActions'
 import {
         Drawer,
         DrawerContent,
@@ -8,8 +8,6 @@ import {
         DrawerHeaderContent,
         Navigation,
         Icon,
-        List,
-        ListItem,
         ListDivider,
         Title,
         } from 'react-mdc-web';
@@ -32,7 +30,7 @@ import {
           </DrawerHeaderContent>
         </DrawerHeader>
         <DrawerContent>
-          <Navigation id="hperadejadj">
+          <Navigation>
             <div
               onClick={()=>{
                 this.props.toggleSplash()
@@ -41,7 +39,10 @@ import {
             ><Icon name='desktop_windows'/>Title Screen</div>
             <div
               selected={this.props.activeItem === 'lobby'}
-              onClick={this.props.openLobby}
+              onClick={() => {
+                this.props.setActiveItem('lobby')
+                this.props.toggleThis(false)
+              }}
             >
               <Icon name='message'/>Lobby
             </div>
@@ -49,18 +50,27 @@ import {
             <div>Settings</div>
             <div
               selected={this.props.activeItem === 'general'}
-              onClick={() => this.props.openToView('general')}
+              onClick={() => {
+                this.props.setActiveItem('general')
+                this.props.toggleThis(false)
+              }}
             >
               <Icon name='settings'/>General</div>
             <div
               selected={this.props.activeItem === 'avatar'}
-              onClick={() => this.props.openToView('avatar')}
+              onClick={() => {
+                this.props.setActiveItem('avatar')
+                this.props.toggleThis(false)
+              }}
             >
               <Icon name='person'/>Avatar
             </div>
             <div
               selected={this.props.activeItem === 'colorScheme'}
-              onClick={() => this.props.openToView('colorScheme')}
+              onClick={() => {
+                this.props.setActiveItem('colorScheme')
+                this.props.toggleThis(false)
+              }}
             >
               <Icon name='color_lens'/>Color Theme
             </div>
@@ -85,6 +95,14 @@ const mapDispatchToProps = (dispatch) => {
     },
     toggleThis: () => {
       dispatch(toggleQuickNavigation())
+    },
+    setActiveItem: (target) => {
+      dispatch(setSettingsActiveItem(target))
+      if (target === 'lobby'){
+        dispatch(uiSetActiveView('lobby'))
+      } else {
+        dispatch(uiSetActiveView('settings'))
+      }
     }
   }
 }

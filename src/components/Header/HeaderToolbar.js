@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux'
+import {uiSetActiveView, toggleQuickNavigation, setSettingsActiveItem} from '../../actions/uiActions'
 import style from 'styled-components';
 import HeaderQuickNavigation from './HeaderQuickNavigation'
 import {
@@ -35,7 +37,7 @@ class HeaderToolbar extends Component {
             </Display1>
           </ToolbarSection>
           <ToolbarSection align="end">
-            <ToolBarImage onClick={() => {this.props.openToView('avatar')}} src={this.props.avatarImg} alt=""/>
+            <ToolBarImage onClick={this.props.openAvatarMenu} src={this.props.avatarImg} alt=""/>
           </ToolbarSection>
         </ToolbarRow>
       </Toolbar>
@@ -45,4 +47,21 @@ class HeaderToolbar extends Component {
   }
 }
 
-export default HeaderToolbar;
+const mapStateToProps = (store) => {
+  return {
+    userName: store.userName
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openAvatarMenu: () => {
+      dispatch(uiSetActiveView('settings'))
+      dispatch(toggleQuickNavigation(false))
+      dispatch(setSettingsActiveItem('avatar'))
+
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderToolbar);

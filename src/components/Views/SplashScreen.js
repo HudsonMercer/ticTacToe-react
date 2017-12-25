@@ -35,23 +35,23 @@ class SplashScreen extends Component {
           <div className="splashInputBox splashTheme">
             <input className="splashInput" type="password" id="splashPasswordInput" name="splashPassword"/><Icon name="chevron_right" style={loginArrowStyle}></Icon>
           </div>
-          <span className="splashSkip" onClick={this.props.toggleSplash}>Skip</span>
+          <span className="splashSkip" onClick={this.props.toggleThis}>Skip</span>
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (store) => {
   return {
-    isOpen: state.splashState.isOpen
+    isOpen: store.splashState.isOpen
   }
 
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleSplash: () => {
+    toggleThis: () => {
       dispatch(toggleSplash())
     }
   }

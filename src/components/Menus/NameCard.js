@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {setUserName} from '../../actions/uiActions'
 import {
         Button,
         Card,
@@ -15,21 +17,6 @@ import {
         } from 'react-mdc-web';
 
 class NameCard extends Component {
-  constructor(props){
-    super(props)
-
-    this.state = {
-      userName: props.userName,
-      isOpen: false
-
-    }
-  }
-
-  handleNameChange = (t) => {
-    this.setState({userName: t.target.value})
-  }
-
-
   render(){
     return(
       <Content>
@@ -45,7 +32,7 @@ class NameCard extends Component {
               floatingLabel="Current Name"
               helptext="Must be alphanumeric, spaces are okay"
               value={this.props.userName}
-              onChange={(t) => this.props.handleNameChange(t)}
+              onChange={(name) => this.props.setUserName(name.target.value)}
             >
             </Textfield>
             <CardActions>
@@ -93,4 +80,18 @@ class NameCard extends Component {
   }
 }
 
-export default NameCard
+const mapStateToProps = (store) => {
+  return {
+    userName: store.userName
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserName: (name) => {
+      dispatch(setUserName(name))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NameCard)

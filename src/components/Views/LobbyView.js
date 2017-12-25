@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {
         Card,
         CardFooter,
@@ -78,4 +79,15 @@ class LobbyView extends Component {
   }
 }
 
-export default LobbyView
+const mapStateToProps = (store) => {
+  return {
+    isOpen: store.lobbyState.isOpen
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(LobbyView)

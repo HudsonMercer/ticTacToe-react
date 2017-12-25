@@ -7,7 +7,7 @@ const initState = {
     isOpen: false,
     activeItem: 'lobby',
   },
-  mainContents:{
+  mainContentsState:{
     isOpen: true,
     },
   settingsState:{
@@ -26,6 +26,9 @@ const initState = {
     isOpen: true,
     lobbyGames: [],
   },
+  uiState:{
+    activeView: 'lobby'
+  }
 }
-
-export default createStore(reducers, initState)
+const store = createStore(reducers, initState)
+export default store

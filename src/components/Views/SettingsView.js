@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {setActiveView, setSettingsActiveItem} from '../../actions/uiActions'
 import {
         Tab,
         Tabbar
@@ -7,7 +9,6 @@ import {
 import NameCard from '../Menus/NameCard'
 import AvatarCard from '../Menus/AvatarCard'
 import ColorSchemeCard from '../Menus/ColorSchemeCard'
-
 
 class SettingsView extends Component{
   render(){
@@ -40,25 +41,24 @@ class SettingsView extends Component{
       throw {message: 'Invalid tab index given to SettingsView.js, given ' + this.props.activeItem}
   }
 
-    if(this.props.isOpen){
-      return(
+  return(
       <div>
         <Tabbar>
           <Tab
             active={this.props.activeItem === 'general'}
-            onClick={() => {this.props.setActiveTab('general')}}
+            onClick={() => {this.props.setActiveItem('general')}}
           >
             General
           </Tab>
           <Tab
             active={this.props.activeItem === 'avatar'}
-            onClick={() => {this.props.setActiveTab('avatar')}}
+            onClick={() => {this.props.setActiveItem('avatar')}}
           >
             Avatar
           </Tab>
           <Tab
             active={this.props.activeItem === 'colorScheme'}
-            onClick={() => {this.props.setActiveTab('colorScheme')}}
+            onClick={() => {this.props.setActiveItem('colorScheme')}}
           >
             Color Scheme
           </Tab>
@@ -66,10 +66,23 @@ class SettingsView extends Component{
         </Tabbar>
         {activeCard}
       </div>
-    )}  else  {
-          return null
-         }
+  )}
+}
+
+const mapStateToProps = (store) => {
+  return {
+    isOpen: store.settingsState.isOpen,
+    activeItem: store.settingsState.activeItem
   }
 }
 
-export default SettingsView
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setActiveItem: (target) => {
+      dispatch(setSettingsActiveItem(target))
+    }
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsView)
