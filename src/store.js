@@ -1,15 +1,14 @@
 import {createStore} from 'redux'
 import reducers from './reducers/reducers'
+import AvatarImg from './res/avatar.png'
 
 const initState = {
   userName: '',
+  avatarImg: AvatarImg,
   quickNavigationState: {
     isOpen: false,
     activeItem: 'lobby',
   },
-  mainContentsState:{
-    isOpen: true,
-    },
   settingsState:{
     activeItem: 'general',
     isOpen: false,
@@ -30,5 +29,6 @@ const initState = {
     activeView: 'lobby'
   }
 }
+
 const store = createStore(reducers, initState)
 export default store

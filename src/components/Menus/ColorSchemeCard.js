@@ -1,41 +1,20 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {setColorScheme} from '../../actions/uiActions'
 import {
         Button,
         Card,
         CardActions,
-        CardFooter,
         CardHeader,
-        CardMedia,
-        CardSubtitle,
         CardText,
-        CardTitle,
         Content,
-        FormField,
         Slider,
-        Title,
-        Textfield
         } from 'react-mdc-web';
 
 class ColorSchemeCard extends Component{
 
-  applyColorScheme = () => {
-    document.documentElement.style.setProperty(`--mdc-theme-primary`,
-      `rgb(
-        ${this.props.colorScheme.red},
-        ${this.props.colorScheme.green},
-        ${this.props.colorScheme.blue}
-      )`)
-    document.documentElement.style.setProperty(`--mdc-theme-primary-dark`,
-      `rgb(
-        ${Math.floor(this.props.colorScheme.red/1.5)},
-        ${Math.floor(this.props.colorScheme.green/1.5)},
-        ${Math.floor(this.props.colorScheme.blue/1.5)}
-      )`)
-    }
-
   resetColorScheme = () => {
-    document.documentElement.style.setProperty(`--mdc-theme-primary`, '')
-    document.documentElement.style.setProperty(`--mdc-theme-primary-dark`, '')
+    this.props.setColorScheme(30, 136, 229)
   }
   render(){
 
@@ -53,7 +32,7 @@ class ColorSchemeCard extends Component{
               min={50}
               max={255}
               step={5}
-              onChange={this.applyColorScheme}
+              // onChange={this.applyColorScheme}
               onInput={(t)=>{
                 this.props.setColorScheme(t,this.props.colorScheme.green, this.props.colorScheme.blue)
               }}
@@ -64,7 +43,7 @@ class ColorSchemeCard extends Component{
               min={50}
               max={255}
               step={5}
-              onChange={this.applyColorScheme}
+              // onChange={this.applyColorScheme}
               onInput={(t)=>{
                 this.props.setColorScheme(this.props.colorScheme.red,t, this.props.colorScheme.blue)
               }}
@@ -75,14 +54,16 @@ class ColorSchemeCard extends Component{
               min={50}
               max={255}
               step={5}
-              onChange={this.applyColorScheme}
+              // onChange={this.applyColorScheme}
               onInput={(t)=>{
                 this.props.setColorScheme(this.props.colorScheme.red,this.props.colorScheme.green, t)
               }}
             />
           </CardText>
           <CardActions>
-            <Button onClick={this.applyColorScheme}>Apply</Button>
+            <Button onClick={ () => {
+              this.props.setColorScheme(this.props.colorScheme.red, this.props.colorScheme.green, this.props.colorScheme.blue)
+            }}>Save</Button>
             <Button onClick={this.resetColorScheme}raised>Reset</Button>
           </CardActions>
         </Card>
@@ -91,4 +72,18 @@ class ColorSchemeCard extends Component{
   }
 }
 
-export default ColorSchemeCard
+const mapStateToProps = (store) => {
+  return {
+    colorScheme: store.colorScheme
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setColorScheme: (r, g, b) => {
+      dispatch(setColorScheme(r, g, b))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ColorSchemeCard)

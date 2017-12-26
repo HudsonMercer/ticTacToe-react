@@ -1,102 +1,15 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux'
 import './styles/default.css';
 
 import HeaderToolbar from './components/Header/HeaderToolbar'
 import MainContentsView from './components/Views/MainContents'
 import QuickNavigation from './components/Menus/QuickNavigation'
 import SplashScreen from './components/Views/SplashScreen'
-import AvatarImg from './res/avatar.png'
 
 class App extends Component {
   constructor() {
     super()
-
-    this.state = {
-      userName: '',
-      quickNavigationState: {
-        isOpen: false,
-        activeItem: 'lobby',
-      },
-      mainContents:{
-        isOpen: true,
-        },
-      settingsState:{
-        activeItem: 'general',
-        isOpen: false,
-        setActiveTab: this.settingsSetActiveTab,
-      },
-      colorScheme: {
-        red: 0,
-        green: 0,
-        blue: 0,
-      },
-      lobbyState: {
-        isOpen: true,
-        lobbyGames: [],
-      },
-    }
-
-  }
-
-  openToView = (t)=>{
-    this.setState(prevState => ({
-      quickNavigationState:{
-        ...prevState.quickNavigationState,
-        activeItem: t,
-        isOpen: false
-      },
-      settingsState: {
-        ...prevState.settingsState,
-        activeItem: t,
-        isOpen: true
-      },
-      lobbyState: {
-        ...prevState.lobbyState,
-        isOpen: false
-      }
-    }))
-  }
-
-
-  handleNameChange = (t)=>{
-    this.setState(
-      {
-        userName: t.target.value
-      }
-    )
-  }
-
-  setColorScheme = (r, g, b) =>{
-    this.setState({
-      colorScheme:{
-        red: r,
-        green: g,
-        blue: b
-      }
-    })
-  }
-
-  openLobby = () =>{
-    this.setState(prevState =>({
-      quickNavigationState:{
-        ...prevState.quickNavigationState,
-        activeItem: 'lobby'
-      },
-      settingsState: {
-        ...prevState.settingsState,
-        isOpen: false
-      },
-      lobbyState: {
-        ...prevState.lobbyState,
-        isOpen: true,
-      }
-    }))
-
-    this.toggleQuickNavigation()
-  }
-
-  pushLobbyGame = (gameObject) =>{
+  const pushLobbyGame = (gameObject) =>{
     let lobbyGameList = this.state.lobbyState.lobbyGames
     let index = lobbyGameList.push(gameObject)
     this.setState(prevState => ({
@@ -107,41 +20,18 @@ class App extends Component {
     }))
     console.log(this.state.lobbyState.lobbyGames[index])
   }
+}
 
   render() {
     return (
       <div>
         <SplashScreen/>
-        <HeaderToolbar
-          openToView={this.openToView}
-          avatarImg={AvatarImg}
-        />
-        <QuickNavigation
-          openToView={this.openToView}
-          openLobby={this.openLobby}
-        />
+        <HeaderToolbar/>
+        <QuickNavigation/>
         <MainContentsView
-          pushLobbyGame={this.pushLobbyGame}
-          userName={this.state.userName}
-          handleNameChange={this.handleNameChange}
-          avatarImg={AvatarImg}
-          colorScheme={this.state.colorScheme}
-          setColorScheme={this.setColorScheme}
         />
       </div>
     )
-  }
-}
-
-const mapStateToProps = (state) => {
-  return {
-
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-
   }
 }
 

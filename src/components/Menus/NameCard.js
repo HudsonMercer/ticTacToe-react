@@ -8,11 +8,8 @@ import {
         CardSubtitle,
         CardHeader,
         CardText,
-        CardFooter,
         CardActions,
         Content,
-        FormField,
-        Title,
         Textfield
         } from 'react-mdc-web';
 

@@ -1,25 +1,17 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {
         Button,
         Card,
         CardActions,
-        CardFooter,
         CardHeader,
         CardMedia,
-        CardSubtitle,
         CardText,
         CardTitle,
         Content,
-        FormField,
-        Slider,
-        Title,
-        Textfield
         } from 'react-mdc-web';
 
 class AvatarCard extends Component{
-  constructor(props){
-    super(props)
-  }
 
   render(){
     return(
@@ -55,4 +47,14 @@ class AvatarCard extends Component{
   }
 }
 
-export default AvatarCard
+const mapStateToProps = (store) => {
+  return{
+  avatarImg: store.avatarImg
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AvatarCard)

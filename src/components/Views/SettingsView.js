@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {setActiveView, setSettingsActiveItem} from '../../actions/uiActions'
+import {setSettingsActiveItem} from '../../actions/uiActions'
 import {
         Tab,
         Tabbar
@@ -18,22 +18,14 @@ class SettingsView extends Component{
   switch(this.props.activeItem){
     case 'general':
      activeCard = <NameCard
-       userName={this.props.userName}
-       settingsState={this.props}
-       handleNameChange={this.props.handleNameChange}
                   />
       break
     case 'avatar':
     activeCard = <AvatarCard
-      settingsState={this.props}
-      avatarImg={this.props.avatarImg}
                  />
       break
     case 'colorScheme':
     activeCard = <ColorSchemeCard
-      settingsState={this.props}
-      colorScheme={this.props.colorScheme}
-      setColorScheme={this.props.setColorScheme}
                  />
       break
     default:

@@ -5,8 +5,6 @@ import {
         Grid
         } from 'react-mdc-web'
 
-import {toggleQuickNavigation} from '../../actions/uiActions'
-
 import SettingsView from './SettingsView'
 import LobbyView from './LobbyView'
 
@@ -26,11 +24,6 @@ class MainContentsView extends Component {
               <Cell col={2}></Cell>
               <Cell col={8}>
                 <SettingsView
-                  userName={this.props.userName}
-                  handleNameChange={this.props.handleNameChange}
-                  avatarImg={this.props.avatarImg}
-                  colorScheme={this.props.colorScheme}
-                  setColorScheme={this.props.setColorScheme}
                 />
               </Cell>
               <Cell col={2}></Cell>
@@ -44,6 +37,7 @@ class MainContentsView extends Component {
 const mapStateToProps = (store) => {
     return {
       uiState: store.uiState
+
     }
 }
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import {toggleSplash, toggleQuickNavigation, setSettingsActiveItem, toggleLobby, toggleSettings, uiSetActiveView} from '../../actions/uiActions'
+import {toggleSplash, toggleQuickNavigation, setSettingsActiveItem, uiSetActiveView} from '../../actions/uiActions'
 import {
         Drawer,
         DrawerContent,

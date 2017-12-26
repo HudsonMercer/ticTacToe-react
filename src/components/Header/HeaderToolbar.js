@@ -49,7 +49,8 @@ class HeaderToolbar extends Component {
 
 const mapStateToProps = (store) => {
   return {
-    userName: store.userName
+    userName: store.userName,
+    avatarImg: store.avatarImg
   }
 }
 
