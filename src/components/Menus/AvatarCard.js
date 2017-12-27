@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {fireSendData} from '../../actions/firebaseActions'
+import firebase from '../../firebaseInit'
 import {
         Button,
         Card,
@@ -36,7 +38,12 @@ class AvatarCard extends Component{
             <Button dense>
               Select File
             </Button>
-            <Button>
+            <Button
+              onClick={() => {
+                let d = firebase.database().ref('test')
+                d.push('somedata yo')
+              }}
+            >
               Update Avatar
             </Button>
             <Button dense raised>Cancel</Button>
@@ -54,7 +61,12 @@ const mapStateToProps = (store) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    fireSendData: () => {
+      dispatch(fireSendData())
+
+    }
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AvatarCard)
