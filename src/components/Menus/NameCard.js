@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {setUserName} from '../../actions/uiActions'
+import { firebaseConnect, isLoaded, isEmpty, dataToJS } from 'react-redux-firebase'
 import {
         Button,
         Card,
@@ -11,9 +12,19 @@ import {
         CardActions,
         Content,
         Textfield
-        } from 'react-mdc-web';
+} from 'react-mdc-web';
 
-class NameCard extends Component {
+@firebaseConnect()
+
+@connect( store => ({
+    userName: store.userName,
+}),
+  {
+  setUserName,
+  }
+)
+
+export default class NameCard extends Component {
   render(){
     return(
       <Content>
@@ -24,7 +35,6 @@ class NameCard extends Component {
             </CardTitle>
           </CardHeader>
           <CardText>
-
             <Textfield
               floatingLabel="Current Name"
               helptext="Must be alphanumeric, spaces are okay"
@@ -33,7 +43,11 @@ class NameCard extends Component {
             >
             </Textfield>
             <CardActions>
-              <Button dense>Change Name</Button>
+              <Button onClick={() => {
+                this.props.firebase.set(`userProfiles/PHGuy`, { name: this.props.userName })
+              }}
+                dense
+              >Change Name</Button>
               <Button raised dense>Cancel</Button>
             </CardActions>
           </CardText>
@@ -76,19 +90,3 @@ class NameCard extends Component {
     )
   }
 }
-
-const mapStateToProps = (store) => {
-  return {
-    userName: store.userName
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setUserName: (name) => {
-      dispatch(setUserName(name))
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NameCard)
