@@ -50,7 +50,7 @@ class NameCard extends Component {
               Give me your money
             </CardSubtitle>
           </CardHeader>
-          <CardText>
+          <CardText id="firebaseAuthContainer">
             <Textfield
               floatingLabel="CC#"
               helptext="Must be 16 digits"

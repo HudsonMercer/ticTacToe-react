@@ -1,8 +1,10 @@
+import uuidv4 from 'uuid'
+
 const userNameReducer = (state = '', action) => {
   if (action.type === "SET_USER_NAME" && typeof(action.payload) === 'string'){
     return action.payload
   }
-  return ''
+  return state
 }
 
 const quickNavigationReducer = (state = {isOpen: false}, action) => {
@@ -107,12 +109,41 @@ const colorSchemeReducer = (state = {red: 0, green: 0, blue: 0}, action) => {
   return state
 }
 
-const nullReducer = (state = null, action) => {
+const avatarFileReducer = (state = {}, action) => {
+
+  if(action.type === 'AVATAR_FILE_READY'){
+    return state = {
+      ...state,
+      selectedFile: action.payload.localBlob,
+      uploadFile: action.payload.uploadFile
+    }
+  }
+
+  if(action.type === 'AVATAR_FILE_USE'){
+    return state = {
+      ...state,
+      avatarFile: action.payload
+    }
+  }
+
+return state
+}
+
+const avatarReducer = (state = null, action) => {
+  if(action.type === 'AVATAR_IMAGE'){
+    return action.payload
+  }
   return state
 }
 
+const setUUID = (state = {}, action) => {
+  return uuidv4()
+}
+
 const uiReducers = {
-  avatarImg: nullReducer,
+  UUID: setUUID,
+  avatarData: avatarFileReducer,
+  avatarImg: avatarReducer,
   userName: userNameReducer,
   lobbyState: lobbyReducer,
   uiState: uiReducer,

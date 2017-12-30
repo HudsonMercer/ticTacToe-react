@@ -1,6 +1,10 @@
-import {createStore} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
+import {createLogger} from 'redux-logger'
+import thunk from 'redux-thunk'
+import createStoreWithFirebase from './firebaseInit'
 import reducers from './reducers/reducers'
 import AvatarImg from './res/avatar.png'
+import uuidv4 from 'uuid'
 
 const initState = {
   userName: '',
@@ -30,5 +34,8 @@ const initState = {
   }
 }
 
-const store = createStore(reducers, initState)
+
+
+const middleware = applyMiddleware(thunk, createLogger())
+const store = createStoreWithFirebase(reducers, initState, middleware)
 export default store

@@ -1,7 +1,11 @@
 import {combineReducers} from 'redux'
-
-import firebaseReducers from './firebaseReducers'
+import { firebaseStateReducer } from 'react-redux-firebase'
 import uiReducers from './uiReducers'
 
-const reducers = combineReducers(uiReducers, firebaseReducers)
+const reducerList = {
+  ...uiReducers,
+  firebase: firebaseStateReducer
+}
+
+const reducers = combineReducers(reducerList)
 export default reducers

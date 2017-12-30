@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {fireSendData} from '../../actions/firebaseActions'
+import {avatarFileLoad, avatarFileUse} from '../../actions/uiActions'
+import {fireSendData, fireSendFile} from '../../actions/firebaseActions'
 import firebase from '../../firebaseInit'
 import {
         Button,
@@ -14,8 +15,21 @@ import {
         } from 'react-mdc-web';
 
 class AvatarCard extends Component{
-
   render(){
+
+    const resolveAvatar = () => {
+      if(this.props.avatarFileBlob !== undefined){
+        return this.props.avatarFileBlob
+      } else {
+        return this.props.avatarImg
+      }
+    }
+
+    const onClickFileSelect = (e) => {
+      let target = document.getElementById('avatarFileSelect')
+      target.click()
+    }
+
     return(
       <Content>
         <Card>
@@ -26,22 +40,36 @@ class AvatarCard extends Component{
           </CardHeader>
           <CardMedia
             style={{
-              backgroundImage: "url(" + this.props.avatarImg + ")",
+              backgroundImage: "url(" + resolveAvatar() + ")",
               height: '300px',
               backgroundSize: 'contain',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center'
             }}
           />
           <CardText>
-            Select an avatar. Images will be resized if over 256px in either axis. Small images may be stretched awkwardly.
+            Images will be resized. Small or large images may be skewed awkwardly.
           </CardText>
           <CardActions>
-            <Button dense>
+            <Button
+              dense
+              onClick={onClickFileSelect}>
               Select File
+              <input
+                id="avatarFileSelect"
+                type="file"
+                name="avatarFile"
+                accept=".jpg, .png, .bmp, .svg"
+                style={{display: "none"}}
+                onChange={(e) => {
+                  this.props.avatarFileLoad(e.target.files[0])
+                }}
+              />
             </Button>
             <Button
               onClick={() => {
-                let d = firebase.database().ref('test')
-                d.push('somedata yo')
+                this.props.avatarFileUse(this.props.avatarFileBlob)
+                this.props.fireSendFile(`${this.props.user.UUID}/${this.props.user.name}Avatar`, this.props.avatarUploadFile)
               }}
             >
               Update Avatar
@@ -56,15 +84,29 @@ class AvatarCard extends Component{
 
 const mapStateToProps = (store) => {
   return{
-  avatarImg: store.avatarImg
+    avatarImg: store.avatarImg,
+    avatarFileBlob: store.avatarData.selectedFile,
+    avatarUploadFile: store.avatarData.uploadFile,
+    user: {
+      name: store.userName,
+      UUID: store.UUID
+    }
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fireSendData: () => {
-      dispatch(fireSendData())
-
+    fireSendData: (dest, data) => {
+      dispatch(fireSendData(dest, data))
+    },
+    fireSendFile: (dest, file, name) => {
+      dispatch(fireSendFile(dest, file, name))
+    },
+    avatarFileLoad: (file) => {
+      dispatch(avatarFileLoad(file))
+    },
+    avatarFileUse: (file) => {
+      dispatch(avatarFileUse(file))
     }
   }
 }
