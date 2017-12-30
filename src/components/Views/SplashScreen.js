@@ -1,21 +1,23 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty, dataToJS } from 'react-redux-firebase'
+import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 import FaFacebookSquare from 'react-icons/lib/fa/facebook-square'
 import FaTwitterSquare from 'react-icons/lib/fa/twitter-square'
 import FaGithubSquare from 'react-icons/lib/fa/github-square'
 import FaGoogle from 'react-icons/lib/fa/google'
-import {toggleSplash} from '../../actions/uiActions'
+import {toggleSplash, setUserName} from '../../actions/uiActions'
 import {
         Icon
         } from 'react-mdc-web';
 
-@firebaseConnect()
+@firebaseConnect(['/profile/'])
 
-@connect(store => ({
-  isOpen: store.splashState.isOpen
+@connect(state => ({
+  isOpen: state.splashState.isOpen,
+  profileName: pathToJS(state.firebase, 'profile/displayName')
 }),{
   toggleThis: toggleSplash,
+  setUserName,
 })
 
 export default class SplashScreen extends Component {
@@ -32,7 +34,8 @@ export default class SplashScreen extends Component {
         backgroundColor: 'var(--mdc-theme-primary)',
         borderRadius: '50%',
         right: '3%',
-        top: '25%'
+        top: '25%',
+        cursor: 'pointer'
       }
 
     return(
@@ -42,25 +45,23 @@ export default class SplashScreen extends Component {
         <div className="splashLoginDialog">
           <span className="splashSpan splashTheme">E-Mail</span>
           <div className="splashInputBox splashTheme">
-            <input className="splashInput" type="text" id="splashNameInput" name="splashName"/>
+            <input className="splashInput" type="text" id="splashNameInput" name="splashName"/> <span className="splashSignUp">Sign Up</span>
           </div>
           <span className="splashSpan splashTheme">Password</span>
           <div className="splashInputBox splashTheme">
             <input className="splashInput" type="password" id="splashPasswordInput" name="splashPassword"/><Icon name="chevron_right" style={loginArrowStyle}></Icon>
           </div>
-          <span
-            className="splashSkip"
-            onClick={this.props.toggleThis}
-          >Skip</span>
           <div>
             <FaFacebookSquare
               style={{cursor: 'pointer'}}
               onClick={() => {
-
                 this.props.firebase.login({
                   provider: 'facebook',
                   type: 'popup'
-                }).then(this.props.toggleThis)
+                }).then(() => {
+                  this.props.toggleThis()
+                  this.props.setUserName(this.props.profileName)
+                })
               }}
               height={32}
               width={32}/>
@@ -71,7 +72,10 @@ export default class SplashScreen extends Component {
                 this.props.firebase.login({
                   provider: 'twitter',
                   type: 'popup'
-                }).then(this.props.toggleThis)
+                }).then(() => {
+                  this.props.toggleThis()
+                  this.props.setUserName(this.props.profileName)
+                })
               }}
               height={32}
               width={32}/>
@@ -82,7 +86,10 @@ export default class SplashScreen extends Component {
                 this.props.firebase.login({
                   provider: 'github',
                   type: 'popup'
-                }).then(this.props.toggleThis)
+                }).then(() => {
+                  this.props.toggleThis()
+                  this.props.setUserName(this.props.profileName)
+                })
               }}
               height={32}
               width={32}/>
@@ -90,14 +97,23 @@ export default class SplashScreen extends Component {
               style={{cursor: 'pointer'}}
               onClick={() => {
 
-                this.props.firebase.login({
+                console.dir(this.props.firebase.login({
                   provider: 'google',
                   type: 'popup'
-                }).then(this.props.toggleThis)
+                }).then(() => {
+                  this.props.toggleThis()
+                  this.props.setUserName(this.props.profileName)
+                }
+                ))
               }}
               height={32}
               width={32}/>
           </div>
+          <br/>
+          <span
+            className="splashSkip"
+            onClick={this.props.toggleThis}
+          >Skip</span>
         </div>
       </div>
     )

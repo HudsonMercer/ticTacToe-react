@@ -10040,11 +10040,19 @@ a.mdc-list-item {
 .hidden {
   display: none; }
 
+.splashSignUp {
+  position: absolute;
+  left: 103%;
+  top: 1rem;
+  width: 5rem;
+  cursor: pointer;
+  text-decoration: underline; }
+
 .splashInput {
   border: 0px;
   width: 88%;
   height: 95%;
-  font-size: 2rem;
+  font-size: 1.25rem;
   text-align: center; }
   .splashInput:focus {
     outline: none; }
