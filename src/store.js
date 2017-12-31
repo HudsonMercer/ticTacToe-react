@@ -8,6 +8,11 @@ import uuidv4 from 'uuid'
 
 const initState = {
   userName: '',
+  userState: {
+    userName: '',
+    uid: '',
+
+  },
   avatarImg: AvatarImg,
   quickNavigationState: {
     isOpen: false,
@@ -18,6 +23,11 @@ const initState = {
     isOpen: false,
   },
   splashState: {
+    errorDialog: {
+      isOpen: false,
+      error: 'No error',
+      message: "If you're reading this, somebody forgot to disable this error dialog by default and you can safely click okay and ignore this message.",
+    },
     isOpen: true,
   },
   colorScheme: {

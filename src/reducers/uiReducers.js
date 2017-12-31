@@ -25,13 +25,42 @@ const quickNavigationReducer = (state = {isOpen: false}, action) => {
 }
 
 const splashReducer = (state = {isOpen: false}, action) => {
-   if(action.type === "MENU_SPLASH_TOGGLE"){
-     state = {
+   switch(action.type){
+   case 'MENU_SPLASH_TOGGLE':
+     return state = {
       ...state,
         isOpen: !state.isOpen
       }
+    case 'MENU_SPLASH_SET_ERROR_DATA':
+    return state = {
+      ...state,
+      errorDialog:{
+        ...state.errorDialog,
+        error: action.payload.error,
+        message: action.payload.message,
+      }
     }
+    case 'MENU_SPLASH_TOGGLE_ERROR':
+      if(typeof(action.payload) === 'boolean'){
+        return state = {
+          ...state,
+            errorDialog:{
+          ...state.errorDialog,
+          isOpen: action.payload,
+          }
+        }
+      } else {
+        return state = {
+        ...state,
+        errorDialog:{
+          ...state.errorDialog,
+          isOpen: !state.errorDialog.isOpen,
+        }
+      }
+    }
+    default:
     return state
+    }
 }
 
 const settingsReducer = (state = {}, action) => {
@@ -140,11 +169,31 @@ const setUUID = (state = {}, action) => {
   return uuidv4()
 }
 
+const userStateReducer = (state = {}, action) => {
+  switch(action.type){
+    case 'STORE_UID':
+    return state = {
+      ...state,
+      uid: action.payload
+    }
+    break
+    case 'STORE_USER_NAME':
+    return state = {
+      ...state,
+      userName: action.payload,
+    }
+    break
+    default:
+    return state
+  }
+}
+
 const uiReducers = {
   UUID: setUUID,
   avatarData: avatarFileReducer,
   avatarImg: avatarReducer,
   userName: userNameReducer,
+  userState: userStateReducer,
   lobbyState: lobbyReducer,
   uiState: uiReducer,
   settingsState: settingsReducer,

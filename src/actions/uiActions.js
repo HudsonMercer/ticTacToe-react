@@ -1,5 +1,3 @@
-import thunk from 'redux-thunk'
-
 export function setUserName(name = ''){
   return {
     type: 'SET_USER_NAME',
@@ -28,6 +26,37 @@ export function toggleQuickNavigation(override){
 export function toggleSplash(){
   return {
     type: 'MENU_SPLASH_TOGGLE',
+  }
+}
+
+export function storeUid(uid){
+  return {
+    type: 'STORE_UID',
+    payload: uid,
+  }
+}
+
+export function storeUserName(name){
+  return {
+    type: 'STORE_USER_NAME',
+    payload: name,
+  }
+}
+
+export function toggleSplashError(override){
+  return {
+    type: 'MENU_SPLASH_TOGGLE_ERROR',
+    payload: override,
+  }
+}
+
+export function setSplashErrorData(error, message){
+  return {
+    type: 'MENU_SPLASH_SET_ERROR_DATA',
+    payload: {
+      error,
+      message,
+    }
   }
 }
 
@@ -155,5 +184,17 @@ export function avatarFileUse(file){
   return {
     type: 'AVATAR_IMAGE',
     payload: file
+  }
+}
+
+export function lobbyChatSendMessage(uid, username, message){
+  return {
+    type: 'LOBBY_CHAT_SEND_MESSAGE',
+    payload: {
+      uid,
+      userName: username,
+      message,
+      date: Date.now(),
+    }
   }
 }

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 import {setColorScheme} from '../../actions/uiActions'
 import {
         Button,
@@ -11,7 +12,22 @@ import {
         Slider,
         } from 'react-mdc-web';
 
-class ColorSchemeCard extends Component{
+@firebaseConnect([
+  {
+    path: 'userProfiles/'
+  }
+])
+
+@connect(store =>
+  ({
+    colorScheme: store.colorScheme,
+    firebaseColorScheme: pathToJS(store.firebase, 'userProfiles/colorScheme')
+  }),
+  {
+    setColorScheme,
+  }
+)
+export default class ColorSchemeCard extends Component{
 
   resetColorScheme = () => {
     this.props.setColorScheme(30, 136, 229)
@@ -33,8 +49,12 @@ class ColorSchemeCard extends Component{
               max={255}
               step={5}
               // onChange={this.applyColorScheme}
-              onInput={(t)=>{
-                this.props.setColorScheme(t,this.props.colorScheme.green, this.props.colorScheme.blue)
+              onInput={(red)=>{
+                this.props.setColorScheme(
+                  red,
+                  this.props.colorScheme.green,
+                  this.props.colorScheme.blue
+                )
               }}
             />Green
             <Slider
@@ -44,8 +64,12 @@ class ColorSchemeCard extends Component{
               max={255}
               step={5}
               // onChange={this.applyColorScheme}
-              onInput={(t)=>{
-                this.props.setColorScheme(this.props.colorScheme.red,t, this.props.colorScheme.blue)
+              onInput={(green)=>{
+                this.props.setColorScheme(
+                  this.props.colorScheme.red,
+                  green,
+                  this.props.colorScheme.blue
+                )
               }}
             />Blue
             <Slider
@@ -55,14 +79,23 @@ class ColorSchemeCard extends Component{
               max={255}
               step={5}
               // onChange={this.applyColorScheme}
-              onInput={(t)=>{
-                this.props.setColorScheme(this.props.colorScheme.red,this.props.colorScheme.green, t)
+              onInput={(blue)=>{
+                this.props.setColorScheme(
+                  this.props.colorScheme.red,
+                  this.props.colorScheme.green,
+                  blue
+                )
               }}
             />
           </CardText>
           <CardActions>
             <Button onClick={ () => {
-              this.props.setColorScheme(this.props.colorScheme.red, this.props.colorScheme.green, this.props.colorScheme.blue)
+              this.props.setColorScheme(
+                this.props.colorScheme.red,
+                this.props.colorScheme.green,
+                this.props.colorScheme.blue
+              )
+              this.props.firebase.set(`userProfiles/${this.props.firebase._.authUid}/colorScheme`, this.props.colorScheme)
             }}>Save</Button>
             <Button onClick={this.resetColorScheme}raised>Reset</Button>
           </CardActions>
@@ -71,19 +104,3 @@ class ColorSchemeCard extends Component{
     )
   }
 }
-
-const mapStateToProps = (store) => {
-  return {
-    colorScheme: store.colorScheme
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setColorScheme: (r, g, b) => {
-      dispatch(setColorScheme(r, g, b))
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ColorSchemeCard)

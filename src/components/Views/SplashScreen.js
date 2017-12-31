@@ -5,19 +5,30 @@ import FaFacebookSquare from 'react-icons/lib/fa/facebook-square'
 import FaTwitterSquare from 'react-icons/lib/fa/twitter-square'
 import FaGithubSquare from 'react-icons/lib/fa/github-square'
 import FaGoogle from 'react-icons/lib/fa/google'
-import {toggleSplash, setUserName} from '../../actions/uiActions'
+import {toggleSplash, setUserName, toggleSplashError} from '../../actions/uiActions'
+import {fireLoginWithProvider} from '../../actions/firebaseActions'
 import {
-        Icon
+        Button,
+        Icon,
+        Dialog,
+        DialogHeader,
+        DialogTitle,
+        DialogBody,
+        DialogFooter
         } from 'react-mdc-web';
 
-@firebaseConnect(['/profile/'])
+@firebaseConnect()
 
-@connect(state => ({
-  isOpen: state.splashState.isOpen,
-  profileName: pathToJS(state.firebase, 'profile/displayName')
+@connect(store => ({
+  isOpen: store.splashState.isOpen,
+  splashState: store.splashState,
+  authError: pathToJS(store, 'authError'),
+  auth: pathToJS(store, 'auth'),
 }),{
   toggleThis: toggleSplash,
   setUserName,
+  fireLoginWithProvider,
+  toggleSplashError,
 })
 
 export default class SplashScreen extends Component {
@@ -54,58 +65,22 @@ export default class SplashScreen extends Component {
           <div>
             <FaFacebookSquare
               style={{cursor: 'pointer'}}
-              onClick={() => {
-                this.props.firebase.login({
-                  provider: 'facebook',
-                  type: 'popup'
-                }).then(() => {
-                  this.props.toggleThis()
-                  this.props.setUserName(this.props.profileName)
-                })
-              }}
+              onClick={() => this.props.fireLoginWithProvider(this.props.firebase, 'facebook')}
               height={32}
               width={32}/>
             <FaTwitterSquare
               style={{cursor: 'pointer'}}
-              onClick={() => {
-
-                this.props.firebase.login({
-                  provider: 'twitter',
-                  type: 'popup'
-                }).then(() => {
-                  this.props.toggleThis()
-                  this.props.setUserName(this.props.profileName)
-                })
-              }}
+              onClick={() => this.props.fireLoginWithProvider(this.props.firebase, 'twitter')}
               height={32}
               width={32}/>
             <FaGithubSquare
               style={{cursor: 'pointer'}}
-              onClick={() => {
-
-                this.props.firebase.login({
-                  provider: 'github',
-                  type: 'popup'
-                }).then(() => {
-                  this.props.toggleThis()
-                  this.props.setUserName(this.props.profileName)
-                })
-              }}
+              onClick={() => this.props.fireLoginWithProvider(this.props.firebase, 'github')}
               height={32}
               width={32}/>
             <FaGoogle
               style={{cursor: 'pointer'}}
-              onClick={() => {
-
-                console.dir(this.props.firebase.login({
-                  provider: 'google',
-                  type: 'popup'
-                }).then(() => {
-                  this.props.toggleThis()
-                  this.props.setUserName(this.props.profileName)
-                }
-                ))
-              }}
+              onClick={() => this.props.fireLoginWithProvider(this.props.firebase, 'google')}
               height={32}
               width={32}/>
           </div>
@@ -115,6 +90,26 @@ export default class SplashScreen extends Component {
             onClick={this.props.toggleThis}
           >Skip</span>
         </div>
+        <Dialog
+          style={{color: 'black'}}
+          open={this.props.splashState.errorDialog.isOpen}
+          onClose={this.props.toggleSplashError}
+        >
+          <DialogHeader>
+            <DialogTitle>Login Error</DialogTitle>
+          </DialogHeader>
+          <DialogBody>
+            {this.props.splashState.errorDialog.error}<br/>
+            {this.props.splashState.errorDialog.message}
+          </DialogBody>
+          <DialogFooter>
+            <Button
+              dense
+              raised
+              onClick={this.props.toggleSplashError}
+            >Okay</Button>
+          </DialogFooter>
+        </Dialog>
       </div>
     )
   }

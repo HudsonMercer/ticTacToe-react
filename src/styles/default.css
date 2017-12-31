@@ -10069,7 +10069,7 @@ a.mdc-list-item {
   text-align: center;
   color: white;
   box-shadow: 0px 10px 50px 5px rgba(0, 0, 0, 0.5);
-  transition: all .5s; }
+  transition: top .5s; }
   .SplashScreen > h1 {
     position: relative;
     top: 15%;
@@ -10100,11 +10100,6 @@ a.mdc-list-item {
 
 * {
   font-family: roboto; }
-
-#bodyContents {
-  margin: 10vh 0vh 0vh 0vh;
-  overflow-y: scroll;
-  max-height: 90vh; }
 
 .mdc-card {
   margin: 8px; }

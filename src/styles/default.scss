@@ -48,7 +48,7 @@ $mdc-theme-background: #f5f5f5;
     top: 15%;
     font-size: 3em;
   }
-  transition: all .5s;
+  transition: top .5s;
 }
 .splashSkip{
   &:hover {
@@ -83,12 +83,6 @@ $mdc-theme-background: #f5f5f5;
   font-family: roboto;
 }
 
-#bodyContents{
-  margin: 10vh 0vh 0vh 0vh;
-  overflow-y: scroll;
-  max-height: 90vh;
-
-}
 .mdc-card{
   margin: 8px;
 }

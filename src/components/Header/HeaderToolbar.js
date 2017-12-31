@@ -12,9 +12,10 @@ import {
 
 
 const ToolBarImage = style.img`
-  max-width: 8vh;
-  max-height: 8vh;
+  max-width: 4vh;
+  max-height: 4vh;
   margin: 1vh;
+  height: 7.5vh;
   border-radius: 50%;
   &:hover {
     cursor: pointer;
@@ -25,7 +26,7 @@ class HeaderToolbar extends Component {
 
   render(){
     return(
-      <Toolbar fixed style={{paddingLeft: '2vh', paddingRight: '2vh'}}>
+      <Toolbar style={{paddingLeft: '2vh', paddingRight: '2vh'}}>
         <ToolbarRow>
           <ToolbarSection align="start">
             <HeaderQuickNavigation>

@@ -12,14 +12,14 @@ class MainContentsView extends Component {
   render(){
       if(this.props.uiState.activeView === 'lobby'){
         return(
-          <div id="bodyContents" style={{overflowY: 'scroll'}}>
+          <div style={{overflowY: 'hidden', height: '92.5vh'}}>
             <LobbyView
             />
           </div>
         )
       } else if (this.props.uiState.activeView === 'settings'){
         return(
-          <div id="bodyContents" style={{overflowY: 'scroll'}}>
+          <div style={{overflowY: 'hidden', height: '92.5vh'}}>
             <Grid>
               <Cell col={2}></Cell>
               <Cell col={8}>

@@ -8,12 +8,11 @@ import {connect} from 'react-redux'
 import {toggleQuickNavigation} from '../../actions/uiActions'
 
 const Container = style.div`
-  width: 8vh;
-  height: 8vh;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   text-align: center;
-  padding-top: auto;
-  padding-bottom: auto;
+  vertical-align: middle;
   &:hover {
     cursor: pointer;
   }
@@ -45,7 +44,7 @@ class HeaderQuickNavigation extends Component {
         onMouseLeave={this.mouseLeave}
       >
         <Icon
-          style={{fontSize: '4vh', top: '25%', position: 'relative'}} name="menu">
+          style={{fontSize: '24px', paddingTop: '25%', position: 'relative'}} name="menu">
         </Icon>
       </Container>
     )
