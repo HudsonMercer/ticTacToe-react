@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS, populatedDataToJS } from 'react-redux-firebase'
 import {lobbyChatSendMessage} from '../../actions/uiActions'
 import {
         Button,
@@ -25,40 +26,71 @@ import {
         ToolbarTitle
         } from 'react-mdc-web'
 
+
+@firebaseConnect([
+  {
+    path: '/lobby/chat/messages',
+    storeAs: 'MESSAGES',
+  }
+])
 @connect((store) => ({
   isOpen: store.lobbyState.isOpen,
   userName: store.userState.userName,
   uid: store.userState.uid,
-}))
+  chatMessages: dataToJS(store.firebase, 'MESSAGES'),
+}),
+  {
+    lobbyChatSendMessage
+  })
 
 export default class LobbyView extends Component {
 
- createLobbyItem = (name, host, key) => {
-  let returnElement =
-  <ListItem key={key}>
-    <ListItemText>
-      {name}:
-      <ListItemTextSecondary>
-        {host}
-      </ListItemTextSecondary>
-    </ListItemText>
-  </ListItem>
-  return returnElement
+  getChatMessages = ()=>{
+    const element = this.props.chatMessages
+
+     let arr = [], msgElement = [], d = []
+     //convert object to array of objects one level deep, firebase key is saved as messageKey
+     for (const prop in element){
+       if(element.hasOwnProperty(prop)){
+         arr.push({messageKey:prop, ...element[prop]})
+       }
+     }
+
+     arr.sort((firstItem, secondItem) => {
+       return (firstItem.date - secondItem.date)
+     })
+
+     if (arr.length !== 0){
+       arr.forEach((key, index) => {
+         d.push(<ListItem key={key.messageKey}>
+           <ListItemText>
+             {key.userName}:
+             <ListItemTextSecondary>
+               {key.message}
+
+             </ListItemTextSecondary>
+           </ListItemText>
+         </ListItem>)
+       })
+   }
+
+     return d
+  }
+  scrollChatField = () => {
+    let chatTextField = document.getElementById('lobbyChatList')
+    if (chatTextField !== null){
+      chatTextField.scrollTop = chatTextField.scrollHeight
+    }
   }
 
-  pushGameTest = (e) => {this.props.pushLobbyGame(e)}
+  componentDidUpdate(){
+    this.scrollChatField()
+  }
+  componentDidMount(){
+    this.scrollChatField()
+  }
 
   render(){
-    let element = [this.createLobbyItem('James', 'Hello world', 'ww3')]
-    element.push(<ListDivider/>)
-    element.push(this.createLobbyItem('Alex T', 'Why was 6 afraid of 7?', 'ww322'), <ListDivider/>)
-    element.push(this.createLobbyItem('Sean C', 'I know why Alex!', 'w2w2'))
-    element.push(this.createLobbyItem('Sean C', 'I know I know I know!', 'ww2'), <ListDivider/>)
-    element.push(this.createLobbyItem('Alex T', 'Why?', 'w42w2'), <ListDivider/>)
-    element.push(this.createLobbyItem('Sean C', 'Because your mother is a whore!', 'ww32f4'), <ListDivider/>)
-    element.push(this.createLobbyItem('Alex T', '.............', 'wf3w2'))
-    element.push(this.createLobbyItem('Alex T', 'Seriously?', 'wsdfw2'), <ListDivider/>)
-
     if(this.props.isOpen){
     return(
       <div style={{height: '92.5vh'}}>
@@ -73,7 +105,7 @@ export default class LobbyView extends Component {
             </ToolbarRow>
           </Toolbar>
           <CardText>
-            <List style={{overflowY: 'scroll', maxHeight: '28vh'}}>
+            <List id="lobbyGamesList" style={{overflowY: 'scroll', maxHeight: '28vh'}}>
               <ListItem>
                 <Icon name="menu"/>
                 <ListItemText>Alberto's Game
@@ -120,28 +152,11 @@ export default class LobbyView extends Component {
             </ToolbarRow>
           </Toolbar>
           <CardText>
-            <List style={{overflowY: 'scroll', maxHeight: '28vh'}}>
-              <ListItem>
-                <ListItemText>Alberto
-                  <ListItemTextSecondary>Hey whats up guys
-                  </ListItemTextSecondary>
-                </ListItemText>
-              </ListItem>
-              <ListItem><ListItemTextSecondary>Hey whats up goys</ListItemTextSecondary></ListItem>
-              <ListDivider/>
-              <ListItem>PH-Item 3</ListItem>
-              <ListItem>PH-Item 4</ListItem>
-              <ListItem>PH-Item 5</ListItem>
-              <ListItem>PH-Item 5</ListItem>
-              <ListItem>PH-Item 5</ListItem>
-              <ListItem>PH-Item 5</ListItem>
-              <ListItem>PH-Item 5</ListItem>
-              <ListItem>PH-Item 5</ListItem>
-              <ListItem>PH-Item 5</ListItem>
-              <ListItem>PH-Item 5</ListItem>
-              <ListDivider/>
-              <ListItem>PH-Item 6</ListItem>
-              {element}
+            <List
+              id="lobbyChatList"
+              style={{overflowY: 'scroll', maxHeight: '28vh'}}
+            >
+              {this.getChatMessages()}
             </List>
           </CardText>
           <CardActions>
@@ -154,12 +169,14 @@ export default class LobbyView extends Component {
                   cols={100}
                   id="chatInputField"
                   floatingLabel={`${this.props.userName}:`}
-                  onKeyDown={(e) => {
+                  onKeyUp={(e) => {
                     // console.log(typeof(e.keyCode))
-                    if (e.keyCode === 13){
-                      this.props.lobbyChatSendMessage('4554', 'test', e.target.value, )
-                    }
 
+                    if (e.keyCode === 13 && e.target.value[0] !== '\n' && e.target.value[0] !== ' '){
+                      document.getElementById('chatSendButton').click()
+                    } else if (e.target.value[0] === '\n' || e.target.value[0] === ' ' ) {
+                      e.target.value = ''
+                    }
                   }}
                 />
               </Cell>
@@ -168,7 +185,14 @@ export default class LobbyView extends Component {
                   id="chatSendButton"
 
                   onClick={() => {
-
+                    let e = document.getElementById('chatInputField')
+                    this.props.lobbyChatSendMessage(
+                      this.props.uid,
+                      this.props.userName,
+                      e.value,
+                      this.props.firebase
+                    )
+                    e.value = ''
                   }}
                   style={{ marginTop: '2%'}}
                 >Send</Button>

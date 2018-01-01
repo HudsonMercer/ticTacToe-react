@@ -1,9 +1,5 @@
-export function setUserName(name = ''){
-  return {
-    type: 'SET_USER_NAME',
-    payload: name,
-  }
-}
+import {fireSendData} from './firebaseActions'
+
 
 export function setColorScheme(r = 0, g = 0, b = 0){
   return {
@@ -187,14 +183,60 @@ export function avatarFileUse(file){
   }
 }
 
-export function lobbyChatSendMessage(uid, username, message){
-  return {
-    type: 'LOBBY_CHAT_SEND_MESSAGE',
-    payload: {
+export function lobbyChatSendMessage(uid, userName, message, firebase){
+
+  return (dispatch) => {
+    firebase.database().ref(`lobby/chat/messages/${Math.random().toString(36).substring(2)}`).set({
+      userName,
       uid,
-      userName: username,
       message,
-      date: Date.now(),
+      date: Date.now()
+    })
+  }
+
+  // {
+  //   type: 'LOBBY_CHAT_SEND_MESSAGE',
+  //   payload: {
+  //     firebase,
+  //     uid,
+  //     userName,
+  //     message,
+  //     date: Date.now(),
+  //   }
+}
+
+export function storeCookieData(userState){
+  document.cookie = `userName=${userState.userName};`
+  document.cookie = `uid=${userState.uid};`
+  return {
+    type: 'STORE_COOKIE_DATA_COMPLETE',
+    payload: document.cookie,
+  }
+}
+
+export function fetchCookieData(){
+
+  function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) === 0) {
+            return c.substring(name.length, c.length);
+        }
     }
+    return "";
+}
+
+  let cookieData = {
+    userName: getCookie('userName'),
+    uid: getCookie('uid'),
+  }
+  return {
+    type: 'FETCH_COOKIE_DATA',
+    payload: cookieData
   }
 }

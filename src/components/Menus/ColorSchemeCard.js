@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 import {setColorScheme} from '../../actions/uiActions'
+import {fireSaveColorScheme, fireGetColorScheme} from '../../actions/firebaseActions'
 import {
         Button,
         Card,
@@ -21,10 +22,11 @@ import {
 @connect(store =>
   ({
     colorScheme: store.colorScheme,
-    firebaseColorScheme: pathToJS(store.firebase, 'userProfiles/colorScheme')
   }),
   {
     setColorScheme,
+    fireSaveColorScheme,
+    fireGetColorScheme,
   }
 )
 export default class ColorSchemeCard extends Component{
@@ -95,7 +97,7 @@ export default class ColorSchemeCard extends Component{
                 this.props.colorScheme.green,
                 this.props.colorScheme.blue
               )
-              this.props.firebase.set(`userProfiles/${this.props.firebase._.authUid}/colorScheme`, this.props.colorScheme)
+              this.props.fireSaveColorScheme(this.props.colorScheme, this.props.firebase)
             }}>Save</Button>
             <Button onClick={this.resetColorScheme}raised>Reset</Button>
           </CardActions>

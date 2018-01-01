@@ -7,7 +7,6 @@ import AvatarImg from './res/avatar.png'
 import uuidv4 from 'uuid'
 
 const initState = {
-  userName: '',
   userState: {
     userName: '',
     uid: '',
@@ -19,7 +18,7 @@ const initState = {
     activeItem: 'lobby',
   },
   settingsState:{
-    activeItem: 'general',
+    activeItem: 'lobby',
     isOpen: false,
   },
   splashState: {

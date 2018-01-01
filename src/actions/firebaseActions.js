@@ -1,7 +1,7 @@
 
 import {isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 import store from '../store'
-import {toggleSplash, setUserName, setSplashErrorData, toggleSplashError, storeUid, storeUserName, avatarFileUse} from './uiActions'
+import {toggleSplash, setSplashErrorData, toggleSplashError, storeUid, storeUserName, avatarFileUse, storeCookieData, setColorScheme} from './uiActions'
 
 export function fireSendData(destination = '', data = 'blankData'){
   return {
@@ -34,16 +34,58 @@ export function fireLoginWithProvider(firebase, provider){
       firebase.login({
         provider: provider,
         type: 'popup'
-      }).then((authUid) => {
-        console.dir(authUid)
+      }).then((authData) => {
         dispatch(toggleSplash())
-        dispatch(setUserName(authUid.profile.displayName))
-        dispatch(storeUserName(authUid.profile.displayName))
-        dispatch(avatarFileUse(authUid.profile.avatarUrl))
-        dispatch(storeUid(authUid.user.uid))
+        dispatch(storeUserName(authData.profile.displayName))
+        dispatch(avatarFileUse(authData.profile.avatarUrl))
+        dispatch(storeUid(authData.user.uid))
+        dispatch(fireGetColorScheme(firebase))
       }).catch((error) => {
         dispatch(setSplashErrorData(error.code, error.message))
         dispatch(toggleSplashError(true))
       })
+  }
+}
+
+export function fireLoginAnon(firebase){
+  return (dispatch) => {
+    firebase.auth().signInAnonymously().then((authData) => {
+      dispatch(storeUserName('Anonymous'))
+      dispatch(storeUid(authData.uid))
+      dispatch(toggleSplash())
+      dispatch(storeCookieData(store.getState().userState))
+      dispatch(fireGetColorScheme(firebase))
+    }).catch((error) => {
+      dispatch(setSplashErrorData(error.code, error.message))
+      dispatch(toggleSplashError(true))
+    })
+  }
+}
+
+export function fireLoginEmail(){
+
+
+}
+
+export function fireSaveColorScheme (colorScheme, firebase){
+  return (dispatch) => {
+    firebase.update(`userProfiles/${store.getState().userState.uid}/colorScheme`, colorScheme).then(dispatch(fireSaveColorSchemeComplete())
+    )
+  }
+}
+
+export function fireSaveColorSchemeComplete(){
+  return {
+    type: 'FIRE_SAVE_COLOR_SCHEME_COMPLETE'
+  }
+}
+
+export function fireGetColorScheme(firebase){
+  return (dispatch) => {
+    firebase.database().ref(`userProfiles/${store.getState().userState.uid}/colorScheme`).once('value', (data) => {
+      if(data.val() !== null){
+       dispatch(setColorScheme(data.val().red, data.val().green, data.val().blue))}
+    })
+
   }
 }

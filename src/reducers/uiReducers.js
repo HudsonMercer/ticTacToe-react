@@ -1,12 +1,5 @@
 import uuidv4 from 'uuid'
 
-const userNameReducer = (state = '', action) => {
-  if (action.type === "SET_USER_NAME" && typeof(action.payload) === 'string'){
-    return action.payload
-  }
-  return state
-}
-
 const quickNavigationReducer = (state = {isOpen: false}, action) => {
   if (action.type === 'MENU_QUICK_NAVIGATION_TOGGLE' && typeof(action.payload) !== 'boolean'){
     return state = {
@@ -192,7 +185,6 @@ const uiReducers = {
   UUID: setUUID,
   avatarData: avatarFileReducer,
   avatarImg: avatarReducer,
-  userName: userNameReducer,
   userState: userStateReducer,
   lobbyState: lobbyReducer,
   uiState: uiReducer,

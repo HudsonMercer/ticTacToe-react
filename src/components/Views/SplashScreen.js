@@ -5,8 +5,8 @@ import FaFacebookSquare from 'react-icons/lib/fa/facebook-square'
 import FaTwitterSquare from 'react-icons/lib/fa/twitter-square'
 import FaGithubSquare from 'react-icons/lib/fa/github-square'
 import FaGoogle from 'react-icons/lib/fa/google'
-import {toggleSplash, setUserName, toggleSplashError} from '../../actions/uiActions'
-import {fireLoginWithProvider} from '../../actions/firebaseActions'
+import {toggleSplash, storeUserName, toggleSplashError} from '../../actions/uiActions'
+import {fireLoginWithProvider, fireLoginAnon} from '../../actions/firebaseActions'
 import {
         Button,
         Icon,
@@ -26,8 +26,9 @@ import {
   auth: pathToJS(store, 'auth'),
 }),{
   toggleThis: toggleSplash,
-  setUserName,
+  storeUserName,
   fireLoginWithProvider,
+  fireLoginAnon,
   toggleSplashError,
 })
 
@@ -87,7 +88,9 @@ export default class SplashScreen extends Component {
           <br/>
           <span
             className="splashSkip"
-            onClick={this.props.toggleThis}
+            onClick={() => {
+              this.props.fireLoginAnon(this.props.firebase)
+            }}
           >Skip</span>
         </div>
         <Dialog

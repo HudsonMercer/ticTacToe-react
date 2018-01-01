@@ -34,7 +34,7 @@ import {
             <div
               onClick={()=>{
                 this.props.toggleSplash()
-                this.props.toggleThis()
+                this.props.toggleThis(false)
               }}
             ><Icon name='desktop_windows'/>Title Screen</div>
             <div

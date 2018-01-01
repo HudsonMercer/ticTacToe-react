@@ -1,5 +1,4 @@
 import firebase from '../firebaseInit'
-import {firebaseInstanceUUID as UUIDv4} from '../firebaseInit'
 
 const fireSendData = (state = null, action) => {
   if(action.type === 'FIRE_SEND_DATA'){
@@ -15,9 +14,19 @@ const fireSendFile = (state = null, action) => {
   return state
 }
 
+const fireChatMessageCatch = (state = {}, action) => {
+  if (action.type === '@@reactReduxFirebase/SET'){
+    
+    return state
+  }
+  return state
+}
+
+
 const firebaseReducers = {
   fireSendData: fireSendData,
   fireSendFile: fireSendFile,
+  fireChatMessageCatch: fireChatMessageCatch
 }
 
 export default firebaseReducers

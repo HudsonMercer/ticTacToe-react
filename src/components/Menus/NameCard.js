@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {setUserName} from '../../actions/uiActions'
+import {storeUserName} from '../../actions/uiActions'
 import { firebaseConnect, isLoaded, isEmpty, dataToJS } from 'react-redux-firebase'
 import {
         Button,
@@ -17,10 +17,11 @@ import {
 @firebaseConnect()
 
 @connect( store => ({
-    userName: store.userName,
+    userName: store.userState.userName,
+    uid: store.userState.uid,
 }),
   {
-  setUserName,
+  storeUserName,
   }
 )
 
@@ -39,12 +40,12 @@ export default class NameCard extends Component {
               floatingLabel="Current Name"
               helptext="Must be alphanumeric, spaces are okay"
               value={this.props.userName}
-              onChange={(name) => this.props.setUserName(name.target.value)}
+              onChange={(name) => this.props.storeUserName(name.target.value)}
             >
             </Textfield>
             <CardActions>
               <Button onClick={() => {
-                this.props.firebase.set(`userProfiles/PHGuy`, { name: this.props.userName })
+                this.props.firebase.update(`userProfiles/${this.props.uid}`, {displayName: this.props.userName})
               }}
                 dense
               >Change Name</Button>
