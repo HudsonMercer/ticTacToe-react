@@ -84,6 +84,13 @@ export function toggleLobby(override){
   }
 }
 
+export function toggleLobbyActiveItem(override){
+  return {
+    type: 'MENU_LOBBY_TOGGLE_ACTIVE_ITEM',
+    payload: override
+  }
+}
+
 export function avatarFileLoad(file){
 
   //I DONT KNOW WHY THIS WORKS BUT, IT DOES. WHO'DA THUNK IT? #DAMNJAVASCRIPTYOUSCARY

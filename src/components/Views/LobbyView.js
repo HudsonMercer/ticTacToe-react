@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS, populatedDataToJS } from 'react-redux-firebase'
-import {lobbyChatSendMessage} from '../../actions/uiActions'
+import {lobbyChatSendMessage, toggleLobbyActiveItem} from '../../actions/uiActions'
 import {
         Button,
         Card,
@@ -38,9 +38,11 @@ import {
   userName: store.userState.userName,
   uid: store.userState.uid,
   chatMessages: dataToJS(store.firebase, 'MESSAGES'),
+  activeItem: store.lobbyState.activeItem,
 }),
   {
-    lobbyChatSendMessage
+    lobbyChatSendMessage,
+    toggleLobbyActiveItem,
   })
 
 export default class LobbyView extends Component {
@@ -91,58 +93,118 @@ export default class LobbyView extends Component {
   }
 
   render(){
+    let gamesView = null, chatView = null
+
+    if(this.props.activeItem === 'games') {gamesView = (<CardText>
+      <List id="lobbyGamesList" style={{overflowY: 'scroll', maxHeight: '55vh'}}>
+        <ListItem>
+          <Icon name="menu"/>
+          <ListItemText>Alberto's Game
+            <ListItemTextSecondary>In Progress...
+            </ListItemTextSecondary>
+          </ListItemText>
+        </ListItem>
+        <ListDivider/>
+        <ListItem>
+          <Icon name="menu"/>
+          <ListItemText>John-Bob's Game
+            <ListItemTextSecondary>Waiting for second player...
+            </ListItemTextSecondary>
+          </ListItemText>
+        </ListItem>
+        <ListDivider/>
+        <ListItem>
+          <Icon name="menu"/>
+          <ListItemText>Rob's Game
+            <ListItemTextSecondary>In Progress...
+            </ListItemTextSecondary>
+          </ListItemText>
+        </ListItem>
+        <ListDivider/>
+        <ListItem>
+          <Icon name="menu"/>
+          <ListItemText>James's Game
+            <ListItemTextSecondary>In Progress...
+            </ListItemTextSecondary>
+          </ListItemText>
+        </ListItem>
+      </List>
+    </CardText>)}else{gamesView = null}
+
+    if(this.props.activeItem === 'chat'){chatView = (
+      <div>
+        <CardText id="lobbyChatCardText">
+          <List
+            id="lobbyChatList"
+            style={{overflowY: 'scroll', maxHeight: '55vh'}}
+          >
+            {this.getChatMessages()}
+          </List>
+        </CardText>
+        <CardActions>
+          <Grid style={{width: '100%'}}>
+            <Cell col={4}>
+              <Textfield
+                style={{resize: 'none'}}
+                textarea
+                rows={1}
+                cols={100}
+                id="chatInputField"
+                floatingLabel={`${this.props.userName}:`}
+                onKeyUp={(e) => {
+                  // console.log(typeof(e.keyCode))
+
+                  if (e.keyCode === 13 && e.target.value[0] !== '\n' && e.target.value[0] !== ' '){
+                    document.getElementById('chatSendButton').click()
+                  } else if (e.target.value[0] === '\n' || e.target.value[0] === ' ' ) {
+                    e.target.value = ''
+                  }
+                }}
+              />
+            </Cell>
+            <Cell col={8}>
+              <Button
+                id="chatSendButton"
+
+                onClick={() => {
+                  let e = document.getElementById('chatInputField')
+                  this.props.lobbyChatSendMessage(
+                    this.props.uid,
+                    this.props.userName,
+                    e.value,
+                    this.props.firebase
+                  )
+                  e.value = ''
+                }}
+                style={{ marginTop: '2%'}}
+              >Send</Button>
+            </Cell>
+          </Grid>
+        </CardActions>
+      </div>
+  )} else {chatView = null}
+
     if(this.props.isOpen){
     return(
       <div style={{height: '92.5vh'}}>
-        <Card style={{maxHeight: '45vh'}}>
-          <Toolbar>
+        <Card>
+          <Toolbar
+            onClick={this.props.toggleLobbyActiveItem}
+          >
             <ToolbarRow>
               <ToolbarSection>
                 <ToolbarTitle>
                   Games
                 </ToolbarTitle>
               </ToolbarSection>
-            </ToolbarRow>
+            </ToolbarRow>{}
           </Toolbar>
-          <CardText>
-            <List id="lobbyGamesList" style={{overflowY: 'scroll', maxHeight: '28vh'}}>
-              <ListItem>
-                <Icon name="menu"/>
-                <ListItemText>Alberto's Game
-                  <ListItemTextSecondary>In Progress...
-                  </ListItemTextSecondary>
-                </ListItemText>
-              </ListItem>
-              <ListDivider/>
-              <ListItem>
-                <Icon name="menu"/>
-                <ListItemText>John-Bob's Game
-                  <ListItemTextSecondary>Waiting for second player...
-                  </ListItemTextSecondary>
-                </ListItemText>
-              </ListItem>
-              <ListDivider/>
-              <ListItem>
-                <Icon name="menu"/>
-                <ListItemText>Rob's Game
-                  <ListItemTextSecondary>In Progress...
-                  </ListItemTextSecondary>
-                </ListItemText>
-              </ListItem>
-              <ListDivider/>
-              <ListItem>
-                <Icon name="menu"/>
-                <ListItemText>James's Game
-                  <ListItemTextSecondary>In Progress...
-                  </ListItemTextSecondary>
-                </ListItemText>
-              </ListItem>
-            </List>
-          </CardText>
+          {gamesView}
         </Card>
 
-        <Card style={{maxHeight: '45vh'}}>
-          <Toolbar>
+        <Card>
+          <Toolbar
+            onClick={this.props.toggleLobbyActiveItem}>
             <ToolbarRow>
               <ToolbarSection>
                 <ToolbarTitle>
@@ -151,54 +213,7 @@ export default class LobbyView extends Component {
               </ToolbarSection>
             </ToolbarRow>
           </Toolbar>
-          <CardText>
-            <List
-              id="lobbyChatList"
-              style={{overflowY: 'scroll', maxHeight: '28vh'}}
-            >
-              {this.getChatMessages()}
-            </List>
-          </CardText>
-          <CardActions>
-            <Grid style={{width: '100%'}}>
-              <Cell col={4}>
-                <Textfield
-                  style={{resize: 'none'}}
-                  textarea
-                  rows={1}
-                  cols={100}
-                  id="chatInputField"
-                  floatingLabel={`${this.props.userName}:`}
-                  onKeyUp={(e) => {
-                    // console.log(typeof(e.keyCode))
-
-                    if (e.keyCode === 13 && e.target.value[0] !== '\n' && e.target.value[0] !== ' '){
-                      document.getElementById('chatSendButton').click()
-                    } else if (e.target.value[0] === '\n' || e.target.value[0] === ' ' ) {
-                      e.target.value = ''
-                    }
-                  }}
-                />
-              </Cell>
-              <Cell col={8}>
-                <Button
-                  id="chatSendButton"
-
-                  onClick={() => {
-                    let e = document.getElementById('chatInputField')
-                    this.props.lobbyChatSendMessage(
-                      this.props.uid,
-                      this.props.userName,
-                      e.value,
-                      this.props.firebase
-                    )
-                    e.value = ''
-                  }}
-                  style={{ marginTop: '2%'}}
-                >Send</Button>
-              </Cell>
-            </Grid>
-          </CardActions>
+          {chatView}
         </Card>
       </div>
     )} else {

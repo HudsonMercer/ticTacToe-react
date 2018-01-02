@@ -36,6 +36,7 @@ const initState = {
   },
   lobbyState: {
     isOpen: true,
+    activeItem: 'chat',
     lobbyGames: [],
   },
   uiState:{

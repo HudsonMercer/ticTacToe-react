@@ -90,19 +90,48 @@ const uiReducer = (state = {activeView: 'lobby'}, action) => {
   return state
 }
 
-const lobbyReducer = (state = {isOpen: true}, action) => {
-  if (action.type === 'MENU_LOBBY_TOGGLE' && typeof(action.payload) !== 'boolean'){
-    return {
-      ...state,
-      isOpen: !state.isOpen
-    }
-  } else if(action.type === 'MENU_LOBBY_TOGGLE') {
-    return {
-      ...state,
-      isOpen: action.payload
-    }
+const lobbyReducer = (state = {isOpen: true, activeItem: 'chat'}, action) => {
+  switch (action.type){
+
+    case 'MENU_LOBBY_TOGGLE':
+      if (typeof(action.payload) !== 'boolean'){
+        return {
+          ...state,
+          isOpen: !state.isOpen
+        }
+      } else {
+          return {
+            ...state,
+            isOpen: action.payload
+          }
+        }
+    break
+
+    case 'MENU_LOBBY_TOGGLE_ACTIVE_ITEM':
+      if(typeof(action.payload) !== 'string'){
+        if(state.activeItem === 'chat'){
+          return {
+            ...state,
+            activeItem: 'games'
+          }
+        } else {
+          return {
+            ...state,
+            activeItem: 'chat'
+          }
+        }
+      } else {
+        return {
+          ...state,
+          activeItem: action.payload,
+        }
+      }
+    break
+
+    default:
+      return state
+    break
   }
-  return state
 }
 
 const colorSchemeReducer = (state = {red: 0, green: 0, blue: 0}, action) => {
