@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS, populatedDataToJS } from 'react-redux-firebase'
 import {lobbyChatSendMessage, toggleLobbyActiveItem} from '../../actions/uiActions'
+import LobbyGameItem from './LobbyItems/LobbyGameItem'
 import {
         Button,
         Card,
@@ -84,19 +85,9 @@ export default class LobbyView extends Component {
       chatTextField.scrollTop = chatTextField.scrollHeight
     }
   }
-
-  componentDidUpdate(){
-    this.scrollChatField()
-  }
-  componentDidMount(){
-    this.scrollChatField()
-  }
-
-  render(){
-    let gamesView = null, chatView = null
-
-    if(this.props.activeItem === 'games') {gamesView = (<CardText>
-      <List id="lobbyGamesList" style={{overflowY: 'scroll', maxHeight: '55vh'}}>
+  getGamesList = () => {
+    return (
+      <div>
         <ListItem>
           <Icon name="menu"/>
           <ListItemText>Alberto's Game
@@ -128,8 +119,37 @@ export default class LobbyView extends Component {
             </ListItemTextSecondary>
           </ListItemText>
         </ListItem>
-      </List>
-    </CardText>)}else{gamesView = null}
+      </div>
+    )
+  }
+  componentDidUpdate(){
+    this.scrollChatField()
+  }
+  componentDidMount(){
+    this.scrollChatField()
+  }
+
+  render(){
+    let gamesView = null, chatView = null
+
+    if(this.props.activeItem === 'games') {gamesView = (
+      <div>
+        <CardText>
+          <List id="lobbyGamesList" style={{overflowY: 'visible', maxHeight: '55vh'}}>
+            {/* {this.getGamesList()} */}
+            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
+            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
+            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
+            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
+            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
+            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
+            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
+          </List>
+        </CardText>
+        <CardActions>
+          <Button raised>Host Game</Button>
+        </CardActions>
+      </div>)}else{gamesView = null}
 
     if(this.props.activeItem === 'chat'){chatView = (
       <div>
@@ -152,8 +172,6 @@ export default class LobbyView extends Component {
                 id="chatInputField"
                 floatingLabel={`${this.props.userName}:`}
                 onKeyUp={(e) => {
-                  // console.log(typeof(e.keyCode))
-
                   if (e.keyCode === 13 && e.target.value[0] !== '\n' && e.target.value[0] !== ' '){
                     document.getElementById('chatSendButton').click()
                   } else if (e.target.value[0] === '\n' || e.target.value[0] === ' ' ) {
@@ -165,7 +183,6 @@ export default class LobbyView extends Component {
             <Cell col={8}>
               <Button
                 id="chatSendButton"
-
                 onClick={() => {
                   let e = document.getElementById('chatInputField')
                   this.props.lobbyChatSendMessage(
@@ -182,7 +199,7 @@ export default class LobbyView extends Component {
           </Grid>
         </CardActions>
       </div>
-  )} else {chatView = null}
+  )}else{chatView = null}
 
     if(this.props.isOpen){
     return(
