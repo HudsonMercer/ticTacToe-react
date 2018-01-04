@@ -46,12 +46,13 @@ export function toggleSplashError(override){
   }
 }
 
-export function setSplashErrorData(error, message){
+export function setSplashErrorData(error, message, title){
   return {
     type: 'MENU_SPLASH_SET_ERROR_DATA',
     payload: {
       error,
       message,
+      title,
     }
   }
 }

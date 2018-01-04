@@ -26,6 +26,7 @@ const initState = {
       isOpen: false,
       error: 'No error',
       message: "If you're reading this, somebody forgot to disable this error dialog by default and you can safely click okay and ignore this message.",
+      title: 'Error',
     },
     isOpen: true,
   },

@@ -22,11 +22,27 @@ const ToolBarImage = style.img`
   }
   `
 
-class HeaderToolbar extends Component {
+@connect(
+  (store) => ({
+    userName: store.userState.userName,
+    avatarImg: store.avatarImg
+
+  }),
+  (dispatch) => (
+    {
+      openAvatarMenu: () => {
+        dispatch(uiSetActiveView('settings'))
+        dispatch(toggleQuickNavigation(false))
+        dispatch(setSettingsActiveItem('avatar'))
+      }
+  })
+)
+
+export default class HeaderToolbar extends Component {
 
   render(){
     return(
-      <Toolbar style={{paddingLeft: '2vh', paddingRight: '2vh'}}>
+      <Toolbar style={{paddingLeft: '2vh', paddingRight: '2vh', maxHeight: '10vh'}}>
         <ToolbarRow>
           <ToolbarSection align="start">
             <HeaderQuickNavigation>
@@ -47,23 +63,3 @@ class HeaderToolbar extends Component {
     )
   }
 }
-
-const mapStateToProps = (store) => {
-  return {
-    userName: store.userState.userName,
-    avatarImg: store.avatarImg
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    openAvatarMenu: () => {
-      dispatch(uiSetActiveView('settings'))
-      dispatch(toggleQuickNavigation(false))
-      dispatch(setSettingsActiveItem('avatar'))
-
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderToolbar);

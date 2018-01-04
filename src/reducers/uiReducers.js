@@ -31,6 +31,7 @@ const splashReducer = (state = {isOpen: false}, action) => {
         ...state.errorDialog,
         error: action.payload.error,
         message: action.payload.message,
+        title: action.payload.title,
       }
     }
     case 'MENU_SPLASH_TOGGLE_ERROR':

@@ -6,7 +6,7 @@ import FaTwitterSquare from 'react-icons/lib/fa/twitter-square'
 import FaGithubSquare from 'react-icons/lib/fa/github-square'
 import FaGoogle from 'react-icons/lib/fa/google'
 import {toggleSplash, storeUserName, toggleSplashError} from '../../actions/uiActions'
-import {fireLoginWithProvider, fireLoginAnon} from '../../actions/firebaseActions'
+import {fireLoginWithProvider, fireLoginAnon, fireLoginEmail, fireCreateUser} from '../../actions/firebaseActions'
 import {
         Button,
         Icon,
@@ -28,8 +28,10 @@ import {
   toggleThis: toggleSplash,
   storeUserName,
   fireLoginWithProvider,
+  fireLoginEmail,
   fireLoginAnon,
   toggleSplashError,
+  fireCreateUser,
 })
 
 export default class SplashScreen extends Component {
@@ -57,11 +59,25 @@ export default class SplashScreen extends Component {
         <div className="splashLoginDialog">
           <span className="splashSpan splashTheme">E-Mail</span>
           <div className="splashInputBox splashTheme">
-            <input className="splashInput" type="text" id="splashNameInput" name="splashName"/> <span className="splashSignUp">Sign Up</span>
+            <input className="splashInput" type="text" id="splashNameInput" name="splashName"/>
+            <span
+              className="splashSignUp"
+              onClick={() => {
+                console.log('click fired')
+                this.props.fireCreateUser(this.props.firebase)
+              }}
+            >Sign Up</span>
           </div>
           <span className="splashSpan splashTheme">Password</span>
           <div className="splashInputBox splashTheme">
-            <input className="splashInput" type="password" id="splashPasswordInput" name="splashPassword"/><Icon name="chevron_right" style={loginArrowStyle}></Icon>
+            <input className="splashInput" type="password" id="splashPasswordInput" name="splashPassword"/>
+            <Icon
+              name="chevron_right"
+              style={loginArrowStyle}
+              onClick={() => {
+                this.props.fireLoginEmail(this.props.firebase)
+              }}
+            />
           </div>
           <div>
             <FaFacebookSquare
@@ -96,10 +112,9 @@ export default class SplashScreen extends Component {
         <Dialog
           style={{color: 'black'}}
           open={this.props.splashState.errorDialog.isOpen}
-          onClose={this.props.toggleSplashError}
-        >
+          onClose={this.props.toggleSplashError}>
           <DialogHeader>
-            <DialogTitle>Login Error</DialogTitle>
+            <DialogTitle >{this.props.splashState.errorDialog.title}</DialogTitle>
           </DialogHeader>
           <DialogBody>
             {this.props.splashState.errorDialog.error}<br/>

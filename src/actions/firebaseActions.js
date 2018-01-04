@@ -41,7 +41,7 @@ export function fireLoginWithProvider(firebase, provider){
         dispatch(storeUid(authData.user.uid))
         dispatch(fireGetColorScheme(firebase))
       }).catch((error) => {
-        dispatch(setSplashErrorData(error.code, error.message))
+        dispatch(setSplashErrorData(error.code, error.message, 'Error'))
         dispatch(toggleSplashError(true))
       })
   }
@@ -56,15 +56,45 @@ export function fireLoginAnon(firebase){
       dispatch(storeCookieData(store.getState().userState))
       dispatch(fireGetColorScheme(firebase))
     }).catch((error) => {
-      dispatch(setSplashErrorData(error.code, error.message))
+      dispatch(setSplashErrorData(error.code, error.message, 'Error'))
       dispatch(toggleSplashError(true))
     })
   }
 }
 
-export function fireLoginEmail(){
+export function fireLoginEmail(firebase){
+  let email = document.getElementById('splashNameInput').value
+  let password = document.getElementById('splashPasswordInput').value
+  return (dispatch) => {
+    firebase.login({email: email, password: password}).then((authData) => {
+      dispatch(storeUid(authData.uid))
+      dispatch(toggleSplash())
+      dispatch(storeCookieData(store.getState().userState))
+      dispatch(fireGetColorScheme(firebase))
+    }).catch((error) => {
+      dispatch(setSplashErrorData(error.code, error.message, 'Error'))
+      dispatch(toggleSplashError(true))
+    })
+  }
+}
 
+export function fireCreateUser(firebase){
 
+  let email = document.getElementById('splashNameInput').value
+  let password = document.getElementById('splashPasswordInput').value
+  let username = 'default'
+  console.log('create user fired')
+
+  return (dispatch) => {
+    console.log('create user dispatch fired')
+    firebase.createUser({email, password},{username, email}).then((e) => {
+      dispatch(setSplashErrorData('New user created', 'Ready to login now with the E-mail and password you used.', 'New Account Created'))
+      dispatch(toggleSplashError(true))
+    }).catch((error) => {
+      dispatch(setSplashErrorData(error.code, error.message, 'Error'))
+      dispatch(toggleSplashError(true))
+    })
+  }
 }
 
 export function fireSaveColorScheme (colorScheme, firebase){

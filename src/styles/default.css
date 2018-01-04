@@ -10072,7 +10072,7 @@ a.mdc-list-item {
   transition: top .5s; }
   .SplashScreen > h1 {
     position: relative;
-    top: 15%;
+    top: 10%;
     font-size: 3em; }
 
 .splashSkip:hover {
@@ -10084,7 +10084,7 @@ a.mdc-list-item {
 
 .splashLoginDialog {
   position: relative;
-  top: 20%; }
+  top: 15%; }
 
 .splashInputBox {
   position: relative;
