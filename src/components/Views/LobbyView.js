@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS, populatedDataToJS } from 'react-redux-firebase'
 import {lobbyChatSendMessage, toggleLobbyActiveItem} from '../../actions/uiActions'
+import {fireHostGame} from '../../actions/firebaseActions'
 import LobbyGameItem from './LobbyItems/LobbyGameItem'
 import {
         Button,
@@ -32,6 +33,10 @@ import {
   {
     path: '/lobby/chat/messages',
     storeAs: 'MESSAGES',
+  },
+  {
+    path: '/lobby/games',
+    storeAs: 'GAMESLIST',
   }
 ])
 @connect((store) => ({
@@ -39,11 +44,13 @@ import {
   userName: store.userState.userName,
   uid: store.userState.uid,
   chatMessages: dataToJS(store.firebase, 'MESSAGES'),
+  gamesList: dataToJS(store.firebase, 'GAMESLIST'),
   activeItem: store.lobbyState.activeItem,
 }),
   {
     lobbyChatSendMessage,
     toggleLobbyActiveItem,
+    fireHostGame,
   })
 
 export default class LobbyView extends Component {
@@ -79,52 +86,44 @@ export default class LobbyView extends Component {
 
      return d
   }
+
   scrollChatField = () => {
     let chatTextField = document.getElementById('lobbyChatList')
     if (chatTextField !== null){
       chatTextField.scrollTop = chatTextField.scrollHeight
     }
   }
+
   getGamesList = () => {
+    let list = this.props.gamesList
+    let elements = []
+    let returnList = []
+
+    for (let game in list){
+      elements.push(
+        <LobbyGameItem
+          hostName={list[game].host}
+          gameStatus={list[game].status}
+        />
+      )
+    }
+
+    elements.forEach((curVal) => {
+      returnList.push(curVal)
+      returnList.push(<ListDivider/>)
+    })
     return (
       <div>
-        <ListItem>
-          <Icon name="menu"/>
-          <ListItemText>Alberto's Game
-            <ListItemTextSecondary>In Progress...
-            </ListItemTextSecondary>
-          </ListItemText>
-        </ListItem>
-        <ListDivider/>
-        <ListItem>
-          <Icon name="menu"/>
-          <ListItemText>John-Bob's Game
-            <ListItemTextSecondary>Waiting for second player...
-            </ListItemTextSecondary>
-          </ListItemText>
-        </ListItem>
-        <ListDivider/>
-        <ListItem>
-          <Icon name="menu"/>
-          <ListItemText>Rob's Game
-            <ListItemTextSecondary>In Progress...
-            </ListItemTextSecondary>
-          </ListItemText>
-        </ListItem>
-        <ListDivider/>
-        <ListItem>
-          <Icon name="menu"/>
-          <ListItemText>James's Game
-            <ListItemTextSecondary>In Progress...
-            </ListItemTextSecondary>
-          </ListItemText>
-        </ListItem>
+        {returnList}
       </div>
     )
   }
+
+
   componentDidUpdate(){
     this.scrollChatField()
   }
+
   componentDidMount(){
     this.scrollChatField()
   }
@@ -136,18 +135,16 @@ export default class LobbyView extends Component {
       <div>
         <CardText>
           <List id="lobbyGamesList" style={{overflowY: 'visible', maxHeight: '55vh'}}>
-            {/* {this.getGamesList()} */}
-            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
-            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
-            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
-            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
-            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
-            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
-            <LobbyGameItem hostName="red" gameStatus="open"></LobbyGameItem>
+            {this.getGamesList()}
           </List>
         </CardText>
         <CardActions>
-          <Button raised>Host Game</Button>
+          <Button
+            raised
+            onClick={() => {
+              this.props.fireHostGame(this.props.firebase)
+            }}
+          >Host Game</Button>
         </CardActions>
       </div>)}else{gamesView = null}
 

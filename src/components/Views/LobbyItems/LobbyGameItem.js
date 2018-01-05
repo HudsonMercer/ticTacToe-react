@@ -16,32 +16,43 @@ import {
         ListGroup
         } from 'react-mdc-web'
 
-
-@connect()
-
 export default class LobbyGameItem extends Component{
   constructor(){
     super()
-    this.state = {menuIsOpen: false}
+    this.state = {menuIsOpen: false, menuTop: 0, menuLeft: 0}
   }
 
   render(){
     return (
-      <ListItem style={{overflowY: 'visible'}}>
-        <Icon name="menu" onClick={() => {
-          this.setState({...this.state, menuIsOpen: true})
-        }}/>
-        <MenuAnchor>
-          <Menu
-            open={this.state.menuIsOpen}
-            onClose={()=>{this.setState({menuIsOpen:false})}}
-            style={{overflowY: 'visible'}}
-          >
-            <MenuItem>
-              Andromeda
-            </MenuItem>
-          </Menu>
-        </MenuAnchor>
+      <ListItem
+        style={{userSelect: 'none'}}
+      >
+        <Icon name="menu"
+          onClick={(e) => {
+            this.setState({...this.state, menuIsOpen: true, menuTop: e.pageY, menuLeft: e.pageX})
+          }}
+          style={{cursor: 'pointer'}}
+        />
+        <Menu
+          style={{
+            overflowY: 'hidden',
+            position: 'aboslute',
+            top: this.state.menuTop,
+            left: this.state.menuLeft
+          }}
+          open={this.state.menuIsOpen}
+          onClose={()=>{this.setState({menuIsOpen:false})}}
+        >
+          <MenuItem>
+            Join
+          </MenuItem>
+          <MenuItem>
+            Observe
+          </MenuItem>
+          <MenuItem>
+            List Players
+          </MenuItem>
+        </Menu>
         <ListItemText>{this.props.hostName}
           <ListItemTextSecondary>{this.props.gameStatus}...
           </ListItemTextSecondary>

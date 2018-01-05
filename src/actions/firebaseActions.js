@@ -3,13 +3,9 @@ import {isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 import store from '../store'
 import {toggleSplash, setSplashErrorData, toggleSplashError, storeUid, storeUserName, avatarFileUse, storeCookieData, setColorScheme} from './uiActions'
 
-export function fireSendData(destination = '', data = 'blankData'){
-  return {
-    type: 'FIRE_SEND_DATA',
-    payload: {
-      destionation: destination,
-      data: data
-    }
+export function fireSendData(firebase, destination = '', data = 'blankData'){
+  return (dispatch) => {
+    firebase.update(destination, data)
   }
 }
 
@@ -83,7 +79,6 @@ export function fireCreateUser(firebase){
   let email = document.getElementById('splashNameInput').value
   let password = document.getElementById('splashPasswordInput').value
   let username = 'default'
-  console.log('create user fired')
 
   return (dispatch) => {
     console.log('create user dispatch fired')
@@ -117,5 +112,19 @@ export function fireGetColorScheme(firebase){
        dispatch(setColorScheme(data.val().red, data.val().green, data.val().blue))}
     })
 
+  }
+}
+
+export function fireHostGame(firebase){
+  return (dispatch) => {
+    let userState = store.getState().userState
+    dispatch(fireSendData(firebase, `lobby/games/${userState.uid}`,
+    {
+      host: userState.userName,
+      status: 'Awaiting challenger...',
+      client: '',
+      observers: ['test1','test2', 'test3']
+    }
+  ))
   }
 }
