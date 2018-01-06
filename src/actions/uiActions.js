@@ -201,16 +201,6 @@ export function lobbyChatSendMessage(uid, userName, message, firebase){
       date: Date.now()
     })
   }
-
-  // {
-  //   type: 'LOBBY_CHAT_SEND_MESSAGE',
-  //   payload: {
-  //     firebase,
-  //     uid,
-  //     userName,
-  //     message,
-  //     date: Date.now(),
-  //   }
 }
 
 export function storeCookieData(userState){
@@ -247,4 +237,8 @@ export function fetchCookieData(){
     type: 'FETCH_COOKIE_DATA',
     payload: cookieData
   }
+}
+
+export function hostNewGame(){
+
 }

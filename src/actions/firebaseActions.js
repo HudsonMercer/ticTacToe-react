@@ -123,7 +123,8 @@ export function fireHostGame(firebase){
       host: userState.userName,
       status: 'Awaiting challenger...',
       client: '',
-      observers: ['test1','test2', 'test3']
+      observers: ['test1','test2', 'test3'],
+      boardState: ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e']
     }
   ))
   }

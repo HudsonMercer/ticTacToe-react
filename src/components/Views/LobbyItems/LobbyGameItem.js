@@ -35,7 +35,6 @@ export default class LobbyGameItem extends Component{
         />
         <Menu
           style={{
-            overflowY: 'hidden',
             position: 'aboslute',
             top: this.state.menuTop,
             left: this.state.menuLeft

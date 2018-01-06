@@ -10,7 +10,6 @@ const initState = {
   userState: {
     userName: '',
     uid: '',
-
   },
   avatarImg: AvatarImg,
   quickNavigationState: {

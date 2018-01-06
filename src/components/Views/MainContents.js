@@ -7,43 +7,35 @@ import {
 
 import SettingsView from './SettingsView'
 import LobbyView from './LobbyView'
+import GameBoard from './GameBoard'
 
-class MainContentsView extends Component {
+@connect(store => ({
+  uiState: store.uiState,
+}),
+)
+
+export default class MainContentsView extends Component {
   render(){
       if(this.props.uiState.activeView === 'lobby'){
         return(
-          <div style={{overflowY: 'hidden', height: '92.5vh'}}>
-            <LobbyView
-            />
+          <div style={{ height: '92.5vh'}}>
+            <LobbyView/>
           </div>
         )
       } else if (this.props.uiState.activeView === 'settings'){
         return(
-          <div style={{overflowY: 'hidden', height: '92.5vh'}}>
+          <div style={{ height: '92.5vh'}}>
             <Grid>
               <Cell col={2}></Cell>
               <Cell col={8}>
-                <SettingsView
-                />
+                <SettingsView/>
               </Cell>
               <Cell col={2}></Cell>
             </Grid>
           </div>
-      )}
+      )} else if (this.props.uiState.activeView === 'gameBoard'){
+        <GameBoard/>
+      }
       return null
   }
 }
-
-const mapStateToProps = (store) => {
-    return {
-      uiState: store.uiState
-
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MainContentsView)
