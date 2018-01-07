@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import {uiSetActiveView, toggleQuickNavigation, setSettingsActiveItem} from '../../actions/uiActions'
+import {uiSetActiveView, toggleQuickNavigation, setSettingsActiveItem, quickNavigationSetActiveItem} from '../../actions/uiActions'
 import style from 'styled-components';
 import HeaderQuickNavigation from './HeaderQuickNavigation'
 import {
@@ -34,6 +34,7 @@ const ToolBarImage = style.img`
         dispatch(uiSetActiveView('settings'))
         dispatch(toggleQuickNavigation(false))
         dispatch(setSettingsActiveItem('avatar'))
+        dispatch(quickNavigationSetActiveItem('avatar'))
       }
   })
 )
@@ -49,7 +50,7 @@ export default class HeaderToolbar extends Component {
             </HeaderQuickNavigation>
           </ToolbarSection>
           <ToolbarSection>
-            <Display1 className="settingsHeader">
+            <Display1 className="settingsHeader no-mobile">
               {`${this.props.userName ? `Hello, ${this.props.userName}` : 'Tic-Tac-Toe'} `}
             </Display1>
           </ToolbarSection>

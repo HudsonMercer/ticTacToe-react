@@ -1,7 +1,7 @@
 
 import {isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 import store from '../store'
-import {toggleSplash, setSplashErrorData, toggleSplashError, storeUid, storeUserName, avatarFileUse, storeCookieData, setColorScheme} from './uiActions'
+import {toggleSplash, setSplashErrorData, toggleSplashError, storeUid, storeUserName, avatarFileUse, storeCookieData, setColorScheme, uiHostNewGame} from './uiActions'
 
 export function fireSendData(firebase, destination = '', data = 'blankData'){
   return (dispatch) => {
@@ -117,15 +117,19 @@ export function fireGetColorScheme(firebase){
 
 export function fireHostGame(firebase){
   return (dispatch) => {
+
     let userState = store.getState().userState
-    dispatch(fireSendData(firebase, `lobby/games/${userState.uid}`,
-    {
-      host: userState.userName,
-      status: 'Awaiting challenger...',
-      client: '',
-      observers: ['test1','test2', 'test3'],
-      boardState: ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e']
-    }
-  ))
+    dispatch(uiHostNewGame())
+    dispatch(
+      fireSendData(firebase, `lobby/games/${userState.uid}`,
+        {
+          host: userState.userName,
+          status: 'Awaiting challenger...',
+          client: '',
+          observers: ['test1','test2', 'test3'],
+          boardState: ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e']
+        }
+      )
+    )
   }
 }

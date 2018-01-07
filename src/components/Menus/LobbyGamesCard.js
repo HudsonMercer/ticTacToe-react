@@ -26,47 +26,48 @@ import {
 
 export default class LobbyGamesView extends Component{
 
-getGamesList = () => {
-  let list = this.props.gamesList
-  let elements = []
-  let returnList = []
+  getGamesList = () => {
+    let list = this.props.gamesList
+    let elements = []
+    let returnList = []
 
-  for (let game in list){
-    elements.push(
-      <LobbyGameItem
-        hostName={list[game].host}
-        gameStatus={list[game].status}
-      />
+    for (let game in list){
+      elements.push(
+        <LobbyGameItem
+          hostName={list[game].host}
+          gameStatus={list[game].status}
+          uid={list[game].uid}
+        />
+      )
+    }
+    elements.forEach((curVal) => {
+      returnList.push(curVal)
+      returnList.push(<ListDivider/>)
+    })
+    return (
+      <div>
+        {returnList}
+      </div>
     )
   }
-  elements.forEach((curVal) => {
-    returnList.push(curVal)
-    returnList.push(<ListDivider/>)
-  })
-  return (
-    <div>
-      {returnList}
-    </div>
-  )
-}
 
-render(){
-  return(
-    <div>
-      <CardText>
-        <List id="lobbyGamesList" style={{maxHeight: '53vh', overflowY: 'scroll'}}>
-          {this.getGamesList()}
-        </List>
-      </CardText>
-      <CardActions>
-        <Button
-          raised
-          onClick={() => {
-            this.props.fireHostGame(this.props.firebase)
-          }}
-        >Host Game</Button>
-      </CardActions>
-    </div>
-  )
-}
+  render(){
+    return(
+      <div>
+        <CardText>
+          <List id="lobbyGamesList" style={{maxHeight: '53vh', overflowY: 'scroll'}}>
+            {this.getGamesList()}
+          </List>
+        </CardText>
+        <CardActions>
+          <Button
+            raised
+            onClick={() => {
+              this.props.fireHostGame(this.props.firebase)
+            }}
+          >Host Game</Button>
+        </CardActions>
+      </div>
+    )
+  }
 }

@@ -1,40 +1,55 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {setSettingsActiveItem} from '../../actions/uiActions'
+import {setSettingsActiveItem, quickNavigationSetActiveItem} from '../../actions/uiActions'
 import {
         Tab,
-        Tabbar
+        Tabbar,
+        Grid,
+        Cell
         } from 'react-mdc-web'
 
 import NameCard from '../Menus/NameCard'
 import AvatarCard from '../Menus/AvatarCard'
 import ColorSchemeCard from '../Menus/ColorSchemeCard'
 
-class SettingsView extends Component{
+@connect(store => ({
+  isOpen: store.settingsState.isOpen,
+  activeItem: store.settingsState.activeItem,
+}), dispatch => ({
+  setActiveItem: (target) => {
+    dispatch(setSettingsActiveItem(target))
+    dispatch(quickNavigationSetActiveItem(target))
+  },
+
+}))
+
+export default class SettingsView extends Component{
   render(){
 
   let activeCard
 
   switch(this.props.activeItem){
     case 'general':
-     activeCard = <NameCard
-                  />
-      break
+      activeCard = <NameCard/>
+    break
     case 'avatar':
-    activeCard = <AvatarCard
-                 />
-      break
+      activeCard = <AvatarCard/>
+    break
     case 'colorScheme':
-    activeCard = <ColorSchemeCard
-                 />
-      break
+      activeCard = <ColorSchemeCard/>
+    break
     default:
-    activeCard = null
-      throw {message: 'Invalid tab index given to SettingsView.js, given ' + this.props.activeItem}
+      activeCard = <NameCard/>
+      throw {
+        message: `Invalid tab index given to SettingsView.js, given  ${this.props.activeItem}. Defaulting to <NameCard>`,
+        name: 'Invalid Index'
+      }
   }
 
   return(
-      <div>
+    <Grid>
+      <Cell col={2}/>
+      <Cell col={8}>
         <Tabbar>
           <Tab
             active={this.props.activeItem === 'general'}
@@ -57,24 +72,8 @@ class SettingsView extends Component{
           <span className="mdc-tab-bar__indicator"></span>
         </Tabbar>
         {activeCard}
-      </div>
+      </Cell>
+      <Cell col={2}/>
+    </Grid>
   )}
 }
-
-const mapStateToProps = (store) => {
-  return {
-    isOpen: store.settingsState.isOpen,
-    activeItem: store.settingsState.activeItem
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setActiveItem: (target) => {
-      dispatch(setSettingsActiveItem(target))
-    }
-
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SettingsView)

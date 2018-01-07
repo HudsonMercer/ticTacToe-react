@@ -1,19 +1,27 @@
-import uuidv4 from 'uuid'
-
 const quickNavigationReducer = (state = {isOpen: false}, action) => {
-  if (action.type === 'MENU_QUICK_NAVIGATION_TOGGLE' && typeof(action.payload) !== 'boolean'){
+  switch(action.type){
+  case 'MENU_QUICK_NAVIGATION_TOGGLE':
+   if(typeof(action.payload) !== 'boolean'){
     return state = {
       ...state,
       isOpen: !state.isOpen
-    }
-  }
-  else if (typeof(action.payload) === 'boolean'){
+      }
+    } else if (typeof(action.payload) === 'boolean'){
     return state = {
       ...state,
       isOpen: action.payload
     }
-  } else {
+  }
+  break
+  case 'MENU_QUICK_NAVIGATION_SET_ACTIVE_ITEM':
+    return {
+      ...state,
+      activeItem: action.payload,
+    }
+  break
+  default:
     return state
+  break
   }
 }
 
@@ -188,31 +196,32 @@ const avatarReducer = (state = null, action) => {
   return state
 }
 
-const setUUID = (state = {}, action) => {
-  return uuidv4()
-}
-
 const userStateReducer = (state = {}, action) => {
   switch(action.type){
     case 'STORE_UID':
-    return state = {
-      ...state,
-      uid: action.payload
-    }
-    break
+      return state = {
+        ...state,
+        uid: action.payload
+      }
+      break
     case 'STORE_USER_NAME':
-    return state = {
-      ...state,
-      userName: action.payload,
-    }
-    break
+      return state = {
+        ...state,
+        userName: action.payload,
+      }
+      break
+    case 'USER_JOIN_HOST_GAME':
+      return state ={
+        ...state,
+        isPlaying: true,
+      }
+      break
     default:
     return state
   }
 }
 
 const uiReducers = {
-  UUID: setUUID,
   avatarData: avatarFileReducer,
   avatarImg: avatarReducer,
   userState: userStateReducer,

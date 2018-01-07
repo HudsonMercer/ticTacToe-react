@@ -19,6 +19,13 @@ export function toggleQuickNavigation(override){
   }
 }
 
+export function quickNavigationSetActiveItem(target){
+  return {
+    type: 'MENU_QUICK_NAVIGATION_SET_ACTIVE_ITEM',
+    payload: target
+  }
+}
+
 export function toggleSplash(){
   return {
     type: 'MENU_SPLASH_TOGGLE',
@@ -239,6 +246,20 @@ export function fetchCookieData(){
   }
 }
 
-export function hostNewGame(){
-
+export function uiHostNewGame(){
+  return (dispatch) => {
+    dispatch(quickNavigationSetActiveItem('gameBoard'))
+    dispatch(uiSetActiveView('gameBoard'))
+    dispatch(
+      {
+        type: 'LOBBY_HOST_NEW_GAME',
+        payload: '"data"',
+      }
+    )
+    dispatch(
+      {
+        type: 'USER_JOIN_HOST_GAME'
+      }
+    )
+  }
 }

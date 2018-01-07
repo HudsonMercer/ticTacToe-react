@@ -12,6 +12,7 @@ import {
         CardText,
         CardTitle,
         Content,
+        Icon
         } from 'react-mdc-web';
 
 class AvatarCard extends Component{
@@ -52,8 +53,9 @@ class AvatarCard extends Component{
           </CardText>
           <CardActions>
             <Button
-              dense
-              onClick={onClickFileSelect}>
+              onClick={onClickFileSelect}
+            >
+              <Icon name="file_upload" style={{position: 'relative', top: '7px', left: '-7px'}}/>
               Select File
               <input
                 id="avatarFileSelect"
@@ -65,6 +67,7 @@ class AvatarCard extends Component{
                   this.props.avatarFileLoad(e.target.files[0])
                 }}
               />
+
             </Button>
             <Button
               onClick={() => {
@@ -72,9 +75,10 @@ class AvatarCard extends Component{
                 this.props.fireSendFile(`${this.props.user.UUID}/${this.props.user.name}Avatar`, this.props.avatarUploadFile)
               }}
             >
+
               Update Avatar
             </Button>
-            <Button dense raised>Cancel</Button>
+            <Button raised>Cancel</Button>
           </CardActions>
         </Card>
       </Content>

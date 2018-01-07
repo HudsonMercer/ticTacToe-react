@@ -10037,6 +10037,24 @@ a.mdc-list-item {
 .mdc-typography--adjust-margin.mdc-typography--button {
   margin: inherit; }
 
+@media screen and (max-width: 639px) {
+  .no-mobile {
+    display: none; } }
+.settingsHeader {
+  white-space: nowrap; }
+
+.gameBoardFlexbox {
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap; }
+
+.gameBoardFlexbox div {
+  flex: 0 1 calc(33.33% - 8px);
+  height: calc(24vh - 8px);
+  margin: 4px;
+  background: red;
+  color: white; }
+
 .hidden {
   display: none; }
 

@@ -29,7 +29,12 @@ export default class LobbyGameItem extends Component{
       >
         <Icon name="menu"
           onClick={(e) => {
-            this.setState({...this.state, menuIsOpen: true, menuTop: e.pageY, menuLeft: e.pageX})
+            this.setState({
+              ...this.state,
+              menuIsOpen: true,
+              menuTop: e.pageY,
+              menuLeft: e.pageX
+            })
           }}
           style={{cursor: 'pointer'}}
         />

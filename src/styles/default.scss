@@ -9,6 +9,28 @@ $mdc-theme-background: #f5f5f5;
 @import "material-components-web/material-components-web";
 
 
+@media screen and (max-width: 639px) {
+  .no-mobile{
+    display: none;
+  }
+}
+
+.settingsHeader{
+  white-space: nowrap;
+}
+.gameBoardFlexbox{
+  display: flex;
+  flex-direction: row;
+  flex-flow: row wrap;
+}
+
+.gameBoardFlexbox div{
+  flex: 0 1 calc(33.33% - 8px);
+  height: calc(24vh - 8px);
+  margin: 4px;
+  background: red;
+  color: white;
+}
 
 .hidden{
   display: none;
