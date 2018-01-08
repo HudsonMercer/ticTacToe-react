@@ -198,13 +198,13 @@ const avatarReducer = (state = null, action) => {
 
 const userStateReducer = (state = {}, action) => {
   switch(action.type){
-    case 'STORE_UID':
+    case 'USER_STORE_UID':
       return state = {
         ...state,
         uid: action.payload
       }
       break
-    case 'STORE_USER_NAME':
+    case 'USER_STORE_USER_NAME':
       return state = {
         ...state,
         userName: action.payload,
@@ -214,8 +214,19 @@ const userStateReducer = (state = {}, action) => {
       return state ={
         ...state,
         isPlaying: true,
+        gameUid: action.payload,
       }
       break
+    case 'USER_HOST_GAME':
+    return state = {
+      ...state,
+      isHost: true,
+    }
+    case 'USER_JOIN_GAME':
+    return state = {
+      ...state,
+      isHost: false,
+    }
     default:
     return state
   }

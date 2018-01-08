@@ -34,14 +34,14 @@ export function toggleSplash(){
 
 export function storeUid(uid){
   return {
-    type: 'STORE_UID',
+    type: 'USER_STORE_UID',
     payload: uid,
   }
 }
 
 export function storeUserName(name){
   return {
-    type: 'STORE_USER_NAME',
+    type: 'USER_STORE_USER_NAME',
     payload: name,
   }
 }
@@ -246,19 +246,19 @@ export function fetchCookieData(){
   }
 }
 
-export function uiHostNewGame(){
+export function uiHostNewGame(gameUid){
   return (dispatch) => {
     dispatch(quickNavigationSetActiveItem('gameBoard'))
     dispatch(uiSetActiveView('gameBoard'))
     dispatch(
       {
-        type: 'LOBBY_HOST_NEW_GAME',
-        payload: '"data"',
+        type: 'USER_HOST_GAME'
       }
     )
     dispatch(
       {
-        type: 'USER_JOIN_HOST_GAME'
+        type: 'USER_JOIN_HOST_GAME',
+        payload: gameUid,
       }
     )
   }

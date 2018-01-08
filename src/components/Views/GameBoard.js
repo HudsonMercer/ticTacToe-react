@@ -3,6 +3,8 @@ import {connect} from 'react-redux'
 import {compose} from 'redux'
 import store from '../../store'
 import {firebaseConnect, dataToJS} from 'react-redux-firebase'
+import GameBoardX from './GameBoardItems/GameBoardX'
+import GameBoardSquare from './GameBoardItems/GameBoardSquare'
 import {
         Card,
         CardText,
@@ -35,7 +37,7 @@ import {
 export default class GameBoard extends Component{
 
   updateBoard = () => {
-    let squares = this.props.squares
+    const squares = this.props.squares
     let idx = 0
     for(const prop of squares){
       if(this.props.gameState.boardState[idx] !== 'e'){
@@ -45,17 +47,30 @@ export default class GameBoard extends Component{
     }
   }
 
+  getUserTurn = () => {
+    if(this.props.gameState.playerTurn === 'host'){
+      return "Your turn"
+    } else {
+      return `${this.props.gameState.client}'s turn`
+    }
+  }
+
   render(){
-    let ready = (this.props.gameState !== undefined)
+
+    let ready = (this.props.gameState !== undefined),
+    playerTurn = ''
+
     if(ready){
       this.updateBoard()
+      playerTurn = this.getUserTurn()
     }
+
     return(
       <Card className="gameBoardCard">
         <Toolbar>
           <ToolbarRow>
             <ToolbarSection>
-              Games Played: 4
+              {playerTurn}
             </ToolbarSection>
             <ToolbarSection>
               <Headline
@@ -71,15 +86,51 @@ export default class GameBoard extends Component{
         </Toolbar>
         <CardText>
           <div className="gameBoardFlexbox">
-            <div className="boardSquare">r</div>
-            <div className="boardSquare">r</div>
-            <div className="boardSquare">r</div>
-            <div className="boardSquare">r</div>
-            <div className="boardSquare">r</div>
-            <div className="boardSquare">r</div>
-            <div className="boardSquare">r</div>
-            <div className="boardSquare">r</div>
-            <div className="boardSquare">r</div>
+            <GameBoardSquare
+              id={0}
+              data={this.props.gameState.boardState}
+              playerTurn={this.props.gameState.playerTurn}
+            />
+            <GameBoardSquare
+              id={1}
+              data={this.props.gameState.boardState}
+              playerTurn={this.props.gameState.playerTurn}
+            />
+            <GameBoardSquare
+              id={2}
+              data={this.props.gameState.boardState}
+              playerTurn={this.props.gameState.playerTurn}
+            />
+            <GameBoardSquare
+              id={3}
+              data={this.props.gameState.boardState}
+              playerTurn={this.props.gameState.playerTurn}
+            />
+            <GameBoardSquare
+              id={4}
+              data={this.props.gameState.boardState}
+              playerTurn={this.props.gameState.playerTurn}
+            />
+            <GameBoardSquare
+              id={5}
+              data={this.props.gameState.boardState}
+              playerTurn={this.props.gameState.playerTurn}
+            />
+            <GameBoardSquare
+              id={6}
+              data={this.props.gameState.boardState}
+              playerTurn={this.props.gameState.playerTurn}
+            />
+            <GameBoardSquare
+              id={7} 
+              data={this.props.gameState.boardState}
+              playerTurn={this.props.gameState.playerTurn}
+            />
+            <GameBoardSquare
+              id={8}
+              data={this.props.gameState.boardState}
+              playerTurn={this.props.gameState.playerTurn}
+            />
           </div>
         </CardText>
       </Card>

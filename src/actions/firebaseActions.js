@@ -115,11 +115,11 @@ export function fireGetColorScheme(firebase){
   }
 }
 
-export function fireHostGame(firebase){
+export function fireHostGame(firebase, gameUid){
   return (dispatch) => {
 
     let userState = store.getState().userState
-    dispatch(uiHostNewGame())
+    dispatch(uiHostNewGame(gameUid))
     dispatch(
       fireSendData(firebase, `lobby/games/${userState.uid}`,
         {
@@ -127,9 +127,34 @@ export function fireHostGame(firebase){
           status: 'Awaiting challenger...',
           client: '',
           observers: ['test1','test2', 'test3'],
-          boardState: ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e']
+          boardState: ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'],
+          playerTurn: 'host'
         }
       )
     )
+  }
+}
+
+export function fireSetPlayerTurn(firebase, gameHostUid, currentTurn){
+  let playerTurn = {}
+
+  switch(currentTurn){
+    case 'host':
+      if(store.getState().userState.uid === gameHostUid){
+        playerTurn = {playerTurn: 'client'}
+      }
+    break
+    case 'client':
+      if(store.getState().userState.uid !== gameHostUid){
+        playerTurn = {playerTurn: 'host'}
+      }
+    default:
+    playerTurn = {playerTurn: currentTurn}
+    break
+  }
+
+
+  return (dispatch) => {
+    dispatch(fireSendData(firebase, `lobby/games/${gameHostUid}/`, playerTurn))
   }
 }

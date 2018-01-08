@@ -63,7 +63,7 @@ export default class LobbyGamesView extends Component{
           <Button
             raised
             onClick={() => {
-              this.props.fireHostGame(this.props.firebase)
+              this.props.fireHostGame(this.props.firebase, this.props.uid)
             }}
           >Host Game</Button>
         </CardActions>
