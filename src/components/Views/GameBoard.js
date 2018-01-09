@@ -21,14 +21,15 @@ import {
 
 @firebaseConnect(() => ([
   {
-    path: `lobby/games/${store.getState().userState.uid}/`,
+    path: `lobby/games/${store.getState().userState.gameUid}/`,
     storeAs: 'GAMESTATE',
   }
 ]))
 
 @connect(store => ({
   gameState: dataToJS(store.firebase, 'GAMESTATE'),
-  squares: document.getElementsByClassName('boardSquare')
+  squares: document.getElementsByClassName('boardSquare'),
+  userState: store.userState,
 }),
 {
 
@@ -48,10 +49,42 @@ export default class GameBoard extends Component{
   }
 
   getUserTurn = () => {
-    if(this.props.gameState.playerTurn === 'host'){
-      return "Your turn"
-    } else {
-      return `${this.props.gameState.client}'s turn`
+    switch (true){
+      case (
+        this.props.gameState.playerTurn === 'host' &&
+        this.props.userState.isHost
+      ):
+        return "Your turn"
+      case (
+        this.props.gameState.playerTurn === 'client' &&
+        !this.props.userState.isHost
+      ):
+        return "Your turn"
+      case (
+        this.props.gameState.playerTurn === 'host' &&
+        !this.props.userState.isHost
+      ):
+        return `${this.props.gameState.host}'s turn`
+      case (
+        this.props.gameState.playerTurn === 'client' &&
+        this.props.userState.isHost
+      ):
+        return `${this.props.gameState.client}'s turn`
+      }
+  }
+
+  getTitleStatus = () => {
+    let ready = (this.props.gameState !== undefined)
+
+    if(ready){
+      switch (true){
+        case (this.props.gameState.client === ''):
+        return 'Awating challenger...'
+        case (this.props.gameState.client !== '' && this.props.gameState.client !== undefined):
+        return `${this.props.gameState.host} VS ${this.props.gameState.client}`
+        default:
+        return 'DEFAULT RETURN'
+      }
     }
   }
 
@@ -61,7 +94,7 @@ export default class GameBoard extends Component{
     playerTurn = ''
 
     if(ready){
-      this.updateBoard()
+      // this.updateBoard()
       playerTurn = this.getUserTurn()
     }
 
@@ -76,7 +109,7 @@ export default class GameBoard extends Component{
               <Headline
                 className="no-mobile"
               >
-                {(ready ? this.props.gameState.host + ' VS' : '')}  {(ready ? this.props.gameState.client : '')}
+                {this.getTitleStatus()}
               </Headline>
             </ToolbarSection>
             <ToolbarSection>
@@ -122,7 +155,7 @@ export default class GameBoard extends Component{
               playerTurn={this.props.gameState.playerTurn}
             />
             <GameBoardSquare
-              id={7} 
+              id={7}
               data={this.props.gameState.boardState}
               playerTurn={this.props.gameState.playerTurn}
             />

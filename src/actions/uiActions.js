@@ -263,3 +263,21 @@ export function uiHostNewGame(gameUid){
     )
   }
 }
+
+export function uiJoinGame(gameUid){
+  return (dispatch) => {
+    dispatch(quickNavigationSetActiveItem('gameBoard'))
+    dispatch(uiSetActiveView('gameBoard'))
+    dispatch(
+      {
+        type: 'USER_JOIN_HOST_GAME',
+        payload: gameUid,
+      }
+    )
+    dispatch(
+      {
+        type: 'USER_JOIN_GAME'
+      }
+    )
+  }
+}

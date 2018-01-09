@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS, populatedDataToJS } from 'react-redux-firebase'
+import {fireJoinGame} from '../../../actions/firebaseActions'
 
 import {
         Menu,
@@ -15,6 +16,14 @@ import {
         ListDivider,
         ListGroup
         } from 'react-mdc-web'
+
+@firebaseConnect()
+
+@connect(store => ({
+
+}),{
+  fireJoinGame,
+})
 
 export default class LobbyGameItem extends Component{
   constructor(){
@@ -47,7 +56,10 @@ export default class LobbyGameItem extends Component{
           open={this.state.menuIsOpen}
           onClose={()=>{this.setState({menuIsOpen:false})}}
         >
-          <MenuItem>
+          <MenuItem
+            onClick={() => {
+              this.props.fireJoinGame(this.props.firebase, this.props.uid)
+            }}>
             Join
           </MenuItem>
           <MenuItem>

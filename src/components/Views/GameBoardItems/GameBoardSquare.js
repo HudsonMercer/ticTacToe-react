@@ -48,8 +48,9 @@ export default class GameBoardSquare extends Component {
     }
     else if(
       this.props.playerTurn === 'client' &&
-      this.props.userState.isHost === false
+      !this.props.userState.isHost
     ){
+      console.log('Client made play!');
       this.props.fireSetPlayerTurn(
         this.props.firebase,
         this.props.userState.gameUid,

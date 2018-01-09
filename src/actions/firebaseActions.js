@@ -1,7 +1,7 @@
 
 import {isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 import store from '../store'
-import {toggleSplash, setSplashErrorData, toggleSplashError, storeUid, storeUserName, avatarFileUse, storeCookieData, setColorScheme, uiHostNewGame} from './uiActions'
+import {toggleSplash, setSplashErrorData, toggleSplashError, storeUid, storeUserName, avatarFileUse, storeCookieData, setColorScheme, uiHostNewGame, uiJoinGame} from './uiActions'
 
 export function fireSendData(firebase, destination = '', data = 'blankData'){
   return (dispatch) => {
@@ -128,10 +128,20 @@ export function fireHostGame(firebase, gameUid){
           client: '',
           observers: ['test1','test2', 'test3'],
           boardState: ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'],
-          playerTurn: 'host'
+          playerTurn: 'host',
+          uid: gameUid,
         }
       )
     )
+  }
+}
+
+export function fireJoinGame(firebase, gameUid){
+  return (dispatch) => {
+
+    let userState = store.getState().userState
+    dispatch(uiJoinGame(gameUid))
+
   }
 }
 
@@ -140,14 +150,16 @@ export function fireSetPlayerTurn(firebase, gameHostUid, currentTurn){
 
   switch(currentTurn){
     case 'host':
-      if(store.getState().userState.uid === gameHostUid){
+      if(store.getState().userState.isHost === true){
         playerTurn = {playerTurn: 'client'}
       }
     break
     case 'client':
-      if(store.getState().userState.uid !== gameHostUid){
+      if(store.getState().userState.isHost === false){
         playerTurn = {playerTurn: 'host'}
+
       }
+    break
     default:
     playerTurn = {playerTurn: currentTurn}
     break

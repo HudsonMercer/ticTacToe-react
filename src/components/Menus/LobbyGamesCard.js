@@ -32,6 +32,7 @@ export default class LobbyGamesView extends Component{
     let returnList = []
 
     for (let game in list){
+      console.dir(list[1]);
       elements.push(
         <LobbyGameItem
           hostName={list[game].host}
