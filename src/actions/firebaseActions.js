@@ -45,6 +45,7 @@ export function fireLoginWithProvider(firebase, provider){
 
 export function fireLoginAnon(firebase){
   return (dispatch) => {
+
     firebase.auth().signInAnonymously().then((authData) => {
       dispatch(storeUserName('Anonymous'))
       dispatch(storeUid(authData.uid))
