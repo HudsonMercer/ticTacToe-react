@@ -30,19 +30,21 @@ export default class GameBoardSquare extends Component {
     }
   }
 
+//put you in the dirt
   makePlay = () => {
-    if(
-      this.props.playerTurn === 'host' &&
-      this.props.userState.isHost
-    ){
-      this.props.fireSetPlayerTurn(
-        this.props.firebase,
-        this.props.userState.gameUid,
-        this.props.playerTurn
-      )
+    if (this.props.data[this.props.id] === 'e'){
+      if(
+        this.props.playerTurn === 'host' &&
+        this.props.userState.isHost
+      ){
+        this.props.fireSetPlayerTurn(
+          this.props.firebase,
+          this.props.userState.gameUid,
+          this.props.playerTurn
+        )
 
-      let data = {}
-      data[this.props.id] = 'x'
+        let data = {}
+        data[this.props.id] = 'x'
 
       this.props.fireSendData(this.props.firebase, `/lobby/games/${this.props.userState.gameUid}/boardState/`, data)
     }
@@ -56,10 +58,22 @@ export default class GameBoardSquare extends Component {
         this.props.playerTurn
       )
 
-      let data = {}
-      data[this.props.id] = 'o'
+          this.props.fireSendData(this.props.firebase, `/lobby/games/${this.props.userState.gameUid}/boardState/`, data)}
+      else if(
+        this.props.playerTurn === 'client' &&
+        !this.props.userState.isHost
+      ){
+        this.props.fireSetPlayerTurn(
+          this.props.firebase,
+          this.props.userState.gameUid,
+          this.props.playerTurn
+        )
 
-      this.props.fireSendData(this.props.firebase, `/lobby/games/${this.props.userState.gameUid}/boardState/`, data)
+        let data = {}
+        data[this.props.id] = 'o'
+
+        this.props.fireSendData(this.props.firebase, `/lobby/games/${this.props.userState.gameUid}/boardState/`, data)
+      }
     }
   }
 
