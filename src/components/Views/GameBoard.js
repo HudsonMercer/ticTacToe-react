@@ -37,16 +37,16 @@ import {
 
 export default class GameBoard extends Component{
 
-  updateBoard = () => {
-    const squares = this.props.squares
-    let idx = 0
-    for(const prop of squares){
-      if(this.props.gameState.boardState[idx] !== 'e'){
-        prop.innerHTML = this.props.gameState.boardState[idx]
-      }
-      idx++
-    }
-  }
+  // updateBoard = () => {
+  //   const squares = this.props.squares
+  //   let idx = 0
+  //   for(const prop of squares){
+  //     if(this.props.gameState.boardState[idx] !== 'e'){
+  //       prop.innerHTML = this.props.gameState.boardState[idx]
+  //     }
+  //     idx++
+  //   }
+  // }
 
   getUserTurn = () => {
     switch (true){
@@ -77,13 +77,15 @@ export default class GameBoard extends Component{
     let ready = (this.props.gameState !== undefined)
 
     if(ready){
-      switch (true){
-        case (this.props.gameState.client === ''):
-        return 'Awating challenger...'
-        case (this.props.gameState.client !== '' && this.props.gameState.client !== undefined):
-        return `${this.props.gameState.host} VS ${this.props.gameState.client}`
+      switch (this.props.gameState.status){
+        case 'Awating challenger...':
+          return this.props.gameState.status
+
+        case 'Playing':
+          return `${this.props.gameState.host} VS ${this.props.gameState.client}`
+
         default:
-        return 'DEFAULT RETURN'
+          return this.props.gameState.status
       }
     }
   }
@@ -121,47 +123,47 @@ export default class GameBoard extends Component{
           <div className="gameBoardFlexbox">
             <GameBoardSquare
               id={0}
-              data={this.props.gameState.boardState}
+              data={this.props.gameState}
               playerTurn={this.props.gameState.playerTurn}
             />
             <GameBoardSquare
               id={1}
-              data={this.props.gameState.boardState}
+              data={this.props.gameState}
               playerTurn={this.props.gameState.playerTurn}
             />
             <GameBoardSquare
               id={2}
-              data={this.props.gameState.boardState}
+              data={this.props.gameState}
               playerTurn={this.props.gameState.playerTurn}
             />
             <GameBoardSquare
               id={3}
-              data={this.props.gameState.boardState}
+              data={this.props.gameState}
               playerTurn={this.props.gameState.playerTurn}
             />
             <GameBoardSquare
               id={4}
-              data={this.props.gameState.boardState}
+              data={this.props.gameState}
               playerTurn={this.props.gameState.playerTurn}
             />
             <GameBoardSquare
               id={5}
-              data={this.props.gameState.boardState}
+              data={this.props.gameState}
               playerTurn={this.props.gameState.playerTurn}
             />
             <GameBoardSquare
               id={6}
-              data={this.props.gameState.boardState}
+              data={this.props.gameState}
               playerTurn={this.props.gameState.playerTurn}
             />
             <GameBoardSquare
               id={7}
-              data={this.props.gameState.boardState}
+              data={this.props.gameState}
               playerTurn={this.props.gameState.playerTurn}
             />
             <GameBoardSquare
               id={8}
-              data={this.props.gameState.boardState}
+              data={this.props.gameState}
               playerTurn={this.props.gameState.playerTurn}
             />
           </div>

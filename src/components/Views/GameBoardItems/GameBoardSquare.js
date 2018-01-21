@@ -18,8 +18,8 @@ import GameBoardO from './GameBoardO'
 export default class GameBoardSquare extends Component {
 
   getData = () => {
-    if (this.props.data !== undefined){
-      switch (this.props.data[this.props.id]){
+    if (this.props.data.boardState !== undefined){
+      switch (this.props.data.boardState[this.props.id]){
       case 'x':
       return (<GameBoardX/>)
       case 'o':
@@ -29,10 +29,14 @@ export default class GameBoardSquare extends Component {
       }
     }
   }
-  
+
 //put you in the dirt
-  makePlay = () => {
-    if (this.props.data[this.props.id] === 'e'){
+  makePlay = (e) => {
+    e.preventDefault()
+    if (
+    this.props.data.boardState[this.props.id] === 'e' &&
+    this.props.data.status === 'Playing'
+    ){
       if(
         this.props.playerTurn === 'host' &&
         this.props.userState.isHost
@@ -45,8 +49,6 @@ export default class GameBoardSquare extends Component {
 
         let data = {}
         data[this.props.id] = 'x'
-
-
           this.props.fireSendData(this.props.firebase, `/lobby/games/${this.props.userState.gameUid}/boardState/`, data)}
       else if(
         this.props.playerTurn === 'client' &&

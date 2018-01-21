@@ -3,7 +3,7 @@ import {isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 import store from '../store'
 import {toggleSplash, setSplashErrorData, toggleSplashError, storeUid, storeUserName, avatarFileUse, storeCookieData, setColorScheme, uiHostNewGame, uiJoinGame} from './uiActions'
 
-export function fireSendData(firebase, destination = '', data = 'blankData'){
+export function fireSendData(firebase, destination = '', data = {debug: 'ERROR BAD DATA SENT'}){
   return (dispatch) => {
     firebase.update(destination, data)
   }
@@ -139,9 +139,13 @@ export function fireHostGame(firebase, gameUid){
 
 export function fireJoinGame(firebase, gameUid){
   return (dispatch) => {
-
     let userState = store.getState().userState
     dispatch(uiJoinGame(gameUid))
+    dispatch(fireSendData(firebase, `/lobby/games/${gameUid}/`,
+       {
+         status: 'Playing',
+         client: userState.userName,
+       }))
 
   }
 }
