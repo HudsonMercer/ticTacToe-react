@@ -37,17 +37,6 @@ import {
 
 export default class GameBoard extends Component{
 
-  // updateBoard = () => {
-  //   const squares = this.props.squares
-  //   let idx = 0
-  //   for(const prop of squares){
-  //     if(this.props.gameState.boardState[idx] !== 'e'){
-  //       prop.innerHTML = this.props.gameState.boardState[idx]
-  //     }
-  //     idx++
-  //   }
-  // }
-
   getUserTurn = () => {
     switch (true){
       case (
@@ -96,7 +85,6 @@ export default class GameBoard extends Component{
     playerTurn = ''
 
     if(ready){
-      // this.updateBoard()
       playerTurn = this.getUserTurn()
     }
 
