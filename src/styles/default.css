@@ -10215,6 +10215,21 @@ a.mdc-list-item {
   stroke: black;
   animation: animationGameBoardOColor2 1s linear forwards; }
 
+.gameBoardBarContainer {
+  position: absolute;
+  top: 400px;
+  left: 100px;
+  width: 50px;
+  height: 500px; }
+
+.gameBoardBarAngled {
+  background: red;
+  width: 0px;
+  height: 40px;
+  box-shadow: 10px 10px 25px 5px rgba(0, 0, 0, 0.25);
+  transform-origin: 50% 50%;
+  animation: gameBoardAngledBar 1s forwards; }
+
 @keyframes animationGameBoardX1 {
   0% {
     width: 0px;
@@ -10260,6 +10275,15 @@ a.mdc-list-item {
   100% {
     stroke: var(--mdc-theme-primary);
     filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.5)); } }
+@keyframes gameBoardAngledBar {
+  0% {
+    width: 0px; }
+  50% {
+    width: 1000px;
+    transform: rotate(0deg); }
+  100% {
+    width: 1000px;
+    transform: rotate(45deg); } }
 ul {
   margin: 0px;
   padding: 0px; }
