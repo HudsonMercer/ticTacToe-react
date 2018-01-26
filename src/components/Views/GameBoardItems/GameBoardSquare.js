@@ -30,9 +30,7 @@ export default class GameBoardSquare extends Component {
     }
   }
 
-//put you in the dirt
   makePlay = (e) => {
-    e.preventDefault()
     if (
     this.props.data.boardState[this.props.id] === 'e' &&
     this.props.data.status === 'Playing'
@@ -65,6 +63,43 @@ export default class GameBoardSquare extends Component {
 
         this.props.fireSendData(this.props.firebase, `/lobby/games/${this.props.userState.gameUid}/boardState/`, data)
       }
+    }
+    this.checkWin(this.props.data.boardState)
+  }
+
+  checkWin = (boardState) => {
+    console.log('SWITCH FIRED!');
+    switch (true){
+      case (
+        boardState[0] !== 'e' &&
+        (boardState[0] === boardState[1] && boardState[0] === boardState[2])
+      ):
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+          {victory: true}
+        )
+      break
+      case (
+        boardState[3] !== 'e' &&
+        (boardState[3] === boardState[4] && boardState[3] === boardState[5])
+      ):
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+          {victory: true}
+        )
+      break
+      case (
+        boardState[6] !== 'e' &&
+        (boardState[6] === boardState[7] && boardState[6] === boardState[8])
+      ):
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+          {victory: true}
+        )
+      break
     }
   }
 
