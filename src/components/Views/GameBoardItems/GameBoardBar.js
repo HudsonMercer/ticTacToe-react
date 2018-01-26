@@ -1,22 +1,41 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {firebaseConnect} from 'react-redux-firebase'
+import store from '../../../store'
+import {firebaseConnect, dataToJS} from 'react-redux-firebase'
 
-@firebaseConnect()
+@firebaseConnect(
+  [{
+    path: `lobby/games/${store.getState().userState.gameUid}/`,
+    storeAs: 'GAMESTATEsdsd',
+  },
+  {
+    path: `lobby/games/${store.getState().userState.gameUid}/victory`,
+    storeAs: 'VICTORY',
+  }]
 
-@connect(store => {
-  gameWin: store.
-},
+)
+
+@connect(store => (
+  {
+    gameWin: dataToJS(store.firebase, 'VICTORY'),
+    boardState: dataToJS(store.firebase, 'GAMESTATEsdsd'),
+  }
+),
 {
 
 })
 
 export default class GameBoardBar extends Component {
   render(){
-    return(
-      <div className="gameBoardBarContainer">
-        <div className="gameBoardBarAngled">love is a lie</div>
-      </div>
-    )
+    if(this.props.gameWin === true){
+      return(
+        <div className="gameBoardBarContainer">
+          <div className="gameBoardBarAngled">Winners never give up</div>
+        </div>
+      )
+    } else {
+      return null
+    }
+
   }
 }

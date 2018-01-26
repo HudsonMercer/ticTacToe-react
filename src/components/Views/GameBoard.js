@@ -5,6 +5,7 @@ import store from '../../store'
 import {firebaseConnect, dataToJS} from 'react-redux-firebase'
 import GameBoardX from './GameBoardItems/GameBoardX'
 import GameBoardSquare from './GameBoardItems/GameBoardSquare'
+import GameBoardBar from './GameBoardItems/GameBoardBar'
 import {fireSendData} from '../../actions/firebaseActions'
 import {
         Card,
@@ -197,7 +198,7 @@ export default class GameBoard extends Component{
     if(ready){
       playerTurn = this.getUserTurn()
       this.checkWin(this.props.gameState.boardState)
-    }
+
     return(
       <Card className="gameBoardCard">
         <Toolbar>
@@ -268,5 +269,8 @@ export default class GameBoard extends Component{
         </CardText>
       </Card>
     )
+  } else {
+    return null
+  }
   }
 }
