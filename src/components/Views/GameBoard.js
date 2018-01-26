@@ -5,6 +5,7 @@ import store from '../../store'
 import {firebaseConnect, dataToJS} from 'react-redux-firebase'
 import GameBoardX from './GameBoardItems/GameBoardX'
 import GameBoardSquare from './GameBoardItems/GameBoardSquare'
+import {fireSendData} from '../../actions/firebaseActions'
 import {
         Card,
         CardText,
@@ -32,7 +33,7 @@ import {
   userState: store.userState,
 }),
 {
-
+fireSendData
 })
 
 export default class GameBoard extends Component{
@@ -79,6 +80,115 @@ export default class GameBoard extends Component{
     }
   }
 
+  checkWin = (boardState) => {
+    switch (true){
+
+      case (
+        boardState[0] !== 'e' &&
+        (boardState[0] === boardState[1] && boardState[0] === boardState[2])
+      ):
+      //Check the top row
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+          {victory: true}
+        )
+      return boardState[0]
+      break
+
+      case (
+        boardState[3] !== 'e' &&
+        (boardState[3] === boardState[4] && boardState[3] === boardState[5])
+      ):
+      //Check the middle row
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+          {victory: true}
+        )
+      return boardState[3]
+      break
+
+      case (
+        boardState[6] !== 'e' &&
+        (boardState[6] === boardState[7] && boardState[6] === boardState[8])
+      ):
+      //Check the bottom row
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+          {victory: true}
+        )
+      return boardState[6]
+      break
+
+      case (
+        boardState[0] !== 'e' &&
+        (boardState[0] === boardState[3] && boardState[0] === boardState[6])
+      ):
+      //Check the left column
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+          {victory: true}
+        )
+      return boardState[0]
+      break
+
+      case (
+        boardState[1] !== 'e' &&
+        (boardState[1] === boardState[4] && boardState[1] === boardState[7])
+      ):
+      //Check the middle column
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+          {victory: true}
+        )
+      return boardState[0]
+      break
+
+      case (
+        boardState[1] !== 'e' &&
+        (boardState[1] === boardState[4] && boardState[1] === boardState[7])
+      ):
+      //Check the right column
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+          {victory: true}
+        )
+      return boardState[0]
+      break
+
+      case (
+        boardState[0] !== 'e' &&
+        (boardState[0] === boardState[4] && boardState[0] === boardState[8])
+      ):
+      //Check from top left to bottom right, the \ direction
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+        {  victory: true}
+        )
+      return boardState[0]
+      break
+
+      case (
+        boardState[2] !== 'e' &&
+        (boardState[2] === boardState[4] && boardState[0] === boardState[6])
+      ):
+      //Check from top right to bottom left, the / direction
+        this.props.fireSendData(
+          this.props.firebase,
+          `lobby/games/${this.props.userState.gameUid}`,
+        {  victory: true}
+        )
+      return boardState[2]
+      break
+    }
+  }
+
   render(){
 
     let ready = (this.props.gameState !== undefined),
@@ -86,8 +196,8 @@ export default class GameBoard extends Component{
 
     if(ready){
       playerTurn = this.getUserTurn()
+      this.checkWin(this.props.gameState.boardState)
     }
-
     return(
       <Card className="gameBoardCard">
         <Toolbar>
