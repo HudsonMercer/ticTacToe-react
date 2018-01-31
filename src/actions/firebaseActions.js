@@ -122,7 +122,7 @@ export function fireHostGame(firebase, gameUid){
     let userState = store.getState().userState
     dispatch(uiHostNewGame(gameUid))
     dispatch(
-      fireSendData(firebase, `lobby/games/${userState.uid}`,
+      fireSendData(firebase, `lobby/games/${gameUid}`,
         {
           host: userState.userName,
           status: 'Awaiting challenger...',

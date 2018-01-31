@@ -24,12 +24,12 @@ import {
 @firebaseConnect(() => ([
   {
     path: `lobby/games/${store.getState().userState.gameUid}/`,
-    storeAs: 'GAMESTATE',
+    storeAs: 'GameBoard_GAMESTATE',
   }
 ]))
 
 @connect(store => ({
-  gameState: dataToJS(store.firebase, 'GAMESTATE'),
+  gameState: dataToJS(store.firebase, 'GameBoard_GAMESTATE'),
   squares: document.getElementsByClassName('boardSquare'),
   userState: store.userState,
 }),
@@ -40,6 +40,7 @@ fireSendData
 export default class GameBoard extends Component{
 
   getUserTurn = () => {
+    try{
     switch (true){
       case (
         this.props.gameState.playerTurn === 'host' &&
@@ -62,22 +63,17 @@ export default class GameBoard extends Component{
       ):
         return `${this.props.gameState.client}'s turn`
       }
+  } catch(err){
+    return "Cant resolve"
   }
+}
 
   getTitleStatus = () => {
-    let ready = (this.props.gameState !== undefined)
-
-    if(ready){
-      switch (this.props.gameState.status){
-        case 'Awating challenger...':
-          return this.props.gameState.status
-
-        case 'Playing':
-          return `${this.props.gameState.host} VS ${this.props.gameState.client}`
-
-        default:
-          return this.props.gameState.status
-      }
+    try{
+      var a = `${this.props.gameState.host} VS ${this.props.gameState.client}`
+      return a
+    } catch(err){
+      return this.props.gameState.status
     }
   }
 
@@ -195,7 +191,7 @@ export default class GameBoard extends Component{
     let ready = (this.props.gameState !== undefined),
     playerTurn = ''
 
-    if(ready){
+    try{
       playerTurn = this.getUserTurn()
       this.checkWin(this.props.gameState.boardState)
 
@@ -219,6 +215,7 @@ export default class GameBoard extends Component{
           </ToolbarRow>
         </Toolbar>
         <CardText>
+          <GameBoardBar/>
           <div className="gameBoardFlexbox">
             <GameBoardSquare
               id={0}
@@ -269,7 +266,8 @@ export default class GameBoard extends Component{
         </CardText>
       </Card>
     )
-  } else {
+  } catch(err) {
+    console.log(err);
     return null
   }
   }
