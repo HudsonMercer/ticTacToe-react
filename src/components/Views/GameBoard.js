@@ -25,6 +25,10 @@ import {
   {
     path: `lobby/games/${store.getState().userState.gameUid}/`,
     storeAs: 'GameBoard_GAMESTATE',
+  },
+  {
+    path: `lobby/games/${store.getState().userState.gameUid}/victory`,
+    storeAs: 'GameBoard_VICTORY',
   }
 ]))
 
@@ -32,6 +36,7 @@ import {
   gameState: dataToJS(store.firebase, 'GameBoard_GAMESTATE'),
   squares: document.getElementsByClassName('boardSquare'),
   userState: store.userState,
+  victory: dataToJS(store.firebase, 'GameBoard_VICTORY'),
 }),
 {
 fireSendData
@@ -74,6 +79,43 @@ export default class GameBoard extends Component{
       return a
     } catch(err){
       return this.props.gameState.status
+    }
+  }
+
+  victoryBannerHandeler = () => {
+    try {
+        if(this.props.victory === true){
+          let container = document.getElementsByClassName('gameBoardCard')[0]
+          const GameBoardWinBannerShadow = (
+            <div
+              style={
+                {
+                  top: container.offsetTop + 'px',
+                  left: container.offsetLeft + 'px',
+                  width: container.offsetWidth + 'px',
+                  height: container.offsetHeight + 'px',
+                  position: 'absolute',
+                }
+              }
+              className="gameBoardWinBannerShadow"
+            />)
+
+          return GameBoardWinBannerShadow
+        } else if(this.props.victory === false){
+          const GameBoardWinBannerShadow = (
+            <div
+              style={
+                {
+                  height: '0px',
+                }
+              }
+              className="gameBoardWinBannerShadow"
+            />)
+          return GameBoardWinBannerShadow
+        }
+    } catch (err){
+      //if we get to this point something with the connection has happened, or the dom hasn't rendered yet.
+      return null
     }
   }
 
@@ -214,7 +256,8 @@ export default class GameBoard extends Component{
             </ToolbarSection>
           </ToolbarRow>
         </Toolbar>
-        <CardText>
+        <CardText className="gameBoardContainer">
+          {this.victoryBannerHandeler()}
           <GameBoardBar/>
           <div className="gameBoardFlexbox">
             <GameBoardSquare

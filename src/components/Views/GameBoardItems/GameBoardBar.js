@@ -27,6 +27,28 @@ fireSendData
 
 export default class GameBoardBar extends Component {
 
+  componentDidMount(){
+    this.windowChangeHandler()
+    window.addEventListener('resize', this.windowChangeHandler)
+  }
+
+  componentWillUnmount(){
+    window.removeEventListener('resize', this.windowChangeHandler)
+  }
+
+  windowChangeHandler = () => {
+    var rotation = 0,
+      containerRect = document.getElementsByClassName('gameBoardContainer')[0].getBoundingClientRect()
+
+      // console.log(containerRect)
+      let y = containerRect.bottom - containerRect.top
+      let x = containerRect.right - containerRect.left
+      rotation = Math.atan2(y, x)
+      // console.log(containerRect.height/containerRect.width)
+    document.documentElement.style.setProperty(`--win-bar-rotation`, rotation + 'rad')
+
+  }
+
   render(){
     if(this.props.gameWin === true){
       this.props.fireSendData(this.props.firebase, `/lobby/games/${this.props.gameUid}`, {playerTurn: 'disabled'})

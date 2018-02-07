@@ -10217,10 +10217,13 @@ a.mdc-list-item {
 
 .gameBoardBarContainer {
   position: absolute;
-  top: 400px;
-  left: 100px;
-  width: 50px;
-  height: 500px; }
+  top: 50%;
+  left: 10%; }
+
+.gameBoardWinBannerShadow {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.25); }
 
 .gameBoardBarAngled {
   background: red;
@@ -10277,13 +10280,13 @@ a.mdc-list-item {
     filter: drop-shadow(4px 4px 6px rgba(0, 0, 0, 0.5)); } }
 @keyframes gameBoardAngledBar {
   0% {
-    width: 0px; }
+    width: 0vw; }
   50% {
-    width: 1000px;
-    transform: rotate(0deg); }
+    width: 90vw;
+    transform: rotate(var(--win-bar-rotation)); }
   100% {
-    width: 1000px;
-    transform: rotate(45deg); } }
+    width: 80vw;
+    transform: rotate(var(--win-bar-rotation)); } }
 ul {
   margin: 0px;
   padding: 0px; }
@@ -10294,5 +10297,8 @@ ul {
   position: fixed;
   top: 0px;
   left: 0px; }
+
+:root {
+  --win-bar-rotation: 0deg; }
 
 /*# sourceMappingURL=default.css.map */
