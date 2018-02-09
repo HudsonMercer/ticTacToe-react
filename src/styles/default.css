@@ -10217,21 +10217,23 @@ a.mdc-list-item {
 
 .gameBoardBarContainer {
   position: absolute;
-  top: 50%;
-  left: 10%; }
+  top: var(--win-bar-top);
+  left: var(--win-bar-left); }
 
 .gameBoardWinBannerShadow {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.25); }
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1; }
 
 .gameBoardBarAngled {
+  position: absolute;
   background: red;
   width: 0px;
   height: 40px;
   box-shadow: 10px 10px 25px 5px rgba(0, 0, 0, 0.25);
   transform-origin: 50% 50%;
-  animation: gameBoardAngledBar 1s forwards; }
+  animation: gameBoardAngledBar 1s forwards;
+  z-index: 2; }
 
 @keyframes animationGameBoardX1 {
   0% {
@@ -10282,10 +10284,10 @@ a.mdc-list-item {
   0% {
     width: 0vw; }
   50% {
-    width: 90vw;
+    width: calc(var(--win-bar-width) * 1.2);
     transform: rotate(var(--win-bar-rotation)); }
   100% {
-    width: 80vw;
+    width: var(--win-bar-width);
     transform: rotate(var(--win-bar-rotation)); } }
 ul {
   margin: 0px;
@@ -10299,6 +10301,9 @@ ul {
   left: 0px; }
 
 :root {
-  --win-bar-rotation: 0deg; }
+  --win-bar-rotation: 0deg;
+  --win-bar-top: 0px;
+  --win-bar-left: 0px;
+  --win-bar-width: 0px; }
 
 /*# sourceMappingURL=default.css.map */

@@ -232,7 +232,16 @@ const userStateReducer = (state = {}, action) => {
   }
 }
 
+const windowResizeReducer = (state = 1, action) => {
+  if (action.type === 'WINDOW_RESIZE_EVENT'){
+    return state += 1
+  } else {
+    return state
+  }
+}
+
 const uiReducers = {
+  windowResize: windowResizeReducer,
   avatarData: avatarFileReducer,
   avatarImg: avatarReducer,
   userState: userStateReducer,

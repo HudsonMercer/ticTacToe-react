@@ -37,6 +37,7 @@ import {
   squares: document.getElementsByClassName('boardSquare'),
   userState: store.userState,
   victory: dataToJS(store.firebase, 'GameBoard_VICTORY'),
+  windowResize: store.windowResize,
 }),
 {
 fireSendData
@@ -85,15 +86,16 @@ export default class GameBoard extends Component{
   victoryBannerHandeler = () => {
     try {
         if(this.props.victory === true){
-          let container = document.getElementsByClassName('gameBoardCard')[0]
+          let containerRect = document.getElementsByClassName('gameBoardContainer')[0].getBoundingClientRect()
+
           const GameBoardWinBannerShadow = (
             <div
               style={
                 {
-                  top: container.offsetTop + 'px',
-                  left: container.offsetLeft + 'px',
-                  width: container.offsetWidth + 'px',
-                  height: container.offsetHeight + 'px',
+                  top: containerRect.top + 'px',
+                  left: containerRect.left + 'px',
+                  width: containerRect.width + 'px',
+                  height: containerRect.height + 'px',
                   position: 'absolute',
                 }
               }
@@ -130,9 +132,8 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true}
+          {victory: true, winner: boardState[0], position: 'topRow'}
         )
-      return boardState[0]
       break
 
       case (
@@ -143,9 +144,8 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true}
+          {victory: true, winner: boardState[3], position: 'middleRow'}
         )
-      return boardState[3]
       break
 
       case (
@@ -156,9 +156,8 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true}
+          {victory: true, winner: boardState[6], position: 'bottomRow'}
         )
-      return boardState[6]
       break
 
       case (
@@ -169,9 +168,8 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true}
+          {victory: true, winner: boardState[0], position: 'lefColumn'}
         )
-      return boardState[0]
       break
 
       case (
@@ -182,9 +180,8 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true}
+          {victory: true, winner: boardState[0], position: 'middleColumn'}
         )
-      return boardState[0]
       break
 
       case (
@@ -195,9 +192,8 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true}
+          {victory: true, winner: boardState[0], position: 'rightColumn'}
         )
-      return boardState[0]
       break
 
       case (
@@ -208,9 +204,8 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-        {  victory: true}
+        {  victory: true, winner: boardState[0], position: 'topDiag'}
         )
-      return boardState[0]
       break
 
       case (
@@ -221,9 +216,8 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-        {  victory: true}
+        {  victory: true, winner: boardState[2], position: 'bottomDiag'}
         )
-      return boardState[2]
       break
     }
   }
