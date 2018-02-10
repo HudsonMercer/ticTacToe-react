@@ -179,6 +179,14 @@ export function fireSetPlayerTurn(firebase, gameHostUid, currentTurn){
 export function fireUserLeaveGame(firebase, userUid, gameUid){
   return (dispatch) => {
     dispatch({type: 'USER_LEAVE_GAME', payload: {userUid, gameUid}})
-    dispatch(fireSendData(firebase, `/lobby/games/${gameUid}/`, {leaverID: userUid}))
+    dispatch(fireSendData(firebase, `/lobby/games/${gameUid}/`, {leaverId: userUid}))
   }
+}
+
+export function fireDeleteGame(firebase, gameUid){
+  firebase.remove(`/lobby/games/${gameUid}`)
+  return (dispatch) => {
+    dispatch({type: 'GAMEBOARD_RESET_LEAVING_GAME'})
+    dispatch({type: 'FIRE_DELETE_GAME', payload: gameUid})
+  } 
 }

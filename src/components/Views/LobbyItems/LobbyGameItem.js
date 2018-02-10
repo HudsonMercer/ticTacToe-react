@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS, populatedDataToJS } from 'react-redux-firebase'
-import {fireJoinGame} from '../../../actions/firebaseActions'
+import {fireJoinGame, fireUserLeaveGame} from '../../../actions/firebaseActions'
 
 import {
         Menu,
@@ -20,9 +20,10 @@ import {
 @firebaseConnect()
 
 @connect(store => ({
-
+  userUid: store.userState.uid,
 }),{
   fireJoinGame,
+  fireUserLeaveGame,
 })
 
 export default class LobbyGameItem extends Component{
@@ -59,6 +60,9 @@ export default class LobbyGameItem extends Component{
           <MenuItem
             onClick={() => {
               this.props.fireJoinGame(this.props.firebase, this.props.uid)
+              window.onunload = () => {
+                this.props.fireUserLeaveGame(this.props.firebase, this.props.userUid, this.props.uid)
+              }
             }}>
             Join
           </MenuItem>

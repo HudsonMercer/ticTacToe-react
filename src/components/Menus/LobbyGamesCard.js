@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {firebaseConnect, dataToJS} from 'react-redux-firebase'
-import {fireHostGame} from '../../actions/firebaseActions'
+import {fireHostGame, fireUserLeaveGame} from '../../actions/firebaseActions'
 import LobbyGameItem from '../Views/LobbyItems/LobbyGameItem'
 import {
         Button,
@@ -22,6 +22,7 @@ import {
   uid: store.userState.uid,
 }), {
   fireHostGame,
+  fireUserLeaveGame,
 })
 
 export default class LobbyGamesView extends Component{
@@ -65,7 +66,9 @@ export default class LobbyGamesView extends Component{
             raised
             onClick={() => {
               this.props.fireHostGame(this.props.firebase, this.props.uid)
-            }}
+              window.onunload = () => {
+                this.props.fireUserLeaveGame(this.props.firebase, this.props.uid, this.props.uid)
+              }}}
           >Host Game</Button>
         </CardActions>
       </div>

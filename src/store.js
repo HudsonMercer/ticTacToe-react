@@ -46,6 +46,7 @@ const initState = {
   gameBoardState: {
     userLeftDialogIsOpen: false,
     timeLeft: 3,
+    leavingGame: false,
   }
 }
 

@@ -288,6 +288,11 @@ export function uiLeaveGame(){
     dispatch(uiSetActiveView('lobby'))
   }
 }
+export function uiLeavingGame(){
+  return (dispatch) => {
+    dispatch({type: 'GAMEBOARD_LEAVING_GAME'})
+  }
+}
 
 export function uiGameBoardUserLeft(){
   return (dispatch) => {

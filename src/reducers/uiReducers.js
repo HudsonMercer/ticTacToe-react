@@ -251,27 +251,43 @@ const windowResizeReducer = (state = 1, action) => {
 const gameBoardStateReducer = (state = {}, action) => {
   switch (action.type){
     case 'GAMEBOARD_SHOW_USER_LEFT_DIALOG':
-    return {
-      ...state,
-      userLeftDialogIsOpen: true
-    }
-    case 'GAMEBOARD_RESET_LEAVER_TIMER':
-    return {
-      ...state,
-      timeLeft: 3
-    }
-    case 'GAMEBOARD_DECREMENT_LEAVER_TIMER':
-    if(state.timeLeft !== 0){
       return {
         ...state,
-        timeLeft: state.timeLeft - 1,
+        userLeftDialogIsOpen: true
       }
-    } else {
+    break
+    case 'GAMEBOARD_RESET_LEAVER_TIMER':
       return {
         ...state,
         timeLeft: 3
       }
-    }
+    break
+    case 'GAMEBOARD_DECREMENT_LEAVER_TIMER':
+      if(state.timeLeft !== 0){
+        return {
+          ...state,
+          timeLeft: state.timeLeft - 1,
+        }
+      } else {
+        return {
+          ...state,
+          timeLeft: 3
+        }
+      }
+    break
+    case 'GAMEBOARD_LEAVING_GAME':
+      return {
+        ...state,
+        leavingGame: true,
+      }
+    break
+    case 'GAMEBOARD_RESET_LEAVING_GAME':
+      return {
+        ...state,
+        leavingGame: false,
+        userLeftDialogIsOpen: false,
+      }
+    break
     default:
     return state
   }

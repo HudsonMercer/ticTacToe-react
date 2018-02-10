@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {compose} from 'redux'
 import store from '../../store'
 import {firebaseConnect, dataToJS} from 'react-redux-firebase'
-import {uiLeaveGame, uiGameBoardUserLeft} from '../../actions/uiActions'
+import {uiLeaveGame, uiGameBoardUserLeft, uiLeavingGame} from '../../actions/uiActions'
 import GameBoardX from './GameBoardItems/GameBoardX'
 import GameBoardSquare from './GameBoardItems/GameBoardSquare'
 import GameBoardLeaveDialog from './GameBoardItems/GameBoardLeaveDialog'
@@ -27,34 +27,41 @@ import {
 @firebaseConnect(() => ([
   {
     path: `lobby/games/${store.getState().userState.gameUid}/`,
-    storeAs: 'GameBoard_GAMESTATE',
+    storeAs: 'GAMEBOARD_GAMESTATE',
   },
   {
     path: `lobby/games/${store.getState().userState.gameUid}/victory`,
-    storeAs: 'GameBoard_VICTORY',
+    storeAs: 'GAMEBOARD_VICTORY',
   },
   {
-    path: `lobby/games/${store.getState().userState.gameUid}/leaverID`,
-    storeAs: 'GameBoard_LEAVER',
+    path: `lobby/games/${store.getState().userState.gameUid}/leaverId`,
+    storeAs: 'GAMEBOARD_LEAVER',
   }
 ]))
 
 @connect(store => ({
-  gameState: dataToJS(store.firebase, 'GameBoard_GAMESTATE'),
+  gameState: dataToJS(store.firebase, 'GAMEBOARD_GAMESTATE'),
   squares: document.getElementsByClassName('boardSquare'),
   userState: store.userState,
-  victory: dataToJS(store.firebase, 'GameBoard_VICTORY'),
-  leaverId: dataToJS(store.firebase, 'GameBoard_LEAVER'),
+  victory: dataToJS(store.firebase, 'GAMEBOARD_VICTORY'),
+  leaverId: dataToJS(store.firebase, 'GAMEBOARD_LEAVER'),
   windowResize: store.windowResize,
+  leavingGame: store.gameBoardState.leavingGame,
+  isHost: store.userState.isHost,
 }),
 {
 fireSendData,
 fireUserLeaveGame,
 uiLeaveGame,
 uiGameBoardUserLeft,
+uiLeavingGame,
 })
 
 export default class GameBoard extends Component{
+  constructor(){
+    super()
+    this.state = {leaveGameFired: false}
+  }
 
   getUserTurn = () => {
     try{
@@ -239,8 +246,9 @@ export default class GameBoard extends Component{
   }
 
   opponentLeftHandler = () => {
-    if(this.props.leaverId !== null){
+    if(this.props.leaverId !== null && this.props.leavingGame === false){
       this.props.uiGameBoardUserLeft()
+      this.props.uiLeavingGame()
     }
   }
 
@@ -253,6 +261,7 @@ export default class GameBoard extends Component{
       playerTurn = this.getUserTurn()
       this.checkWin(this.props.gameState.boardState)
       this.opponentLeftHandler()
+
     return(
       <Card className="gameBoardCard">
 
