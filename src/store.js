@@ -42,6 +42,10 @@ const initState = {
   },
   uiState:{
     activeView: 'lobby'
+  },
+  gameBoardState: {
+    userLeftDialogIsOpen: false,
+    timeLeft: 3,
   }
 }
 

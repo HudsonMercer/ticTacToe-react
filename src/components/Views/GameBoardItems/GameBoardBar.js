@@ -45,26 +45,25 @@ export default class GameBoardBar extends Component {
     let containerRect = document.getElementsByClassName('gameBoardContainer')[0].getBoundingClientRect(),
     y = 0, x = 0, rotation = 0, cellHeight = (containerRect.height - 56)/3, cellWidth = (containerRect.width - 56)/3
 
-    console.log(cellHeight)
     switch(this.props.gameWinPosition){
       case 'topDiag':
-          y = containerRect.bottom - containerRect.top,
-          x = containerRect.right - containerRect.left,
+          y = (containerRect.bottom - 24) - (containerRect.top - 8),
+          x = (containerRect.right - 16) - (containerRect.left - 16),
           rotation = Math.atan2(y, x)
         document.documentElement.style.setProperty('--win-bar-rotation', rotation + 'rad')
-        document.documentElement.style.setProperty('--win-bar-top', containerRect.top + ((containerRect.height/2) - 20) + 'px')
-        document.documentElement.style.setProperty('--win-bar-left', '10%')
-        document.documentElement.style.setProperty('--win-bar-width', window.innerWidth * 0.8 + 'px')
+        document.documentElement.style.setProperty('--win-bar-top', containerRect.top + (containerRect.height/2) - 32 + 'px')
+        document.documentElement.style.setProperty('--win-bar-left', '0%')
+        document.documentElement.style.setProperty('--win-bar-width', window.innerWidth + 'px')
       break
 
       case 'bottomDiag':
-          y = containerRect.top - containerRect.bottom,
-          x = containerRect.right - containerRect.left,
+          y = (containerRect.top - 8) - (containerRect.bottom - 24),
+          x = (containerRect.right - 16) - (containerRect.left - 16),
           rotation = Math.atan2(y, x)
         document.documentElement.style.setProperty('--win-bar-rotation', rotation + 'rad')
-        document.documentElement.style.setProperty('--win-bar-top', containerRect.top + ((containerRect.height/2) - 20) + 'px')
-        document.documentElement.style.setProperty('--win-bar-left', '10%')
-        document.documentElement.style.setProperty('--win-bar-width', window.innerWidth * 0.8 + 'px')
+        document.documentElement.style.setProperty('--win-bar-top', containerRect.top + (containerRect.height/2) - 32  + 'px')
+        document.documentElement.style.setProperty('--win-bar-left', '0%')
+        document.documentElement.style.setProperty('--win-bar-width', window.innerWidth + 'px')
       break
       case 'rowTop':
         document.documentElement.style.setProperty('--win-bar-rotation', 0 + 'rad')
@@ -105,7 +104,7 @@ export default class GameBoardBar extends Component {
         document.documentElement.style.setProperty('--win-bar-width', containerRect.height * 0.8 + 'px')
       break
       default:
-      document.getElementsByClassName('gameBoardBarAngled')[0].innerText = 'it broked'
+
       break
     }
   }
@@ -113,9 +112,10 @@ export default class GameBoardBar extends Component {
   render(){
     if(this.props.gameWin === true){
       this.props.fireSendData(this.props.firebase, `/lobby/games/${this.props.gameUid}`, {playerTurn: 'disabled'})
+      //dispatch win event to redux, win event should reset the board, add score and hide this menu after 5 seconds.
       return(
         <div className="gameBoardBarContainer">
-          <div className="gameBoardBarAngled">Winners never give up</div>
+          <div className="gameBoardBarAngled">The difference between winners and losers is quitting</div>
         </div>
       )
     } else {

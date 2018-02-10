@@ -281,3 +281,24 @@ export function uiJoinGame(gameUid){
     )
   }
 }
+
+export function uiLeaveGame(){
+  return (dispatch) => {
+    dispatch(quickNavigationSetActiveItem('lobby'))
+    dispatch(uiSetActiveView('lobby'))
+  }
+}
+
+export function uiGameBoardUserLeft(){
+  return (dispatch) => {
+    dispatch({type: 'GAMEBOARD_SHOW_USER_LEFT_DIALOG'})
+  }
+}
+
+export function uiGameBoardResetLeaverTimer(){
+  return {type:'GAMEBOARD_RESET_LEAVER_TIMER'}
+}
+
+export function uiGameBoardDecrementTimer(){
+  return {type: 'GAMEBOARD_DECREMENT_LEAVER_TIMER'}
+}

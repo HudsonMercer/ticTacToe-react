@@ -175,3 +175,10 @@ export function fireSetPlayerTurn(firebase, gameHostUid, currentTurn){
     dispatch(fireSendData(firebase, `lobby/games/${gameHostUid}/`, playerTurn))
   }
 }
+
+export function fireUserLeaveGame(firebase, userUid, gameUid){
+  return (dispatch) => {
+    dispatch({type: 'USER_LEAVE_GAME', payload: {userUid, gameUid}})
+    dispatch(fireSendData(firebase, `/lobby/games/${gameUid}/`, {leaverID: userUid}))
+  }
+}

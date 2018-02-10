@@ -3,11 +3,14 @@ import {connect} from 'react-redux'
 import {compose} from 'redux'
 import store from '../../store'
 import {firebaseConnect, dataToJS} from 'react-redux-firebase'
+import {uiLeaveGame, uiGameBoardUserLeft} from '../../actions/uiActions'
 import GameBoardX from './GameBoardItems/GameBoardX'
 import GameBoardSquare from './GameBoardItems/GameBoardSquare'
+import GameBoardLeaveDialog from './GameBoardItems/GameBoardLeaveDialog'
 import GameBoardBar from './GameBoardItems/GameBoardBar'
-import {fireSendData} from '../../actions/firebaseActions'
+import {fireSendData, fireUserLeaveGame} from '../../actions/firebaseActions'
 import {
+        Button,
         Card,
         CardText,
         CardHeader,
@@ -29,6 +32,10 @@ import {
   {
     path: `lobby/games/${store.getState().userState.gameUid}/victory`,
     storeAs: 'GameBoard_VICTORY',
+  },
+  {
+    path: `lobby/games/${store.getState().userState.gameUid}/leaverID`,
+    storeAs: 'GameBoard_LEAVER',
   }
 ]))
 
@@ -37,10 +44,14 @@ import {
   squares: document.getElementsByClassName('boardSquare'),
   userState: store.userState,
   victory: dataToJS(store.firebase, 'GameBoard_VICTORY'),
+  leaverId: dataToJS(store.firebase, 'GameBoard_LEAVER'),
   windowResize: store.windowResize,
 }),
 {
-fireSendData
+fireSendData,
+fireUserLeaveGame,
+uiLeaveGame,
+uiGameBoardUserLeft,
 })
 
 export default class GameBoard extends Component{
@@ -73,6 +84,11 @@ export default class GameBoard extends Component{
     return "Cant resolve"
   }
 }
+
+  leaveGameHandler = () => {
+    this.props.fireUserLeaveGame(this.props.firebase, this.props.userState.uid, this.props.userState.gameUid)
+    this.props.uiLeaveGame()
+  }
 
   getTitleStatus = () => {
     try{
@@ -132,7 +148,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[0], position: 'topRow'}
+          {victory: true, winner: boardState[0], position: 'rowTop'}
         )
       break
 
@@ -144,7 +160,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[3], position: 'middleRow'}
+          {victory: true, winner: boardState[3], position: 'rowMiddle'}
         )
       break
 
@@ -156,7 +172,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[6], position: 'bottomRow'}
+          {victory: true, winner: boardState[6], position: 'rowBottom'}
         )
       break
 
@@ -168,7 +184,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[0], position: 'lefColumn'}
+          {victory: true, winner: boardState[0], position: 'columnLeft'}
         )
       break
 
@@ -180,7 +196,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[0], position: 'middleColumn'}
+          {victory: true, winner: boardState[0], position: 'columnMiddle'}
         )
       break
 
@@ -192,7 +208,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[0], position: 'rightColumn'}
+          {victory: true, winner: boardState[0], position: 'columnRight'}
         )
       break
 
@@ -222,6 +238,12 @@ export default class GameBoard extends Component{
     }
   }
 
+  opponentLeftHandler = () => {
+    if(this.props.leaverId !== null){
+      this.props.uiGameBoardUserLeft()
+    }
+  }
+
   render(){
 
     let ready = (this.props.gameState !== undefined),
@@ -230,9 +252,11 @@ export default class GameBoard extends Component{
     try{
       playerTurn = this.getUserTurn()
       this.checkWin(this.props.gameState.boardState)
-
+      this.opponentLeftHandler()
     return(
       <Card className="gameBoardCard">
+
+        <GameBoardLeaveDialog></GameBoardLeaveDialog>
         <Toolbar>
           <ToolbarRow>
             <ToolbarSection>
@@ -301,11 +325,20 @@ export default class GameBoard extends Component{
             />
           </div>
         </CardText>
+        <CardActions>
+          <Button
+            compact
+            raised
+            onClick={this.leaveGameHandler}
+          >Leave Game
+          </Button>
+        </CardActions>
+
       </Card>
     )
   } catch(err) {
-    console.log(err);
-    return null
-  }
+      console.log(err);
+      return null
+    }
   }
 }

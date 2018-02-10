@@ -227,6 +227,14 @@ const userStateReducer = (state = {}, action) => {
       ...state,
       isHost: false,
     }
+    case 'USER_LEAVE_GAME':
+    return state = {
+      ...state,
+      isPlaying: false,
+      isHost: false,
+      gameUid: null,
+    }
+    break
     default:
     return state
   }
@@ -236,6 +244,35 @@ const windowResizeReducer = (state = 1, action) => {
   if (action.type === 'WINDOW_RESIZE_EVENT'){
     return state += 1
   } else {
+    return state
+  }
+}
+
+const gameBoardStateReducer = (state = {}, action) => {
+  switch (action.type){
+    case 'GAMEBOARD_SHOW_USER_LEFT_DIALOG':
+    return {
+      ...state,
+      userLeftDialogIsOpen: true
+    }
+    case 'GAMEBOARD_RESET_LEAVER_TIMER':
+    return {
+      ...state,
+      timeLeft: 3
+    }
+    case 'GAMEBOARD_DECREMENT_LEAVER_TIMER':
+    if(state.timeLeft !== 0){
+      return {
+        ...state,
+        timeLeft: state.timeLeft - 1,
+      }
+    } else {
+      return {
+        ...state,
+        timeLeft: 3
+      }
+    }
+    default:
     return state
   }
 }
@@ -250,7 +287,8 @@ const uiReducers = {
   settingsState: settingsReducer,
   splashState: splashReducer,
   quickNavigationState: quickNavigationReducer,
-  colorScheme: colorSchemeReducer
+  colorScheme: colorSchemeReducer,
+  gameBoardState: gameBoardStateReducer,
 }
 
 export default uiReducers
