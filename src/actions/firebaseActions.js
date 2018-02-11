@@ -3,7 +3,7 @@ import {isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 import store from '../store'
 import {toggleSplash, setSplashErrorData, toggleSplashError, storeUid, storeUserName, avatarFileUse, storeCookieData, setColorScheme, uiHostNewGame, uiJoinGame} from './uiActions'
 
-export function fireSendData(firebase, destination = '', data = {debug: 'ERROR BAD DATA SENT'}){
+export function fireSendData(firebase, destination = '', data = {debug: 'ERROR BAD DATA SENT'}, thenCallback){
   return (dispatch) => {
     firebase.update(destination, data)
   }
@@ -131,6 +131,7 @@ export function fireHostGame(firebase, gameUid){
           boardState: ['e', 'e', 'e', 'e', 'e', 'e', 'e', 'e', 'e'],
           playerTurn: 'host',
           uid: gameUid,
+          victory: false,
         }
       )
     )
@@ -188,5 +189,24 @@ export function fireDeleteGame(firebase, gameUid){
   return (dispatch) => {
     dispatch({type: 'GAMEBOARD_RESET_LEAVING_GAME'})
     dispatch({type: 'FIRE_DELETE_GAME', payload: gameUid})
-  } 
+  }
+}
+
+export function fireResetGameBoard(firebase, gameUid){
+  return (dispatch) => {
+    firebase.update(`lobby/games/${gameUid}/`,
+    {
+      boardState: ['e','e','e','e','e','e','e','e','e'],
+      playerTurn: 'host',
+      winner: null,
+      position: '',
+      winDialogIsOpen: false,
+
+    }).then(() => {
+      firebase.update(`lobby/games/${gameUid}`,
+      {
+        victory: false,
+      })
+    })
+ }
 }

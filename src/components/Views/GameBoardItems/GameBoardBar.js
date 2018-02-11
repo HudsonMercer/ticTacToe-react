@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import store from '../../../store'
 import {firebaseConnect, dataToJS} from 'react-redux-firebase'
-import {fireSendData} from '../../../actions/firebaseActions'
 
 @firebaseConnect(() => ([{
     path: `lobby/games/${store.getState().userState.gameUid}/`,
@@ -28,7 +27,6 @@ import {fireSendData} from '../../../actions/firebaseActions'
   }
 ),
 {
-fireSendData
 })
 
 export default class GameBoardBar extends Component {
@@ -111,8 +109,6 @@ export default class GameBoardBar extends Component {
 
   render(){
     if(this.props.gameWin === true){
-      this.props.fireSendData(this.props.firebase, `/lobby/games/${this.props.gameUid}`, {playerTurn: 'disabled'})
-      //dispatch win event to redux, win event should reset the board, add score and hide this menu after 5 seconds.
       return(
         <div className="gameBoardBarContainer">
           <div className="gameBoardBarAngled">The difference between winners and losers is quitting</div>

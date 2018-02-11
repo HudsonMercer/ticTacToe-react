@@ -7,6 +7,7 @@ import {uiLeaveGame, uiGameBoardUserLeft, uiLeavingGame} from '../../actions/uiA
 import GameBoardX from './GameBoardItems/GameBoardX'
 import GameBoardSquare from './GameBoardItems/GameBoardSquare'
 import GameBoardLeaveDialog from './GameBoardItems/GameBoardLeaveDialog'
+import GameBoardWinDialog from './GameBoardItems/GameBoardWinDialog'
 import GameBoardBar from './GameBoardItems/GameBoardBar'
 import {fireSendData, fireUserLeaveGame} from '../../actions/firebaseActions'
 import {
@@ -58,10 +59,6 @@ uiLeavingGame,
 })
 
 export default class GameBoard extends Component{
-  constructor(){
-    super()
-    this.state = {leaveGameFired: false}
-  }
 
   getUserTurn = () => {
     try{
@@ -113,29 +110,23 @@ export default class GameBoard extends Component{
 
           const GameBoardWinBannerShadow = (
             <div
-              style={
-                {
+              style={{
                   top: containerRect.top + 'px',
                   left: containerRect.left + 'px',
                   width: containerRect.width + 'px',
                   height: containerRect.height + 'px',
                   position: 'absolute',
-                }
-              }
+              }}
               className="gameBoardWinBannerShadow"
             />)
-
           return GameBoardWinBannerShadow
         } else if(this.props.victory === false){
-          const GameBoardWinBannerShadow = (
-            <div
-              style={
-                {
-                  height: '0px',
-                }
-              }
-              className="gameBoardWinBannerShadow"
-            />)
+            const GameBoardWinBannerShadow = (
+              <div
+                style={{height: '0px'}}
+                className="gameBoardWinBannerShadow"
+              />
+            )
           return GameBoardWinBannerShadow
         }
     } catch (err){
@@ -155,7 +146,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[0], position: 'rowTop'}
+          {victory: true, winner: boardState[0], position: 'rowTop', winDialogIsOpen: true}
         )
       break
 
@@ -167,7 +158,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[3], position: 'rowMiddle'}
+          {victory: true, winner: boardState[3], position: 'rowMiddle', winDialogIsOpen: true}
         )
       break
 
@@ -179,7 +170,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[6], position: 'rowBottom'}
+          {victory: true, winner: boardState[6], position: 'rowBottom', winDialogIsOpen: true}
         )
       break
 
@@ -191,7 +182,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[0], position: 'columnLeft'}
+          {victory: true, winner: boardState[0], position: 'columnLeft', winDialogIsOpen: true}
         )
       break
 
@@ -203,7 +194,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[0], position: 'columnMiddle'}
+          {victory: true, winner: boardState[0], position: 'columnMiddle', winDialogIsOpen: true}
         )
       break
 
@@ -215,7 +206,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[0], position: 'columnRight'}
+          {victory: true, winner: boardState[0], position: 'columnRight', winDialogIsOpen: true}
         )
       break
 
@@ -227,7 +218,7 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-        {  victory: true, winner: boardState[0], position: 'topDiag'}
+        {  victory: true, winner: boardState[0], position: 'topDiag', winDialogIsOpen: true}
         )
       break
 
@@ -239,9 +230,14 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-        {  victory: true, winner: boardState[2], position: 'bottomDiag'}
+        {  victory: true, winner: boardState[2], position: 'bottomDiag', winDialogIsOpen: true}
         )
       break
+    }
+  }
+  componentDidUpdate(){
+    if(this.props.victory === false){
+      this.checkWin(this.props.gameState.boardState)
     }
   }
 
@@ -259,13 +255,13 @@ export default class GameBoard extends Component{
 
     try{
       playerTurn = this.getUserTurn()
-      this.checkWin(this.props.gameState.boardState)
       this.opponentLeftHandler()
 
     return(
       <Card className="gameBoardCard">
 
-        <GameBoardLeaveDialog></GameBoardLeaveDialog>
+        <GameBoardLeaveDialog/>
+        <GameBoardWinDialog/>
         <Toolbar>
           <ToolbarRow>
             <ToolbarSection>
