@@ -40,19 +40,22 @@ export default class GameBoardLeaveDialog extends Component {
     })
   }
 
+  leaveGame = () => {
+    this.props.uiGameBoardDecrementTimer()
+    this.props.uiLeaveGame()
+    this.props.fireDeleteGame(this.props.firebase, this.props.gameUid)
+  }
+
   startCountDown = () => {
     if(this.props.isOpen === true && this.state.fireTimer === true){
       this.setState({
         fireTimer: false
       })
-      console.log('leave game countdown fired')
       setTimeout(this.props.uiGameBoardDecrementTimer, 1000)
       setTimeout(this.props.uiGameBoardDecrementTimer, 2000)
       setTimeout(this.props.uiGameBoardDecrementTimer, 3000)
       setTimeout(() => {
-        this.props.uiGameBoardDecrementTimer()
-        this.props.uiLeaveGame()
-        this.props.fireDeleteGame(this.props.firebase, this.props.gameUid)
+        this.leaveGame()
       }, 4000)
     }
   }

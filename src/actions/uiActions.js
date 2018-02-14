@@ -266,8 +266,6 @@ export function uiHostNewGame(gameUid){
 
 export function uiJoinGame(gameUid){
   return (dispatch) => {
-    dispatch(quickNavigationSetActiveItem('gameBoard'))
-    dispatch(uiSetActiveView('gameBoard'))
     dispatch(
       {
         type: 'USER_JOIN_HOST_GAME',
@@ -279,6 +277,8 @@ export function uiJoinGame(gameUid){
         type: 'USER_JOIN_GAME'
       }
     )
+    dispatch(quickNavigationSetActiveItem('gameBoard'))
+    dispatch(uiSetActiveView('gameBoard'))
   }
 }
 
@@ -286,6 +286,7 @@ export function uiLeaveGame(){
   return (dispatch) => {
     dispatch(quickNavigationSetActiveItem('lobby'))
     dispatch(uiSetActiveView('lobby'))
+    dispatch({type: 'USER_LEAVE_GAME'})
   }
 }
 export function uiLeavingGame(){

@@ -32,6 +32,17 @@ export default class LobbyGameItem extends Component{
     this.state = {menuIsOpen: false, menuTop: 0, menuLeft: 0}
   }
 
+  joinGameHandler = () => {
+    this.props.firebase.database().ref(`lobby/games/${this.props.uid}/`).child('client').once('value').then((snap) => {
+      if(snap.val() === ''){
+        this.props.fireJoinGame(this.props.firebase, this.props.uid)
+        window.onunload = () => {
+          this.props.fireUserLeaveGame(this.props.firebase, this.props.userUid, this.props.uid)
+        }
+      }
+    })
+  }
+
   render(){
     return (
       <ListItem
@@ -58,12 +69,7 @@ export default class LobbyGameItem extends Component{
           onClose={()=>{this.setState({menuIsOpen:false})}}
         >
           <MenuItem
-            onClick={() => {
-              this.props.fireJoinGame(this.props.firebase, this.props.uid)
-              window.onunload = () => {
-                this.props.fireUserLeaveGame(this.props.firebase, this.props.userUid, this.props.uid)
-              }
-            }}>
+            onClick={this.joinGameHandler}>
             Join
           </MenuItem>
           <MenuItem>

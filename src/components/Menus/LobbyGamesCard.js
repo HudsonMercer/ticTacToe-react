@@ -12,14 +12,20 @@ import {
         ListDivider
         } from 'react-mdc-web'
 
-@firebaseConnect([{
+@firebaseConnect([
+  {
   path: '/lobby/games',
-  storeAs: 'GAMESLIST',
-}])
+  storeAs: 'LOBBY_GAMESLIST',
+  },
+  {
+    path: '/lobby/'
+  }
+  ])
 
 @connect(store => ({
-  gamesList: dataToJS(store.firebase, 'GAMESLIST'),
+  gamesList: dataToJS(store.firebase, 'LOBBY_GAMESLIST'),
   uid: store.userState.uid,
+  canHost: store.userState.isPlaying,
 }), {
   fireHostGame,
   fireUserLeaveGame,
@@ -64,6 +70,7 @@ export default class LobbyGamesView extends Component{
         <CardActions>
           <Button
             raised
+            disabled={this.props.canHost}
             onClick={() => {
               this.props.fireHostGame(this.props.firebase, this.props.uid)
               window.onunload = () => {
