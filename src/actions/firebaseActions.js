@@ -132,6 +132,10 @@ export function fireHostGame(firebase, gameUid){
           playerTurn: 'host',
           uid: gameUid,
           victory: false,
+          score: {
+            host: 0,
+            client: 0,
+          }
         }
       )
     )

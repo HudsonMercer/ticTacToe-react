@@ -194,19 +194,19 @@ export default class GameBoard extends Component{
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[0], position: 'columnMiddle', winDialogIsOpen: true}
+          {victory: true, winner: boardState[1], position: 'columnMiddle', winDialogIsOpen: true}
         )
       break
 
       case (
-        boardState[1] !== 'e' &&
-        (boardState[1] === boardState[4] && boardState[1] === boardState[7])
+        boardState[2] !== 'e' &&
+        (boardState[2] === boardState[5] && boardState[2] === boardState[8])
       ):
       //Check the right column
         this.props.fireSendData(
           this.props.firebase,
           `lobby/games/${this.props.userState.gameUid}`,
-          {victory: true, winner: boardState[0], position: 'columnRight', winDialogIsOpen: true}
+          {victory: true, winner: boardState[2], position: 'columnRight', winDialogIsOpen: true}
         )
       break
 
@@ -224,7 +224,7 @@ export default class GameBoard extends Component{
 
       case (
         boardState[2] !== 'e' &&
-        (boardState[2] === boardState[4] && boardState[0] === boardState[6])
+        (boardState[2] === boardState[4] && boardState[2] === boardState[6])
       ):
       //Check from top right to bottom left, the / direction
         this.props.fireSendData(
@@ -233,8 +233,19 @@ export default class GameBoard extends Component{
         {  victory: true, winner: boardState[2], position: 'bottomDiag', winDialogIsOpen: true}
         )
       break
+
+      case (
+        !boardState.includes('e')
+      ):
+      this.props.fireSendData(
+        this.props.firebase,
+        `lobby/games/${this.props.userState.gameUid}`,
+      {  victory: true, winner: 'tie', position: 'NONE', winDialogIsOpen: true}
+      )
+      break
     }
   }
+
   componentDidUpdate(){
     if(this.props.victory === false){
       this.checkWin(this.props.gameState.boardState)

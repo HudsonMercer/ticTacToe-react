@@ -54,7 +54,7 @@ export default class LobbyView extends Component {
                     Games
                   </ToolbarTitle>
                 </ToolbarSection>
-              </ToolbarRow>{}
+              </ToolbarRow>
             </Toolbar>
             {gamesView}
           </Card>

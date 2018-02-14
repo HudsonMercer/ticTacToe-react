@@ -16,6 +16,10 @@ import {
     {
       path: `/lobby/games/${store.getState().userState.gameUid}/winDialogIsOpen`,
       storeAs: 'GAMEBOARD_WIN_DIALOG_IS_OPEN'
+    },
+    {
+      path: `/lobby/games/${store.getState().userState.gameUid}/winner`,
+      storeAs: 'GAMEBOARD_WIN_DIALOG_WINNER'
     }
   ])
 )
@@ -23,6 +27,7 @@ import {
 @connect((store) => ({
   isOpen: dataToJS(store.firebase, 'GAMEBOARD_WIN_DIALOG_IS_OPEN'),
   gameUid: store.userState.gameUid,
+  winner: dataToJS(store.firebase, 'GAMEBOARD_WIN_DIALOG_WINNER'),
 }),
 {
   fireResetGameBoard,
@@ -39,16 +44,28 @@ export default class GameBoardWinDialog extends Component {
     }
   }
 
+  getWinner(){
+    switch(this.props.winner){
+      case 'x':
+      return 'X wins!'
+      case 'o':
+      return 'O wins!'
+      case 'tie':
+      return 'Game was a tie'
+      default:
+      return 'ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR ERROR'
+    }
+  }
+
   render(){
     return(
       <Dialog open={this.props.isOpen}>
         <DialogHeader>
           <DialogTitle>
-            Somebody won
           </DialogTitle>
         </DialogHeader>
-        <DialogBody>
-          S wins! or ties, or whatever.....
+        <DialogBody style={{textAlign: 'center'}}>
+          {this.getWinner()}
         </DialogBody>
         <DialogFooter>
           <Button

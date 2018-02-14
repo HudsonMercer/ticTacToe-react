@@ -60,7 +60,7 @@ export default class GameBoardLeaveDialog extends Component {
   render(){
     this.startCountDown()
     return(
-      <Dialog open={this.props.isOpen}>
+      <Dialog open={this.props.isOpen} style={{zIndex: 999}}>
         <DialogBody>
           Opponent left game, leaving {this.props.timeLeft === 0 ? 'now':`in ${this.props.timeLeft} seconds`}...
         </DialogBody>
