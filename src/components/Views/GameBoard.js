@@ -9,7 +9,7 @@ import GameBoardSquare from './GameBoardItems/GameBoardSquare'
 import GameBoardLeaveDialog from './GameBoardItems/GameBoardLeaveDialog'
 import GameBoardWinDialog from './GameBoardItems/GameBoardWinDialog'
 import GameBoardBar from './GameBoardItems/GameBoardBar'
-import {fireSendData, fireUserLeaveGame} from '../../actions/firebaseActions'
+import {fireSendData, fireUserLeaveGame, fireAddScore} from '../../actions/firebaseActions'
 import {
         Button,
         Card,
@@ -37,6 +37,10 @@ import {
   {
     path: `lobby/games/${store.getState().userState.gameUid}/leaverId`,
     storeAs: 'GAMEBOARD_LEAVER',
+  },
+  {
+    path: `lobby/games/${store.getState().userState.gameUid}/score`,
+    storeAs: 'GAMEBOARD_SCORE'
   }
 ]))
 
@@ -49,13 +53,15 @@ import {
   windowResize: store.windowResize,
   leavingGame: store.gameBoardState.leavingGame,
   isHost: store.userState.isHost,
+  score: dataToJS(store.firebase, 'GAMEBOARD_SCORE'),
 }),
 {
-fireSendData,
-fireUserLeaveGame,
-uiLeaveGame,
-uiGameBoardUserLeft,
-uiLeavingGame,
+  fireAddScore,
+  fireSendData,
+  fireUserLeaveGame,
+  uiGameBoardUserLeft,
+  uiLeaveGame,
+  uiLeavingGame,
 })
 
 export default class GameBoard extends Component{
@@ -148,6 +154,7 @@ export default class GameBoard extends Component{
           `lobby/games/${this.props.userState.gameUid}`,
           {victory: true, winner: boardState[0], position: 'rowTop', winDialogIsOpen: true}
         )
+        this.props.fireAddScore(this.props.firebase, this.props.userState.gameUid, boardState[0])
       break
 
       case (
@@ -160,6 +167,7 @@ export default class GameBoard extends Component{
           `lobby/games/${this.props.userState.gameUid}`,
           {victory: true, winner: boardState[3], position: 'rowMiddle', winDialogIsOpen: true}
         )
+        this.props.fireAddScore(this.props.firebase, this.props.userState.gameUid, boardState[3])
       break
 
       case (
@@ -172,6 +180,7 @@ export default class GameBoard extends Component{
           `lobby/games/${this.props.userState.gameUid}`,
           {victory: true, winner: boardState[6], position: 'rowBottom', winDialogIsOpen: true}
         )
+        this.props.fireAddScore(this.props.firebase, this.props.userState.gameUid, boardState[6])
       break
 
       case (
@@ -184,6 +193,7 @@ export default class GameBoard extends Component{
           `lobby/games/${this.props.userState.gameUid}`,
           {victory: true, winner: boardState[0], position: 'columnLeft', winDialogIsOpen: true}
         )
+        this.props.fireAddScore(this.props.firebase, this.props.userState.gameUid, boardState[0])
       break
 
       case (
@@ -196,6 +206,7 @@ export default class GameBoard extends Component{
           `lobby/games/${this.props.userState.gameUid}`,
           {victory: true, winner: boardState[1], position: 'columnMiddle', winDialogIsOpen: true}
         )
+        this.props.fireAddScore(this.props.firebase, this.props.userState.gameUid, boardState[1])
       break
 
       case (
@@ -208,6 +219,7 @@ export default class GameBoard extends Component{
           `lobby/games/${this.props.userState.gameUid}`,
           {victory: true, winner: boardState[2], position: 'columnRight', winDialogIsOpen: true}
         )
+        this.props.fireAddScore(this.props.firebase, this.props.userState.gameUid, boardState[2])
       break
 
       case (
@@ -220,6 +232,7 @@ export default class GameBoard extends Component{
           `lobby/games/${this.props.userState.gameUid}`,
         {  victory: true, winner: boardState[0], position: 'topDiag', winDialogIsOpen: true}
         )
+        this.props.fireAddScore(this.props.firebase, this.props.userState.gameUid, boardState[0])
       break
 
       case (
@@ -232,6 +245,7 @@ export default class GameBoard extends Component{
           `lobby/games/${this.props.userState.gameUid}`,
         {  victory: true, winner: boardState[2], position: 'bottomDiag', winDialogIsOpen: true}
         )
+        this.props.fireAddScore(this.props.firebase, this.props.userState.gameUid, boardState[2])
       break
 
       case (
@@ -286,7 +300,7 @@ export default class GameBoard extends Component{
               </Headline>
             </ToolbarSection>
             <ToolbarSection>
-              Score: 1 - 3
+              Score: {`${this.props.score.host} - ${this.props.score.client}`}
             </ToolbarSection>
           </ToolbarRow>
         </Toolbar>

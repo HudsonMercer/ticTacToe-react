@@ -214,3 +214,35 @@ export function fireResetGameBoard(firebase, gameUid){
     })
  }
 }
+
+export function fireAddScore(firebase, gameUid, winner){
+  let isHost = store.getState().userState.isHost
+  if(isHost){
+    return (dispatch) => {
+      firebase.database().ref(`lobby/games/${gameUid}/score`).once('value').then((snap) => {
+        let data = {}, isHost = store.getState().userState.isHost
+
+        if(winner === 'x'){
+          data = {
+            score: {
+              host: snap.val().host + 1,
+              client: snap.val().client
+            }
+          }
+        } else if(winner === 'o') {
+          data ={
+            score: {
+              host: snap.val().host,
+              client: snap.val().client + 1
+            }
+          }
+        }
+          firebase.update(`lobby/games/${gameUid}/`, data)
+      })
+    }
+  } else {
+    return {
+      type: 'WINGAME_EVENT_CLIENT'
+    }
+  }
+}
