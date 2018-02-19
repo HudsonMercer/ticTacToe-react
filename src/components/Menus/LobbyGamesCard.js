@@ -75,6 +75,12 @@ export default class LobbyGamesView extends Component{
               this.props.fireHostGame(this.props.firebase, this.props.uid)
               window.onunload = () => {
                 this.props.fireUserLeaveGame(this.props.firebase, this.props.uid, this.props.uid)
+
+                this.props.firebase.database().ref(`/lobby/games/${this.props.uid}/`).child('client').once('value').then((snap) => {
+                  if(!snap.val()){
+                    this.props.firebase.remove(`/lobby/games/${this.props.uid}`)
+                  }
+                })
               }}}
           >Host Game</Button>
         </CardActions>

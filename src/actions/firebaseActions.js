@@ -62,6 +62,7 @@ export function fireLoginAnon(firebase){
   return (dispatch) => {
 
     firebase.auth().signInAnonymously().then((authData) => {
+      //Handle user name persistance
       firebase.database().ref(`/userProfiles/${authData.uid}/`).child(`displayName`).once('value').then(snap => {
           if (!snap.val()){
             dispatch(storeUserName('Anonymous'))
@@ -69,12 +70,15 @@ export function fireLoginAnon(firebase){
             dispatch(storeUserName(snap.val()))
           }
         })
+
+      //Handle avatar persistance
       firebase.storage().ref(`/userProfiles/${authData.uid}/avatar/image`).getDownloadURL().then(url => {
         dispatch(avatarFileUse(url))
       }).catch((error) => {
         dispatch(setSplashErrorData(error.code, error.message, 'Error'))
         dispatch(toggleSplashError(true))
       })
+
       dispatch(storeUid(authData.uid))
       dispatch(toggleSplash())
       dispatch(storeCookieData(store.getState().userState))

@@ -38,6 +38,12 @@ export default class LobbyGameItem extends Component{
         this.props.fireJoinGame(this.props.firebase, this.props.uid)
         window.onunload = () => {
           this.props.fireUserLeaveGame(this.props.firebase, this.props.userUid, this.props.uid)
+
+          this.props.firebase.database().ref(`/lobby/games/${this.props.uid}/`).child('host').once('value').then((snap) => {
+            if(!snap.val()){
+              this.props.firebase.remove(`/lobby/games/${this.props.uid}`)
+            }
+          })
         }
       }
     })
@@ -79,7 +85,7 @@ export default class LobbyGameItem extends Component{
             List Players
           </MenuItem>
         </Menu>
-        <ListItemText>{this.props.hostName}
+        <ListItemText>{this.props.hostName}'s game
           <ListItemTextSecondary>{this.props.gameStatus}...
           </ListItemTextSecondary>
         </ListItemText>

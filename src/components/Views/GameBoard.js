@@ -96,8 +96,25 @@ export default class GameBoard extends Component{
 }
 
   leaveGameHandler = () => {
+
     this.props.fireUserLeaveGame(this.props.firebase, this.props.userState.uid, this.props.userState.gameUid)
+
     this.props.uiLeaveGame()
+
+    if (this.props.isHost){
+      this.props.fireSendData(
+        this.props.firebase,
+        `/lobby/games/${this.props.userState.gameUid}/`,
+        {host: ''}
+       )
+    } else {
+        this.props.fireSendData(
+          this.props.firebase,
+          `/lobby/games/${this.props.userState.gameUid}/`,
+          {client: ''}
+        )
+    }
+
   }
 
   getTitleStatus = () => {
