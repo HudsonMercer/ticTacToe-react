@@ -13,12 +13,8 @@ export function fireSendFile(firebase, dest = '', file = ''){
   return (dispatch) => {
     dispatch(
         {
-          type: 'FIRE_SEND_FILE',
-          payload: {
-          destination: dest,
-          file: file
+          type: 'FIRE_SEND_FILE_STARTED'
         }
-      }
     )
 
   file.name = 'image'
@@ -27,7 +23,14 @@ export function fireSendFile(firebase, dest = '', file = ''){
     `/userProfiles/${dest}/avatar`,
     file,
     `/userProfiles/${dest}/avatar/meta`
-   )
+  ).then(
+      (val) => {
+        dispatch({type: 'FIRE_SEND_FILE_SUCCESS', payload: val})
+      },
+      (err) => {
+        dispatch({type: 'FIRE_SEND_FILE_FAIL', payload: err})
+      }
+    )
   }
 }
 
@@ -59,7 +62,13 @@ export function fireLoginAnon(firebase){
   return (dispatch) => {
 
     firebase.auth().signInAnonymously().then((authData) => {
-      dispatch(storeUserName('Anonymous'))
+      firebase.database().ref(`/userProfiles/${authData.uid}/`).child('displayName').once('value').then(snap => {
+          if (!snap.val()){
+            dispatch(storeUserName('Anonymous'))
+          } else {
+            dispatch(storeUserName(snap.val()))
+          }
+        })
       dispatch(storeUid(authData.uid))
       dispatch(toggleSplash())
       dispatch(storeCookieData(store.getState().userState))
