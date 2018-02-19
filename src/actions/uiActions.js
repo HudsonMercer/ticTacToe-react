@@ -1,4 +1,4 @@
-import {fireSendData} from './firebaseActions'
+  import {fireSendData} from './firebaseActions'
 
 
 export function setColorScheme(r = 0, g = 0, b = 0){
@@ -272,11 +272,7 @@ export function uiJoinGame(gameUid){
         payload: gameUid,
       }
     )
-    dispatch(
-      {
-        type: 'USER_JOIN_GAME'
-      }
-    )
+    dispatch({type: 'USER_JOIN_GAME'})
     dispatch(quickNavigationSetActiveItem('gameBoard'))
     dispatch(uiSetActiveView('gameBoard'))
   }
@@ -289,6 +285,7 @@ export function uiLeaveGame(){
     dispatch({type: 'USER_LEAVE_GAME'})
   }
 }
+
 export function uiLeavingGame(){
   return (dispatch) => {
     dispatch({type: 'GAMEBOARD_LEAVING_GAME'})
@@ -307,4 +304,12 @@ export function uiGameBoardResetLeaverTimer(){
 
 export function uiGameBoardDecrementTimer(){
   return {type: 'GAMEBOARD_DECREMENT_LEAVER_TIMER'}
+}
+
+export function uiChatInput(char){
+  return {type: 'MENU_LOBBY_CHAT_INPUT', payload: char}
+}
+
+export function uiChatInputClear(){
+  return {type: 'MENU_LOBBY_CHAT_CLEAR_INPUT'}
 }

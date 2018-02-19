@@ -238,6 +238,7 @@ export function fireAddScore(firebase, gameUid, winner){
           }
         }
           firebase.update(`lobby/games/${gameUid}/`, data)
+          return {type: 'WINGAME_EVENT_HOST'}
       })
     }
   } else {

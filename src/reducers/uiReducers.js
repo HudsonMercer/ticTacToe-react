@@ -137,6 +137,19 @@ const lobbyReducer = (state = {isOpen: true, activeItem: 'chat'}, action) => {
       }
     break
 
+    case 'MENU_LOBBY_CHAT_CLEAR_INPUT':
+    return {
+      ...state,
+      chatInputText: ''
+    }
+
+    case 'MENU_LOBBY_CHAT_INPUT':
+
+    return {
+      ...state,
+      chatInputText: action.payload.trim(),
+    }
+
     default:
       return state
     break
