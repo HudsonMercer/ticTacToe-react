@@ -9,13 +9,25 @@ export function fireSendData(firebase, destination = '', data = {debug: 'ERROR B
   }
 }
 
-export function fireSendFile(destination = '', file = ''){
-  return {
-    type: 'FIRE_SEND_FILE',
-    payload: {
-      destination: destination,
-      file: file
-    }
+export function fireSendFile(firebase, dest = '', file = ''){
+  return (dispatch) => {
+    dispatch(
+        {
+          type: 'FIRE_SEND_FILE',
+          payload: {
+          destination: dest,
+          file: file
+        }
+      }
+    )
+
+  file.name = 'image'
+
+  firebase.uploadFile(
+    `/userProfiles/${dest}/avatar`,
+    file,
+    `/userProfiles/${dest}/avatar/meta`
+   )
   }
 }
 

@@ -101,6 +101,9 @@ export default class GameBoardBar extends Component {
         document.documentElement.style.setProperty('--win-bar-left', containerRect.left + cellWidth * 2 + 36 + (cellWidth / 2) - (containerRect.height * .8 / 2) + 'px')
         document.documentElement.style.setProperty('--win-bar-width', containerRect.height * 0.8 + 'px')
       break
+      case 'NONE':
+      document.documentElement.style.setProperty('--win-bar-width', '0px')
+      break
       default:
 
       break

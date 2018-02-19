@@ -11,7 +11,7 @@ const fireSendData = (state = null, action) => {
 
 const fireSendFile = (state = null, action) => {
   if (action.type === 'FIRE_SEND_FILE') {
-    // firebase.storage().ref(action.payload.destination).put(action.payload.file)
+   // firebase.storage().ref(action.payload.destination).put(action.payload.file)
   }
   return state
 }
