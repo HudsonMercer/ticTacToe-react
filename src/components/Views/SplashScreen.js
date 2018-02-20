@@ -102,12 +102,12 @@ export default class SplashScreen extends Component {
               width={32}/>
           </div>
           <br/>
-          <span
+          <div
             className="splashSkip"
             onClick={() => {
               this.props.fireLoginAnon(this.props.firebase)
             }}
-          >Skip</span>
+          >Skip</div>
         </div>
         <Dialog
           style={{color: 'black'}}

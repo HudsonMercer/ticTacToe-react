@@ -10040,6 +10040,9 @@ a.mdc-list-item {
 @media screen and (max-width: 639px) {
   .no-mobile {
     display: none; } }
+.quickNavItem {
+  cursor: pointer; }
+
 .settingsHeader {
   white-space: nowrap; }
 
@@ -10069,11 +10072,29 @@ a.mdc-list-item {
   top: 1rem;
   width: 5rem;
   cursor: pointer;
-  text-decoration: underline; }
+  text-decoration: none; }
+
+.splashSignUp::before {
+  content: "";
+  width: 75%;
+  margin: 0 12.5% 0 12.5%;
+  height: .2rem;
+  background-color: white;
+  position: absolute;
+  top: 100%;
+  left: 0%;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.25s ease-in-out 0s; }
+
+.splashSignUp:hover::before {
+  visibility: visible;
+  transform: scaleX(1); }
 
 .splashInput {
   border: 0px;
-  width: 88%;
+  width: 93%;
+  background-color: transparent;
   height: 95%;
   font-size: 1.25rem;
   text-align: center; }
@@ -10091,15 +10112,32 @@ a.mdc-list-item {
   z-index: 99999;
   text-align: center;
   color: white;
-  box-shadow: 0px 10px 50px 5px rgba(0, 0, 0, 0.5);
   transition: top .5s; }
   .SplashScreen > h1 {
     position: relative;
     top: 10%;
     font-size: 3em; }
 
-.splashSkip:hover {
-  cursor: pointer; }
+.splashSkip {
+  cursor: pointer;
+  width: 2rem;
+  margin: 0px auto 0px auto; }
+
+.splashSkip::after {
+  content: "";
+  width: 2rem;
+  height: .2rem;
+  background-color: white;
+  position: absolute;
+  top: 100%;
+  left: calc(50% - 1rem);
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.25s ease-in-out 0s; }
+
+.splashSkip:hover::after {
+  visibility: visible;
+  transform: scaleX(1); }
 
 .splashTheme {
   background-color: var(--mdc-theme-primary);

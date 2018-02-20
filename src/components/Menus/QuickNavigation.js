@@ -31,6 +31,7 @@ import {
         <DrawerContent>
           <Navigation>
             <div
+              className='quickNavItem'
               onClick={()=>{
                 this.props.toggleSplash()
                 this.props.toggleThis(false)
@@ -38,6 +39,7 @@ import {
             ><Icon name='desktop_windows'/>Title Screen</div>
             <div
               selected={this.props.activeItem === 'lobby'}
+              className='quickNavItem'
               onClick={() => {
                 this.props.setActiveItem('lobby')
                 this.props.toggleThis(false)
@@ -48,6 +50,7 @@ import {
             <div
               style={{display: this.props.userIsPlaying ? 'flex' : 'none'}}
               selected={this.props.activeItem === 'gameBoard'}
+              className='quickNavItem'
               onClick={() => {
                 this.props.setActiveItem('gameBoard')
                 this.props.toggleThis(false)
@@ -58,6 +61,7 @@ import {
             <div>Settings</div>
             <div
               selected={this.props.activeItem === 'general'}
+              className='quickNavItem'
               onClick={() => {
                 this.props.setActiveItem('general')
                 this.props.toggleThis(false)
@@ -66,6 +70,7 @@ import {
               <Icon name='settings'/>General</div>
             <div
               selected={this.props.activeItem === 'avatar'}
+              className='quickNavItem'
               onClick={() => {
                 this.props.setActiveItem('avatar')
                 this.props.toggleThis(false)
@@ -75,6 +80,7 @@ import {
             </div>
             <div
               selected={this.props.activeItem === 'colorScheme'}
+              className='quickNavItem'
               onClick={() => {
                 this.props.setActiveItem('colorScheme')
                 this.props.toggleThis(false)
