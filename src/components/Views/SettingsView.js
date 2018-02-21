@@ -10,6 +10,7 @@ import {
 
 import NameCard from '../Menus/NameCard'
 import AvatarCard from '../Menus/AvatarCard'
+import AboutCard from '../Menus/AboutCard'
 import ColorSchemeCard from '../Menus/ColorSchemeCard'
 
 @connect(store => ({
@@ -25,7 +26,6 @@ import ColorSchemeCard from '../Menus/ColorSchemeCard'
 
 export default class SettingsView extends Component{
   render(){
-
   let activeCard
 
   switch(this.props.activeItem){
@@ -37,6 +37,9 @@ export default class SettingsView extends Component{
     break
     case 'colorScheme':
       activeCard = <ColorSchemeCard/>
+    break
+    case 'about':
+      activeCard = <AboutCard/>
     break
     default:
       activeCard = <NameCard/>
@@ -68,6 +71,12 @@ export default class SettingsView extends Component{
             onClick={() => {this.props.setActiveItem('colorScheme')}}
           >
             Color Scheme
+          </Tab>
+          <Tab
+            active={this.props.activeItem === 'about'}
+            onClick={() => {this.props.setActiveItem('about')}}
+          >
+            About
           </Tab>
           <span className="mdc-tab-bar__indicator"></span>
         </Tabbar>

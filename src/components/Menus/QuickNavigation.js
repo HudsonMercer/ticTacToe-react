@@ -88,6 +88,16 @@ import {
             >
               <Icon name='color_lens'/>Color Theme
             </div>
+            <div
+              selected={this.props.activeItem === 'about'}
+              className='quickNavItem'
+              onClick={() => {
+                this.props.setActiveItem('about')
+                this.props.toggleThis(false)
+              }}
+            >
+              <Icon name='info_outline'/>About
+            </div>
           </Navigation>
         </DrawerContent>
       </Drawer>
@@ -134,6 +144,11 @@ const mapDispatchToProps = (dispatch) => {
         break
         case 'gameBoard':
           dispatch(uiSetActiveView(target))
+          dispatch(quickNavigationSetActiveItem(target))
+        break
+        case 'about':
+          dispatch(uiSetActiveView('settings'))
+          dispatch(setSettingsActiveItem(target))
           dispatch(quickNavigationSetActiveItem(target))
         break
         default:
