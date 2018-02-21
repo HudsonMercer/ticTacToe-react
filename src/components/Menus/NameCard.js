@@ -1,16 +1,14 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {storeUserName} from '../../actions/uiActions'
-import { firebaseConnect, isLoaded, isEmpty, dataToJS } from 'react-redux-firebase'
+import { firebaseConnect} from 'react-redux-firebase'
 import {
         Button,
         Card,
         CardTitle,
-        CardSubtitle,
         CardHeader,
         CardText,
         CardActions,
-        Content,
         Textfield
 } from 'react-mdc-web';
 

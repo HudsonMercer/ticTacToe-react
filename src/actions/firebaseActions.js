@@ -1,5 +1,4 @@
 
-import {isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
 import store from '../store'
 import {toggleSplash, setSplashErrorData, toggleSplashError, storeUid, storeUserName, avatarFileUse, storeCookieData, setColorScheme, uiHostNewGame, uiJoinGame} from './uiActions'
 
@@ -251,7 +250,7 @@ export function fireAddScore(firebase, gameUid, winner){
   if(isHost){
     return (dispatch) => {
       firebase.database().ref(`lobby/games/${gameUid}/score`).once('value').then((snap) => {
-        let data = {}, isHost = store.getState().userState.isHost
+        let data = {}
 
         if(winner === 'x'){
           data = {

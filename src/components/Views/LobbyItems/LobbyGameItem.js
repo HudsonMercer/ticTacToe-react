@@ -1,20 +1,16 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS, populatedDataToJS } from 'react-redux-firebase'
+import { firebaseConnect} from 'react-redux-firebase'
 import {fireJoinGame, fireUserLeaveGame} from '../../../actions/firebaseActions'
 
 import {
         Menu,
-        MenuAnchor,
         MenuItem,
         MenuDivider,
         Icon,
-        List,
         ListItem,
         ListItemText,
         ListItemTextSecondary,
-        ListDivider,
-        ListGroup
         } from 'react-mdc-web'
 
 @firebaseConnect()
@@ -78,9 +74,11 @@ export default class LobbyGameItem extends Component{
             onClick={this.joinGameHandler}>
             Join
           </MenuItem>
+          <MenuDivider/>
           <MenuItem>
             Observe
           </MenuItem>
+          <MenuDivider/>
           <MenuItem>
             List Players
           </MenuItem>

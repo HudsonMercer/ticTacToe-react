@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
+import { firebaseConnect, pathToJS } from 'react-redux-firebase'
 import FaFacebookSquare from 'react-icons/lib/fa/facebook-square'
 import FaTwitterSquare from 'react-icons/lib/fa/twitter-square'
 import FaGithubSquare from 'react-icons/lib/fa/github-square'

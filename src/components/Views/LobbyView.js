@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {toggleLobbyActiveItem} from '../../actions/uiActions'
-import LobbyGameItem from './LobbyItems/LobbyGameItem'
 import LobbyChatList from '../Menus/LobbyChatCard'
 import LobbyGamesList from '../Menus/LobbyGamesCard'
 

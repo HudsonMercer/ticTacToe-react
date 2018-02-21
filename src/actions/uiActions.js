@@ -1,6 +1,3 @@
-  import {fireSendData} from './firebaseActions'
-
-
 export function setColorScheme(r = 0, g = 0, b = 0){
   return {
     type: 'SET_COLOR_SCHEME',

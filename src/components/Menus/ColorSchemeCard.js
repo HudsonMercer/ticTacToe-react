@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty, dataToJS, pathToJS } from 'react-redux-firebase'
+import { firebaseConnect} from 'react-redux-firebase'
 import {setColorScheme} from '../../actions/uiActions'
 import {fireSaveColorScheme, fireGetColorScheme} from '../../actions/firebaseActions'
 import {

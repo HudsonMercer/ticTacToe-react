@@ -26,7 +26,10 @@ import ColorSchemeCard from '../Menus/ColorSchemeCard'
 
 export default class SettingsView extends Component{
   render(){
-  let activeCard
+  let activeCard, err = {
+    message: `Invalid tab index given to SettingsView.js, given  ${this.props.activeItem}. Defaulting to <NameCard>`,
+    name: 'Invalid Index'
+  }
 
   switch(this.props.activeItem){
     case 'general':
@@ -43,10 +46,7 @@ export default class SettingsView extends Component{
     break
     default:
       activeCard = <NameCard/>
-      throw {
-        message: `Invalid tab index given to SettingsView.js, given  ${this.props.activeItem}. Defaulting to <NameCard>`,
-        name: 'Invalid Index'
-      }
+      throw err
   }
 
   return(

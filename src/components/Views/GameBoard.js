@@ -1,10 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {compose} from 'redux'
 import store from '../../store'
 import {firebaseConnect, dataToJS} from 'react-redux-firebase'
 import {uiLeaveGame, uiGameBoardUserLeft, uiLeavingGame} from '../../actions/uiActions'
-import GameBoardX from './GameBoardItems/GameBoardX'
 import GameBoardSquare from './GameBoardItems/GameBoardSquare'
 import GameBoardLeaveDialog from './GameBoardItems/GameBoardLeaveDialog'
 import GameBoardWinDialog from './GameBoardItems/GameBoardWinDialog'
@@ -14,15 +12,11 @@ import {
         Button,
         Card,
         CardText,
-        CardHeader,
         CardActions,
         Toolbar,
         ToolbarSection,
         ToolbarRow,
-        Title,
         Headline,
-        Grid,
-        Cell
         } from 'react-mdc-web'
 
 @firebaseConnect(() => ([
@@ -89,6 +83,8 @@ export default class GameBoard extends Component{
         this.props.userState.isHost
       ):
         return `${this.props.gameState.client}'s turn`
+        default:
+        return 'Cannot resolve'
       }
   } catch(err){
     return "Cant resolve"
@@ -160,7 +156,6 @@ export default class GameBoard extends Component{
 
   checkWin = (boardState) => {
     switch (true){
-
       case (
         boardState[0] !== 'e' &&
         (boardState[0] === boardState[1] && boardState[0] === boardState[2])
@@ -274,6 +269,8 @@ export default class GameBoard extends Component{
       {  victory: true, winner: 'tie', position: 'NONE', winDialogIsOpen: true}
       )
       break
+      default:
+      break
     }
   }
 
@@ -292,8 +289,7 @@ export default class GameBoard extends Component{
 
   render(){
 
-    let ready = (this.props.gameState !== undefined),
-    playerTurn = ''
+    let playerTurn = ''
 
     try{
       playerTurn = this.getUserTurn()

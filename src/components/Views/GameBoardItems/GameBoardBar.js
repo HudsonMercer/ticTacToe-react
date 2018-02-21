@@ -45,8 +45,8 @@ export default class GameBoardBar extends Component {
 
     switch(this.props.gameWinPosition){
       case 'topDiag':
-          y = (containerRect.bottom - 24) - (containerRect.top - 8),
-          x = (containerRect.right - 16) - (containerRect.left - 16),
+          y = (containerRect.bottom - 24) - (containerRect.top - 8)
+          x = (containerRect.right - 16) - (containerRect.left - 16)
           rotation = Math.atan2(y, x)
         document.documentElement.style.setProperty('--win-bar-rotation', rotation + 'rad')
         document.documentElement.style.setProperty('--win-bar-top', containerRect.top + (containerRect.height/2) - 32 + 'px')
@@ -55,8 +55,8 @@ export default class GameBoardBar extends Component {
       break
 
       case 'bottomDiag':
-          y = (containerRect.top - 8) - (containerRect.bottom - 24),
-          x = (containerRect.right - 16) - (containerRect.left - 16),
+          y = (containerRect.top - 8) - (containerRect.bottom - 24)
+          x = (containerRect.right - 16) - (containerRect.left - 16)
           rotation = Math.atan2(y, x)
         document.documentElement.style.setProperty('--win-bar-rotation', rotation + 'rad')
         document.documentElement.style.setProperty('--win-bar-top', containerRect.top + (containerRect.height/2) - 32  + 'px')

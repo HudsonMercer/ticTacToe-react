@@ -18,10 +18,8 @@ const quickNavigationReducer = (state = {isOpen: false}, action) => {
       ...state,
       activeItem: action.payload,
     }
-  break
   default:
     return state
-  break
   }
 }
 
@@ -114,7 +112,6 @@ const lobbyReducer = (state = {isOpen: true, activeItem: 'chat'}, action) => {
             isOpen: action.payload
           }
         }
-    break
 
     case 'MENU_LOBBY_TOGGLE_ACTIVE_ITEM':
       if(typeof(action.payload) !== 'string'){
@@ -135,7 +132,6 @@ const lobbyReducer = (state = {isOpen: true, activeItem: 'chat'}, action) => {
           activeItem: action.payload,
         }
       }
-    break
 
     case 'MENU_LOBBY_CHAT_CLEAR_INPUT':
     return {
@@ -144,7 +140,6 @@ const lobbyReducer = (state = {isOpen: true, activeItem: 'chat'}, action) => {
     }
 
     case 'MENU_LOBBY_CHAT_INPUT':
-
     return {
       ...state,
       chatInputText: action.payload.trim(),
@@ -152,7 +147,6 @@ const lobbyReducer = (state = {isOpen: true, activeItem: 'chat'}, action) => {
 
     default:
       return state
-    break
   }
 }
 
@@ -216,20 +210,17 @@ const userStateReducer = (state = {}, action) => {
         ...state,
         uid: action.payload
       }
-      break
     case 'USER_STORE_USER_NAME':
       return state = {
         ...state,
         userName: action.payload,
       }
-      break
     case 'USER_JOIN_HOST_GAME':
       return state ={
         ...state,
         isPlaying: true,
         gameUid: action.payload,
       }
-      break
     case 'USER_HOST_GAME':
     return state = {
       ...state,
@@ -247,7 +238,6 @@ const userStateReducer = (state = {}, action) => {
       isHost: false,
       gameUid: null,
     }
-    break
     default:
     return state
   }
@@ -268,13 +258,11 @@ const gameBoardStateReducer = (state = {}, action) => {
         ...state,
         userLeftDialogIsOpen: true
       }
-    break
     case 'GAMEBOARD_RESET_LEAVER_TIMER':
       return {
         ...state,
         timeLeft: 3
       }
-    break
     case 'GAMEBOARD_DECREMENT_LEAVER_TIMER':
       if(state.timeLeft !== 0){
         return {
@@ -287,20 +275,17 @@ const gameBoardStateReducer = (state = {}, action) => {
           timeLeft: 3
         }
       }
-    break
     case 'GAMEBOARD_LEAVING_GAME':
       return {
         ...state,
         leavingGame: true,
       }
-    break
     case 'GAMEBOARD_RESET_LEAVING_GAME':
       return {
         ...state,
         leavingGame: false,
         userLeftDialogIsOpen: false,
       }
-    break
     default:
     return state
   }

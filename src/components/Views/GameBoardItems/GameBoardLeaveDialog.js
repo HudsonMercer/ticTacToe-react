@@ -4,11 +4,8 @@ import {firebaseConnect} from 'react-redux-firebase'
 import {uiGameBoardResetLeaverTimer, uiGameBoardDecrementTimer, uiLeaveGame} from '../../../actions/uiActions'
 import {fireDeleteGame} from '../../../actions/firebaseActions'
 import {
-        Button,
         Dialog,
-        DialogHeader,
-        DialogTitle,
-        DialogBody
+        DialogBody,
         } from 'react-mdc-web'
 
 @firebaseConnect()

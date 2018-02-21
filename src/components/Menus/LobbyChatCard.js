@@ -6,7 +6,6 @@ import {
         Button,
         CardActions,
         CardText,
-        Icon,
         List,
         ListItem,
         ListItemText,
@@ -45,7 +44,7 @@ chatScrollToBottom = () => {
 getChatMessages = () => {
   const element = this.props.chatMessages
 
-   let arr = [], msgElement = [], d = []
+   let arr = [], d = []
    //convert object to array of objects one level deep, firebase key is saved as messageKey
    for (const prop in element){
      if(element.hasOwnProperty(prop)){

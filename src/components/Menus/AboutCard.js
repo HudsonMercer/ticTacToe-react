@@ -2,19 +2,11 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {
         Elevation,
-        CardActions,
-        CardHeader,
-        CardMedia,
-        CardText,
-        CardTitle,
-        Content,
         GridList,
         Tile,
-        TileContent,
         TilePrimary,
         TileSecondary,
         TileTitle,
-        Icon
         } from 'react-mdc-web';
 
 import reactIcon from '../../res/react.svg'
@@ -29,6 +21,7 @@ import githubIcon from '../../res/github.svg'
 import css3Icon from '../../res/css3shield.svg'
 import html5Icon from '../../res/html5shield.svg'
 import jsxIcon from '../../res/jsx.png'
+import webpackIcon from '../../res/webpack.svg'
 
 
 @connect(
@@ -56,7 +49,7 @@ export default class AboutCard extends Component {
       <Elevation z={4} style={{overflowY: 'scroll', height: '75vh', padding: '24px', margin: '8px'}}>
         Built With:<br/>
 
-        Frameworks & Libraries <br/>
+        Frameworks & Libraries: <br/>
         <GridList>
           <Tile>
             <TilePrimary>
@@ -83,7 +76,7 @@ export default class AboutCard extends Component {
             </TilePrimary>
             <TileSecondary>
               <TileTitle>
-                React JS
+                Redux
               </TileTitle>
             </TileSecondary>
           </Tile>
@@ -129,14 +122,29 @@ export default class AboutCard extends Component {
             <TilePrimary>
               {this.logoIcon(
                 npmIcon,
-                'NPM',
+                'No Particular Meaning',
                 'https://www.npmjs.com/',
                 '25%'
               )}
             </TilePrimary>
             <TileSecondary>
               <TileTitle>
-                NPM
+                npm
+              </TileTitle>
+            </TileSecondary>
+          </Tile>
+
+          <Tile>
+            <TilePrimary>
+              {this.logoIcon(
+                webpackIcon,
+                'webpack',
+                'https://webpack.js.org/'
+              )}
+            </TilePrimary>
+            <TileSecondary>
+              <TileTitle>
+                webpack
               </TileTitle>
             </TileSecondary>
           </Tile>
@@ -248,52 +256,8 @@ export default class AboutCard extends Component {
             </TileSecondary>
           </Tile>
         </GridList>
-        {/*
-            <a
-            href="https://nodejs.org/en/about/">
-            {this.logoIcon(nodeIcon)}
-            </a>
-
-            <a
-            href="https://www.npmjs.com/">
-            {this.logoIcon(npmIcon)}
-            </a>
-
-            <a
-            href="https://git-scm.com/">
-            {this.logoIcon(gitIcon)}
-            </a>
-
-            <a
-            href="https://github.com/Lou-Saydus/ticTacToe-react">
-            {this.logoIcon(githubIcon)}
-            </a>
-
-            <a
-            href="http://sass-lang.com/">
-            {this.logoIcon(sassIcon)}
-            </a>
-
-            <a
-            href="https://reactjs.org/docs/introducing-jsx.html">
-            {this.logoIcon(jsxIcon)}
-            </a>
-
-            <a
-            href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5">
-            {this.logoIcon(html5Icon)}
-            </a>
-
-            <a
-            href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS3">
-            {this.logoIcon(css3Icon)}
-            </a>
-
-            <a
-            href="https://developer.mozilla.org/en-US/docs/Glossary/JavaScript">
-            {this.logoIcon(jsIcon)}
-        </a>*/}
-
+        <br/>
+        <div style={{textAlign: 'center', fontSize: '0.75rem'}}>© {new Date().getFullYear()} HKM Development</div>
       </Elevation>
     )
   }

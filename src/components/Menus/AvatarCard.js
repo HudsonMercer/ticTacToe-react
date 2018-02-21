@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {firebaseConnect} from 'react-redux-firebase'
 import {avatarFileLoad, avatarFileUse} from '../../actions/uiActions'
 import {fireSendData, fireSendFile} from '../../actions/firebaseActions'
-import firebase from '../../firebaseInit'
 import {
         Button,
         Card,

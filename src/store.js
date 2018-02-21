@@ -1,10 +1,9 @@
-import {createStore, applyMiddleware} from 'redux'
+import {applyMiddleware} from 'redux'
 import {createLogger} from 'redux-logger'
 import thunk from 'redux-thunk'
 import createStoreWithFirebase from './firebaseInit'
 import reducers from './reducers/reducers'
 import AvatarImg from './res/avatar.png'
-import uuidv4 from 'uuid'
 
 const initState = {
   userState: {

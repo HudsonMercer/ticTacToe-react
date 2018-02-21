@@ -1,9 +1,5 @@
-import { reactReduxFirebase, firebaseStateReducer } from 'react-redux-firebase'
+import { reactReduxFirebase } from 'react-redux-firebase'
 import {createStore, compose} from 'redux'
-import firebaseui from 'firebaseui'
-
-import uuidv4 from 'uuid'
-
 const config ={
   apiKey: "AIzaSyCWcbz2SwfHQDkVq9qu0_UmJT9giOVNVrM",
   authDomain: "tictactoe-b8474.firebaseapp.com",
@@ -16,5 +12,4 @@ const reduxFirebaseConfig = { userProfile: 'userProfiles' }
 // Add reactReduxFirebase store enhancer
 const createStoreWithFirebase = compose(reactReduxFirebase(config, reduxFirebaseConfig))(createStore)
 
-export const firebaseInstanceUUID = uuidv4()
 export default createStoreWithFirebase

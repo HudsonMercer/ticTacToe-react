@@ -7,7 +7,6 @@ import {
         Button,
         CardActions,
         CardText,
-        Icon,
         List,
         ListDivider
         } from 'react-mdc-web'
