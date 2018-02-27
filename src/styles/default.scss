@@ -8,7 +8,21 @@ $mdc-theme-background: #f5f5f5;
 
 @import "material-components-web/material-components-web";
 
-
+@media screen and (min-device-width: 426px){
+  //phone screen max
+  .SplashScreen{
+    > h1 {
+      top: 10%;
+    }
+  }
+  .splashLoginDialog {
+    top: 15%;
+  }
+  #lobbyChatList{
+    max-height: 45vh; 
+  }
+}
+//min width of full banner support
 @media screen and (max-width: 639px) {
   .no-mobile{
     display: none;
@@ -100,7 +114,6 @@ $mdc-theme-background: #f5f5f5;
 
   > h1 {
     position: relative;
-    top: 10%;
     font-size: 3em;
   }
   transition: top .5s;
@@ -137,8 +150,8 @@ $mdc-theme-background: #f5f5f5;
 
 .splashLoginDialog {
   position: relative;
-  top: 15%;
 }
+
 
 .splashInputBox {
   position: relative;

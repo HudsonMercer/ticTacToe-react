@@ -10037,6 +10037,15 @@ a.mdc-list-item {
 .mdc-typography--adjust-margin.mdc-typography--button {
   margin: inherit; }
 
+@media screen and (min-device-width: 426px) {
+  .SplashScreen > h1 {
+    top: 10%; }
+
+  .splashLoginDialog {
+    top: 15%; }
+
+  #lobbyChatList {
+    max-height: 45vh; } }
 @media screen and (max-width: 639px) {
   .no-mobile {
     display: none; } }
@@ -10115,7 +10124,6 @@ a.mdc-list-item {
   transition: top .5s; }
   .SplashScreen > h1 {
     position: relative;
-    top: 10%;
     font-size: 3em; }
 
 .splashSkip {
@@ -10144,8 +10152,7 @@ a.mdc-list-item {
   font-family: 'Pacifico', cursive; }
 
 .splashLoginDialog {
-  position: relative;
-  top: 15%; }
+  position: relative; }
 
 .splashInputBox {
   position: relative;
