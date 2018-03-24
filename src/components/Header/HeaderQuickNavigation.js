@@ -1,11 +1,9 @@
-import React, {Component} from 'react'
-import style from 'styled-components'
-import {
-        Icon
-        } from 'react-mdc-web'
+import React, { Component } from 'react';
+import style from 'styled-components';
+import { Icon } from 'react-mdc-web';
 
-import {connect} from 'react-redux'
-import {toggleQuickNavigation} from '../../actions/uiActions'
+import { connect } from 'react-redux';
+import { toggleQuickNavigation } from '../../actions/uiActions';
 
 const Container = style.div`
   width: 52px;
@@ -16,26 +14,25 @@ const Container = style.div`
   &:hover {
     cursor: pointer;
   }
-`
-
+`;
 
 class HeaderQuickNavigation extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-    backgroundColor: 'var(--mdc-theme-primary)'}
+      backgroundColor: 'var(--mdc-theme-primary)',
+    };
   }
 
   mouseEnter = () => {
-    this.setState({backgroundColor: 'var(--mdc-theme-primary-dark)'})
-
-  }
+    this.setState({ backgroundColor: 'var(--mdc-theme-primary-dark)' });
+  };
 
   mouseLeave = () => {
-    this.setState({backgroundColor: 'var(--mdc-theme-primary)'})
-  }
+    this.setState({ backgroundColor: 'var(--mdc-theme-primary)' });
+  };
 
-  render(){
+  render() {
     return (
       <Container
         style={this.state}
@@ -44,24 +41,26 @@ class HeaderQuickNavigation extends Component {
         onMouseLeave={this.mouseLeave}
       >
         <Icon
-          style={{fontSize: '24px', paddingTop: '25%', position: 'relative'}} name="menu">
-        </Icon>
+          style={{ fontSize: '24px', paddingTop: '25%', position: 'relative' }}
+          name="menu"
+        />
       </Container>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => {
-  return state
+const mapStateToProps = state => {
+  return state;
+};
 
-}
-
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     onClick: () => {
-      dispatch(toggleQuickNavigation())
-    }
-  }
-}
+      dispatch(toggleQuickNavigation());
+    },
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderQuickNavigation)
+export default connect(mapStateToProps, mapDispatchToProps)(
+  HeaderQuickNavigation,
+);

@@ -1,57 +1,60 @@
-import React, {Component} from 'react'
-import {connect} from 'react-redux'
-import {storeUserName} from '../../actions/uiActions'
-import { firebaseConnect} from 'react-redux-firebase'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { storeUserName } from '../../actions/uiActions';
+import { firebaseConnect } from 'react-redux-firebase';
 import {
-        Button,
-        Card,
-        CardTitle,
-        CardHeader,
-        CardText,
-        CardActions,
-        Textfield
+  Button,
+  Card,
+  CardTitle,
+  CardHeader,
+  CardText,
+  CardActions,
+  Textfield,
 } from 'react-mdc-web';
 
 @firebaseConnect()
-
-@connect( store => ({
+@connect(
+  store => ({
     userName: store.userState.userName,
     uid: store.userState.uid,
-}),
+  }),
   {
-  storeUserName,
-  }
+    storeUserName,
+  },
 )
-
 export default class NameCard extends Component {
-  render(){
-    return(
+  render() {
+    return (
       <div>
         <Card>
           <CardHeader>
-            <CardTitle>
-              Name Settings
-            </CardTitle>
+            <CardTitle>Name Settings</CardTitle>
           </CardHeader>
           <CardText>
             <Textfield
               floatingLabel="Current Name"
               helptext="Must be alphanumeric, spaces are okay"
               value={this.props.userName}
-              onChange={(name) => this.props.storeUserName(name.target.value)}
-            >
-            </Textfield>
+              onChange={name => this.props.storeUserName(name.target.value)}
+            />
             <CardActions>
-              <Button onClick={() => {
-                this.props.firebase.update(`userProfiles/${this.props.uid}`, {displayName: this.props.userName})
-              }}
+              <Button
+                onClick={() => {
+                  this.props.firebase.update(`userProfiles/${this.props.uid}`, {
+                    displayName: this.props.userName,
+                  });
+                }}
                 dense
-              >Change Name</Button>
-              <Button raised dense>Cancel</Button>
+              >
+                Change Name
+              </Button>
+              <Button raised dense>
+                Cancel
+              </Button>
             </CardActions>
           </CardText>
         </Card>
       </div>
-    )
+    );
   }
 }

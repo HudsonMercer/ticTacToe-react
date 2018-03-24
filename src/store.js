@@ -1,9 +1,9 @@
-import {applyMiddleware} from 'redux'
-import {createLogger} from 'redux-logger'
-import thunk from 'redux-thunk'
-import createStoreWithFirebase from './firebaseInit'
-import reducers from './reducers/reducers'
-import AvatarImg from './res/avatar.png'
+import { applyMiddleware } from 'redux';
+import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
+import createStoreWithFirebase from './firebaseInit';
+import reducers from './reducers/reducers';
+import AvatarImg from './res/avatar.png';
 
 const initState = {
   userState: {
@@ -16,7 +16,7 @@ const initState = {
     isOpen: false,
     activeItem: 'lobby',
   },
-  settingsState:{
+  settingsState: {
     activeItem: 'lobby',
     isOpen: false,
   },
@@ -24,7 +24,8 @@ const initState = {
     errorDialog: {
       isOpen: false,
       error: 'No error',
-      message: "If you're reading this, somebody forgot to disable this error dialog by default and you can safely click okay and ignore this message.",
+      message:
+        "If you're reading this, somebody forgot to disable this error dialog by default and you can safely click okay and ignore this message.",
       title: 'Error',
     },
     isOpen: true,
@@ -40,18 +41,16 @@ const initState = {
     lobbyGames: [],
     chatInputText: '',
   },
-  uiState:{
-    activeView: 'lobby'
+  uiState: {
+    activeView: 'lobby',
   },
   gameBoardState: {
     userLeftDialogIsOpen: false,
     timeLeft: 3,
     leavingGame: false,
-  }
-}
+  },
+};
 
-
-
-const middleware = applyMiddleware(thunk, createLogger())
-const store = createStoreWithFirebase(reducers, initState, middleware)
-export default store
+const middleware = applyMiddleware(thunk, createLogger());
+const store = createStoreWithFirebase(reducers, initState, middleware);
+export default store;
