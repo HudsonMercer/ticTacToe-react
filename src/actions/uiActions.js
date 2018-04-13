@@ -149,8 +149,9 @@ export function avatarFileLoad(file) {
       fileLoader.onabort = function() {
         alert('The upload was aborted.');
       };
-      fileLoader.onerror = function() {
+      fileLoader.onerror = function(error) {
         alert('An error occured while reading the file.');
+        alert( error);
       };
       imageObj.onload = function() {
         if (this.width === 0 || this.height === 0) {

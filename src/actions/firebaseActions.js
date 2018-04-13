@@ -104,8 +104,10 @@ export function fireLoginAnon(firebase) {
             dispatch(avatarFileUse(url));
           })
           .catch(error => {
-            dispatch(setSplashErrorData(error.code, error.message, 'Error'));
-            dispatch(toggleSplashError(true));
+            if(error.code !== 'storage/object-not-found'){
+                        dispatch(setSplashErrorData(error.code, error.message, 'Error'));
+                        dispatch(toggleSplashError(true));
+                      }
           });
 
         dispatch(storeUid(authData.uid));
